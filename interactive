@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: Brand Research for Purpose-Driven Organizations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+        - 5-Phase Process: Interactive HTML/CSS process flow diagram, clickable to navigate. Goal: Inform/Organize. Justification: Provides a clear mental model.
+        - Benefits vs. Challenges: Dynamic Chart.js Bar Chart with toggle buttons. Goal: Compare. Justification: More impactful than text lists.
+        - Brand Architecture: Interactive cards with a dropdown selector. Goal: Organize/Explain. Justification: Makes abstract concepts concrete.
+        - Impact Frameworks: Dynamic Chart.js Radar Chart with buttons to switch frameworks. Goal: Compare/Inform. Justification: Visually shows the multi-dimensional nature of frameworks.
+        - Case Studies: HTML/CSS carousel. Goal: Inform/Engage. Justification: Presents examples engagingly without using too much space.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F6F2;
+            color: #3D352E;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #C0783F;
+            border-bottom-color: #C0783F;
+        }
+        .phase-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .phase-card.active {
+            border-color: #C0783F;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(192, 120, 63, 0.2), 0 4px 6px -2px rgba(192, 120, 63, 0.1);
+        }
+        .btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #4A5C5A;
+            color: #F8F6F2;
+        }
+        .btn-primary:hover {
+            background-color: #3A4947;
+        }
+        .btn-secondary {
+            background-color: #E8E2D9;
+            color: #3D352E;
+        }
+        .btn-secondary.active, .btn-secondary:hover {
+            background-color: #C0783F;
+            color: #F8F6F2;
+        }
+        .architecture-card {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .architecture-card.active {
+            border-color: #4A5C5A;
+            box-shadow: 0 4px 12px rgba(74, 92, 90, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#F8F6F2] shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-[#3D352E]">PDO Research Framework</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#framework" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Framework</a>
+                        <a href="#foundations" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Foundations</a>
+                        <a href="#toolkit" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Toolkit</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Strategy</a>
+                        <a href="#measurement" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Measurement</a>
+                        <a href="#cases" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Cases</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-[#E8E2D9] py-20 sm:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl font-bold tracking-tight text-[#3D352E] sm:text-5xl lg:text-6xl">A Strategic Framework for Purpose-Driven Brands</h2>
+                <p class="mt-6 text-lg max-w-3xl mx-auto leading-8 text-[#5a4f45]">This interactive guide translates the comprehensive report on brand research for Purpose-Driven Organizations (PDOs) into an actionable, explorable experience. Navigate the key phases, tools, and strategies to build authentic, impactful brands.</p>
+            </div>
+        </section>
+        
+        <section id="framework" class="py-20 sm:py-24 bg-[#F8F6F2]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">The 5-Phase Research Process</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">A standardized, phased approach ensures that all critical aspects of brand research are covered, from initial discovery to ongoing performance measurement. Click on any phase to learn more.</p>
+                </div>
+                <div id="phase-container" class="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 md:top-1/2 md:left-0 md:-translate-y-1/2 w-1 h-full md:h-1 md:w-full bg-[#D1C7B8]"></div>
+                    <div class="w-full md:w-1/5 p-2 relative">
+                        <a href="#phase1" class="phase-card-link">
+                            <div id="phase-card-1" class="phase-card bg-[#FDFBF9] p-6 rounded-lg border-2 border-transparent text-center shadow-md">
+                                <div class="text-3xl font-bold text-[#C0783F]">1</div>
+                                <h4 class="mt-2 text-lg font-semibold">Discovery & Definition</h4>
+                                <p class="mt-2 text-sm text-[#5a4f45]">Understand the core purpose and stakeholder landscape.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/5 p-2 relative">
+                        <a href="#phase2" class="phase-card-link">
+                            <div id="phase-card-2" class="phase-card bg-[#FDFBF9] p-6 rounded-lg border-2 border-transparent text-center shadow-md">
+                                <div class="text-3xl font-bold text-[#C0783F]">2</div>
+                                <h4 class="mt-2 text-lg font-semibold">Research & Insights</h4>
+                                <p class="mt-2 text-sm text-[#5a4f45]">Uncover stakeholder perceptions through primary data.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/5 p-2 relative">
+                       <a href="#phase3" class="phase-card-link">
+                            <div id="phase-card-3" class="phase-card bg-[#FDFBF9] p-6 rounded-lg border-2 border-transparent text-center shadow-md">
+                                <div class="text-3xl font-bold text-[#C0783F]">3</div>
+                                <h4 class="mt-2 text-lg font-semibold">Strategy Development</h4>
+                                <p class="mt-2 text-sm text-[#5a4f45]">Craft purpose-aligned brand and communication strategies.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/5 p-2 relative">
+                        <a href="#phase4" class="phase-card-link">
+                            <div id="phase-card-4" class="phase-card bg-[#FDFBF9] p-6 rounded-lg border-2 border-transparent text-center shadow-md">
+                                <div class="text-3xl font-bold text-[#C0783F]">4</div>
+                                <h4 class="mt-2 text-lg font-semibold">Creative Solutions</h4>
+                                <p class="mt-2 text-sm text-[#5a4f45]">Visualize data and craft compelling brand narratives.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/5 p-2 relative">
+                        <a href="#phase5" class="phase-card-link">
+                            <div id="phase-card-5" class="phase-card bg-[#FDFBF9] p-6 rounded-lg border-2 border-transparent text-center shadow-md">
+                                <div class="text-3xl font-bold text-[#C0783F]">5</div>
+                                <h4 class="mt-2 text-lg font-semibold">Measurement & Iteration</h4>
+                                <p class="mt-2 text-sm text-[#5a4f45]">Drive continuous improvement with data analytics.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="foundations" class="py-20 sm:py-24 bg-[#E8E2D9]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">Foundations of Purpose</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">PDOs are defined by their commitment to a mission beyond profit. Understanding their characteristics, benefits, and common hurdles is the first step toward effective brand strategy.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold mb-2">Characteristics</h4>
+                        <p class="text-[#5a4f45]">Their "why" is woven into strategy, guiding decisions and fostering employee engagement. They pursue measurable goals and communicate with authenticity.</p>
+                    </div>
+                     <div class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold mb-2">Leadership's Role</h4>
+                        <p class="text-[#5a4f45]">Leaders must embody the purpose, championing it through actions, allocating resources, and fostering a culture of psychological safety and alignment.</p>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-1 bg-[#FDFBF9] p-8 rounded-lg shadow">
+                         <h4 class="text-xl font-semibold mb-2">Benefits vs. Challenges</h4>
+                        <p class="text-[#5a4f45] mb-4">A clear purpose boosts retention and long-term performance but faces hurdles like short-term financial pressure and a lack of non-financial metrics. Toggle the chart to compare.</p>
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button id="show-benefits-btn" class="btn btn-secondary active px-4 py-2 text-sm rounded-md">Benefits</button>
+                            <button id="show-challenges-btn" class="btn btn-secondary px-4 py-2 text-sm rounded-md">Challenges</button>
+                        </div>
+                        <div class="chart-container h-64 md:h-auto">
+                            <canvas id="benefitsChallengesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit" class="py-20 sm:py-24 bg-[#F8F6F2]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">The Research Toolkit</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">A combination of research methods is needed to gain a holistic view. Explore the primary quantitative and qualitative tools used to uncover deep stakeholder insights.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="phase1" class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold mb-4 border-b pb-2">Phase 1: Discovery & Definition</h4>
+                         <p class="text-[#5a4f45] mb-4">This phase uses secondary research to understand the broader context. It involves analyzing market trends, the competitive purpose-driven landscape, and societal shifts related to the organization's mission.</p>
+                        <ul class="list-disc list-inside text-[#5a4f45] space-y-2">
+                            <li>Market & Industry Analysis</li>
+                            <li>Purpose-Driven Competitor Analysis</li>
+                            <li>Societal Trend Analysis</li>
+                            <li>Stakeholder Mapping & Trust Analysis</li>
+                        </ul>
+                    </div>
+                     <div id="phase2" class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold mb-4 border-b pb-2">Phase 2: Primary Research & Insights</h4>
+                         <p class="text-[#5a4f45] mb-4">This phase gathers firsthand data to understand stakeholder perceptions, needs, and motivations. Toggle between quantitative and qualitative methods.</p>
+                         <div class="flex justify-start space-x-2 mb-4">
+                             <button id="show-quant-btn" class="btn btn-secondary active px-4 py-2 text-sm rounded-md">Quantitative</button>
+                             <button id="show-qual-btn" class="btn btn-secondary px-4 py-2 text-sm rounded-md">Qualitative</button>
+                         </div>
+                         <div id="quant-methods">
+                             <h5 class="font-semibold mb-2">Quantitative Methods (The "What")</h5>
+                             <ul class="list-disc list-inside text-[#5a4f45] space-y-2">
+                                 <li><strong>Surveys:</strong> Gauge brand awareness, purpose perception, and satisfaction with structured questions.</li>
+                                 <li><strong>A/B Testing:</strong> Optimize messaging and calls-to-action by comparing different versions empirically.</li>
+                             </ul>
+                         </div>
+                         <div id="qual-methods" class="hidden">
+                             <h5 class="font-semibold mb-2">Qualitative Methods (The "Why")</h5>
+                             <ul class="list-disc list-inside text-[#5a4f45] space-y-2">
+                                 <li><strong>In-depth Interviews:</strong> Uncover rich, nuanced insights into individual experiences and emotional connections.</li>
+                                 <li><strong>Focus Groups:</strong> Explore collective perspectives and shared values through facilitated group discussions.</li>
+                                 <li><strong>Ethnographic Studies:</strong> Gain deep contextual understanding by observing stakeholders in their natural environments.</li>
+                             </ul>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-20 sm:py-24 bg-[#E8E2D9]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">Strategy & Creative Solutions</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">Insights from research are translated into purpose-aligned strategies for brand identity, architecture, and communication, brought to life through compelling narratives.</p>
+                </div>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div id="phase3" class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                         <h4 class="text-xl font-semibold mb-4 border-b pb-2">Phase 3: Strategic Development</h4>
+                         <p class="text-[#5a4f45] mb-4">This phase focuses on crafting the brand's core. Select a brand architecture model below to see how a purpose-driven organization might structure its offerings.</p>
+                         <select id="architecture-selector" class="w-full p-2 border rounded-md bg-white mb-4">
+                             <option value="monolith">Branded House (Monolith)</option>
+                             <option value="sub-brands">Sub-brands</option>
+                             <option value="endorsed">Endorsed Brands</option>
+                             <option value="hybrid">Hybrid Model</option>
+                         </select>
+                         <div id="architecture-display"></div>
+                    </div>
+                     <div id="phase4" class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                         <h4 class="text-xl font-semibold mb-4 border-b pb-2">Phase 4: Creative & Communication</h4>
+                         <p class="text-[#5a4f45] mb-4">Effective storytelling connects with audiences on an emotional level, building trust and inspiring action. Key principles include:</p>
+                         <ul class="list-disc list-inside text-[#5a4f45] space-y-2">
+                            <li><strong>Start with 'Why':</strong> Articulate purpose simply and compellingly.</li>
+                            <li><strong>Be Authentic:</strong> Share wins, struggles, and ongoing commitments.</li>
+                            <li><strong>Show Real Impact:</strong> Use testimonials and data to support the narrative.</li>
+                            <li><strong>Find a Unique Voice:</strong> Let the brand's personality shine through.</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="measurement" class="py-20 sm:py-24 bg-[#F8F6F2]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">Measurement & Iteration</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">To ensure accountability and drive improvement, PDOs must track both brand performance and their unique social or environmental impact. Explore common frameworks for measuring what matters.</p>
+                </div>
+                 <div id="phase5" class="bg-[#FDFBF9] p-8 rounded-lg shadow">
+                    <p class="text-[#5a4f45] mb-4 text-center">Measuring non-financial value is complex. Different frameworks help organizations define and track progress across key domains. Select a framework to see its areas of focus visualized on the chart.</p>
+                    <div class="flex justify-center flex-wrap gap-2 mb-6">
+                        <button data-framework="bia" class="impact-framework-btn btn btn-secondary active px-4 py-2 text-sm rounded-md">B Impact Assessment</button>
+                        <button data-framework="iris" class="impact-framework-btn btn btn-secondary px-4 py-2 text-sm rounded-md">IRIS+</button>
+                        <button data-framework="upmetrics" class="impact-framework-btn btn btn-secondary px-4 py-2 text-sm rounded-md">UpMetrics</button>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                         <div class="chart-container">
+                             <canvas id="impactFrameworkChart"></canvas>
+                         </div>
+                         <div id="framework-description" class="text-[#5a4f45]"></div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="cases" class="py-20 sm:py-24 bg-[#E8E2D9]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold text-[#3D352E]">Purpose in Action: Case Studies</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">Learn from leading purpose-driven brands that have successfully integrated their mission into their strategy, operations, and communication.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-[#FDFBF9] p-8 rounded-lg shadow text-center">
+                        <h4 class="text-2xl font-bold text-[#4A5C5A]">Patagonia</h4>
+                        <p class="mt-2 text-sm font-semibold text-[#C0783F]">"We're in business to save our home planet."</p>
+                        <p class="mt-4 text-[#5a4f45]">Embeds its environmental mission into product design, activism, and marketing, building deep loyalty with conscious consumers.</p>
+                    </div>
+                    <div class="bg-[#FDFBF9] p-8 rounded-lg shadow text-center">
+                        <h4 class="text-2xl font-bold text-[#4A5C5A]">TOMS Shoes</h4>
+                        <p class="mt-2 text-sm font-semibold text-[#C0783F]">"One for One" Model</p>
+                        <p class="mt-4 text-[#5a4f45]">Pioneered a simple, tangible purpose model linking purchases directly to impact, making it easy for consumers to participate.</p>
+                    </div>
+                    <div class="bg-[#FDFBF9] p-8 rounded-lg shadow text-center">
+                        <h4 class="text-2xl font-bold text-[#4A5C5A]">Warby Parker</h4>
+                        <p class="mt-2 text-sm font-semibold text-[#C0783F]">"Buy a Pair, Give a Pair"</p>
+                        <p class="mt-4 text-[#5a4f45]">Disrupted the eyewear industry by combining affordable, stylish products with a clear social mission, building a strong brand connection.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#3D352E] text-[#E8E2D9]">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2024 Interactive Guide to PDO Brand Research. All rights reserved.</p>
+            <p class="mt-1">This application is an interactive synthesis of the report "Standardizing Brand Research for Purpose-Driven Organizations".</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sections = document.querySelectorAll('main section');
+    const navLinks = document.querySelectorAll('nav a.nav-link');
+    const phaseCards = document.querySelectorAll('.phase-card');
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.4
+    };
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+                
+                let phaseNum = 0;
+                if(id.startsWith('phase')) {
+                    phaseNum = parseInt(id.replace('phase',''));
+                } else if(id === 'toolkit' || id === 'foundations'){
+                    phaseNum = 0;
+                } else if(id === 'strategy'){
+                    phaseNum = 3;
+                } else if(id === 'measurement'){
+                    phaseNum = 5;
+                }
+
+                phaseCards.forEach(card => {
+                    card.classList.toggle('active', card.id === `phase-card-${phaseNum}`);
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    const benefitsData = {
+        labels: ['Culture', 'Performance', 'Trust', 'Innovation'],
+        datasets: [{
+            label: 'Benefit Impact',
+            data: [85, 75, 90, 70],
+            backgroundColor: 'rgba(74, 92, 90, 0.6)',
+            borderColor: 'rgba(74, 92, 90, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const challengesData = {
+        labels: ['Short-term Focus', 'Lack of Metrics', 'Resistance', 'Purpose-Washing'],
+        datasets: [{
+            label: 'Challenge Severity',
+            data: [90, 80, 75, 85],
+            backgroundColor: 'rgba(192, 120, 63, 0.6)',
+            borderColor: 'rgba(192, 120, 63, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const benefitsChallengesCtx = document.getElementById('benefitsChallengesChart').getContext('2d');
+    const benefitsChallengesChart = new Chart(benefitsChallengesCtx, {
+        type: 'bar',
+        data: benefitsData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { color: '#3D352E' },
+                    grid: { color: '#E8E2D9' }
+                },
+                x: {
+                    ticks: { color: '#3D352E' },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#3D352E',
+                    titleColor: '#F8F6F2',
+                    bodyColor: '#F8F6F2'
+                }
+            }
+        }
+    });
+
+    document.getElementById('show-benefits-btn').addEventListener('click', (e) => {
+        benefitsChallengesChart.data = benefitsData;
+        benefitsChallengesChart.update();
+        e.target.classList.add('active');
+        document.getElementById('show-challenges-btn').classList.remove('active');
+    });
+
+    document.getElementById('show-challenges-btn').addEventListener('click', (e) => {
+        benefitsChallengesChart.data = challengesData;
+        benefitsChallengesChart.update();
+        e.target.classList.add('active');
+        document.getElementById('show-benefits-btn').classList.remove('active');
+    });
+
+    const quantMethods = document.getElementById('quant-methods');
+    const qualMethods = document.getElementById('qual-methods');
+    document.getElementById('show-quant-btn').addEventListener('click', (e) => {
+        quantMethods.classList.remove('hidden');
+        qualMethods.classList.add('hidden');
+        e.target.classList.add('active');
+        document.getElementById('show-qual-btn').classList.remove('active');
+    });
+    document.getElementById('show-qual-btn').addEventListener('click', (e) => {
+        quantMethods.classList.add('hidden');
+        qualMethods.classList.remove('hidden');
+        e.target.classList.add('active');
+        document.getElementById('show-quant-btn').classList.remove('active');
+    });
+    
+    const architectureData = {
+        monolith: {
+            title: 'Branded House (Monolith)',
+            description: 'A single master brand is used across all products and initiatives. All efforts build equity in the main brand.',
+            example: 'TOMS, Patagonia (core brand)'
+        },
+        'sub-brands': {
+            title: 'Sub-brands',
+            description: 'The master brand has distinct offerings that are clearly linked but have their own identity.',
+            example: 'Oxfam (with specific programs), Google Maps'
+        },
+        endorsed: {
+            title: 'Endorsed Brands',
+            description: 'Unique brands that are backed by the credibility and endorsement of the parent company.',
+            example: '365 by Whole Foods Market'
+        },
+        hybrid: {
+            title: 'Hybrid Model',
+            description: 'A mix of models is used, often seen in large, complex organizations with diverse portfolios.',
+            example: 'Amazon (with AWS, Prime), Patagonia (with Tin Shed Ventures)'
+        }
+    };
+    const architectureSelector = document.getElementById('architecture-selector');
+    const architectureDisplay = document.getElementById('architecture-display');
+
+    function updateArchitectureDisplay(value) {
+        const data = architectureData[value];
+        architectureDisplay.innerHTML = `
+            <div class="architecture-card active border-l-4 p-4 bg-[#F8F6F2] rounded">
+                <h5 class="font-bold text-lg text-[#3D352E]">${data.title}</h5>
+                <p class="text-[#5a4f45] mt-2">${data.description}</p>
+                <p class="text-sm text-[#C0783F] mt-3"><strong>Example:</strong> ${data.example}</p>
+            </div>
+        `;
+    }
+    architectureSelector.addEventListener('change', (e) => updateArchitectureDisplay(e.target.value));
+    updateArchitectureDisplay('monolith');
+    
+    const impactFrameworksData = {
+        bia: {
+            labels: ['Governance', 'Workers', 'Community', 'Environment', 'Customers'],
+            data: [20, 20, 20, 20, 20],
+            description: 'The B Impact Assessment is a holistic framework used for B Corp certification. It evaluates a company\'s overall positive impact on five key stakeholder groups, providing a comprehensive score of its social and environmental performance.'
+        },
+        iris: {
+            labels: ['What', 'Who', 'How Much', 'Contribution', 'Risk'],
+            data: [20, 20, 20, 20, 20],
+            description: 'IRIS+ by GIIN provides a catalog of standardized metrics for social, environmental, and financial performance. It helps investors and organizations measure and manage their impact using five core dimensions.'
+        },
+        upmetrics: {
+            labels: ['Who', 'What', 'Quality', 'Better Off', 'Community'],
+            data: [20, 20, 20, 20, 20],
+            description: 'The UpMetrics Impact Framework focuses on five "Dimensions of Impact." It offers a structured way to define objectives and Key Impact Indicators (KIIs) to track progress comprehensively from service delivery to community contribution.'
+        }
+    };
+
+    const impactFrameworkCtx = document.getElementById('impactFrameworkChart').getContext('2d');
+    let impactFrameworkChart;
+
+    function createOrUpdateImpactChart(framework) {
+        const frameworkInfo = impactFrameworksData[framework];
+        if (impactFrameworkChart) {
+            impactFrameworkChart.data.labels = frameworkInfo.labels;
+            impactFrameworkChart.data.datasets[0].data = frameworkInfo.data;
+            impactFrameworkChart.update();
+        } else {
+            impactFrameworkChart = new Chart(impactFrameworkCtx, {
+                type: 'radar',
+                data: {
+                    labels: frameworkInfo.labels,
+                    datasets: [{
+                        label: 'Framework Focus Areas',
+                        data: frameworkInfo.data,
+                        fill: true,
+                        backgroundColor: 'rgba(74, 92, 90, 0.2)',
+                        borderColor: 'rgb(74, 92, 90)',
+                        pointBackgroundColor: 'rgb(74, 92, 90)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(74, 92, 90)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                     scales: {
+                        r: {
+                            angleLines: { color: '#D1C7B8' },
+                            grid: { color: '#D1C7B8' },
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#3D352E'
+                            },
+                            ticks: {
+                                display: false,
+                                backdropColor: 'transparent',
+                                stepSize: 5
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 25
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+        document.getElementById('framework-description').textContent = frameworkInfo.description;
+    }
+
+    const frameworkButtons = document.querySelectorAll('.impact-framework-btn');
+    frameworkButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            frameworkButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            createOrUpdateImpactChart(button.dataset.framework);
+        });
+    });
+    createOrUpdateImpactChart('bia');
+});
+</script>
+</body>
+</html>
