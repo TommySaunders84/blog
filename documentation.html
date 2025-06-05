@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Operating System (PEOS) - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .content-section h2 {
+            font-size: 1.75rem; 
+            font-weight: 600;
+            margin-bottom: 1rem; 
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb; /* theme('colors.gray.200') */
+        }
+        .content-section h3 {
+            font-size: 1.375rem; 
+            font-weight: 600;
+            margin-top: 1.75rem; 
+            margin-bottom: 0.75rem; 
+        }
+        .content-section h4 { /* Added for rule titles within the table section */
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .content-section p, .content-section ul, .content-section ol {
+            margin-bottom: 1rem; 
+            line-height: 1.6;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+        }
+        .content-section code, .content-section kbd, .content-section samp, .content-section pre {
+            background-color: #f3f4f6; /* theme('colors.gray.100') */
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem; /* theme('rounded.md') */
+            font-family: monospace;
+            font-size: 0.9em; 
+        }
+        .content-section pre {
+            padding: 0.75rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        .content-section pre code {
+            padding: 0;
+            background-color: transparent;
+            border-radius: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 0.5rem 1rem; 
+            border-radius: 0.375rem; /* theme('rounded.md') */
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            font-size: 0.9rem; 
+        }
+        .sidebar a:hover {
+            background-color: #e5e7eb; /* theme('colors.gray.200') */
+            color: #1f2937; /* theme('colors.gray.800') */
+        }
+        .sidebar a.active {
+            background-color: #3b82f6; /* theme('colors.blue.500') */
+            color: white;
+            font-weight: 500;
+        }
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Sticky sidebar */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .sidebar {
+                position: sticky;
+                top: 1.5rem; /* Adjust as needed for navbar height if any */
+                height: calc(100vh - 3rem); /* Adjust for top/bottom padding or navbar */
+                overflow-y: auto;
+            }
+        }
+        /* Table styling */
+        .responsive-table-container {
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid #d1d5db; /* theme('colors.gray.300') */
+            border-radius: 0.5rem; /* theme('rounded.lg') */
+        }
+        .responsive-table {
+            min-width: 100%;
+            divide-y: divide-gray-200;
+        }
+        .responsive-table th, .responsive-table td {
+            padding: 0.75rem 1rem; /* Consistent padding */
+            text-align: left;
+            font-size: 0.875rem; /* text-sm */
+            border-bottom: 1px solid #e5e7eb; /* theme('colors.gray.200') */
+            vertical-align: top; /* Align content to the top for better readability */
+        }
+        .responsive-table th {
+            background-color: #f9fafb; /* theme('colors.gray.50') */
+            font-weight: 600; /* font-semibold */
+            color: #374151; /* theme('colors.gray.700') */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .responsive-table td code { white-space: pre-wrap; word-break: break-all; } /* Ensure code within table cells wraps */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-3xl font-bold text-blue-600">The Prompt Engineering Operating System (PEOS)</h1>
+            <p class="text-sm text-gray-600">Documentation & Core Concepts</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8 lg:flex">
+        <!-- Sidebar Navigation -->
+        <aside class="lg:w-1/4 lg:pr-8 mb-8 lg:mb-0">
+            <div class="sidebar bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Navigation</h2>
+                <nav id="sidebar-nav">
+                    <a href="#introduction" class="text-gray-700 hover:bg-gray-200">Introduction</a>
+                    <a href="#problem-solved" class="text-gray-700 hover:bg-gray-200">The Problem PEOS Solves</a>
+                    <a href="#why-peos-matters" class="text-gray-700 hover:bg-gray-200">Why PEOS Matters</a>
+                    <a href="#core-concepts" class="text-gray-700 hover:bg-gray-200">Core Concepts</a>
+                    <a href="#key-features" class="text-gray-700 hover:bg-gray-200">Key Features & Capabilities</a>
+                    <a href="#peos-architecture" class="text-gray-700 hover:bg-gray-200">PEOS Architecture (High-Level)</a>
+                    <a href="#methodology" class="text-gray-700 hover:bg-gray-200">Methodology & Implementation</a>
+                    <a href="#value-proposition" class="text-gray-700 hover:bg-gray-200">Value Proposition & Benefits</a>
+                    <a href="#philosophy" class="text-gray-700 hover:bg-gray-200">Tommy Saunders' Philosophy</a>
+                    <a href="#use-cases" class="text-gray-700 hover:bg-gray-200">Use Cases & Applications</a>
+                    <a href="#html-css-style-guide-dev" class="text-gray-700 hover:bg-gray-200">HTML/CSS Style Guide Development</a>
+                    <a href="#html-css-style-guide-table" class="text-gray-700 hover:bg-gray-200">HTML/CSS Style Guide Table</a>
+                    <a href="#getting-started" class="text-gray-700 hover:bg-gray-200">Getting Started</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="lg:w-3/4 content-section bg-white p-6 sm:p-8 rounded-lg shadow">
+            <!-- Introduction Section -->
+            <section id="introduction" class="mb-12">
+                <h2>Introduction: What is PEOS?</h2>
+                <p><strong>The Prompt Engineering Operating System (PEOS)</strong> is a foundational system architecture that serves as the critical intermediary between users, applications, and AI models. It bridges organizational domain expertise with the complex technical systems and mechanisms involved in interacting with diverse AI models, capabilities, and systems. By operationalizing prompt engineering as essential business infrastructure, PEOS simplifies, standardizes, and facilitates all human-AI and AI-AI communications, making them strategic, systematic, and scalable.</p>
+                <p>At its heart, PEOS is designed to help organizations create <strong>"Intelligence That's Not Artificial."</strong> This means ensuring AI systems operate not with generic knowledge, but with your organization's unique expertise, strategic intent, brand voice, and ethical values. PEOS transforms AI from a disconnected tool into an authentic extension of your organizational intelligence.</p>
+                <p>This evolving intelligence system dynamically orchestrates <strong>statefulness</strong> across every AI interaction—covering all systems, touchpoints, and use cases—with contextual awareness, coherent continuity, and the dynamic collective intelligence of your entire organization.</p>
+            </section>
+
+            <!-- The Problem PEOS Solves Section -->
+            <section id="problem-solved" class="mb-12">
+                <h2>The Problem PEOS Solves</h2>
+                <p>PEOS fundamentally addresses the critical gap between the raw potential of artificial intelligence and its effective, strategic, and scalable implementation within an organization to deliver tangible business value. Key challenges it solves include:</p>
+                <ul>
+                    <li><strong>The "AI Last Mile" & Value Realization Gap:</strong> Moving AI from experimental phases to becoming a deeply integrated, consistently value-generating part of daily operations.</li>
+                    <li><strong>Misalignment with Organizational Context & Expertise:</strong> Countering generic AI outputs that lack deep understanding of an organization's unique knowledge, brand voice, and strategic objectives, often resulting in irrelevant or inconsistent responses.</li>
+                    <li><strong>Fragmentation and Inconsistency in AI Usage:</strong> Overcoming inefficiencies and quality variations from ad-hoc, individual-led prompt engineering by providing a unified infrastructure for standardization and scaling of best practices.</li>
+                    <li><strong>Underutilization of Human Expertise:</strong> Systematically capturing and amplifying invaluable human domain knowledge and strategic insights, ensuring AI augments rather than devalues human experts.</li>
+                    <li><strong>Lack of Control, Governance, and Trust:</strong> Establishing infrastructure for consistent governance, ensuring AI outputs are strategically aligned, contextually appropriate, and trustworthy, managing the "black box" nature of some AI.</li>
+                    <li><strong>Difficulty in Scaling AI Systematically:</strong> Enabling the consistent and efficient deployment of AI capabilities across different departments and use cases.</li>
+                    <li><strong>Complexity for Non-Technical Users:</strong> Abstracting technical intricacies to empower non-technical business strategists and domain experts to directly and effectively leverage advanced AI capabilities.</li>
+                </ul>
+            </section>
+
+            <!-- Why PEOS Matters Section -->
+            <section id="why-peos-matters" class="mb-12">
+                <h2>Why PEOS Matters: Survival and Thriving in the AI Era</h2>
+                <p>Adopting PEOS is critical because it directly impacts an organization's ability to compete, innovate, and thrive. Failing to systematically integrate AI with core organizational intelligence puts fundamental aspects of the business at risk.</p>
+                <h3>For Survival:</h3>
+                <ul>
+                    <li><strong>Avoiding Competitive Irrelevance:</strong> Enables organizations to remain relevant by systematically embedding unique intelligence into AI, outpacing competitors using generic AI.</li>
+                    <li><strong>Mitigating AI-Related Risks:</strong> Introduces essential infrastructure for governance and control, making AI operations safer, more reliable, and reducing risks from unmanaged AI use (e.g., inconsistent messaging, errors, ethical breaches).</li>
+                    <li><strong>Preventing Wasted Investment:</strong> Bridges the "AI Last Mile" ensuring AI investments translate into measurable business value rather than costly, dead-end experiments.</li>
+                </ul>
+                <h3>For Thriving:</h3>
+                <ul>
+                    <li><strong>Building Sustainable Competitive Advantage:</strong> Creates a proprietary, defensible AI capability rooted in unique organizational intelligence, which is hard for competitors to replicate.</li>
+                    <li><strong>Unlocking True Operational Agility & Scalability:</strong> Transforms human expertise into a scalable asset, allowing rapid, intelligent responses to market changes across all functions.</li>
+                    <li><strong>Accelerating Innovation and Growth:</strong> Frees human capital for higher-level strategy and creativity by systematizing routine intelligent tasks.</li>
+                    <li><strong>Empowering the Entire Workforce:</strong> Democratizes strategic AI use, augmenting human capabilities and fostering human-AI collaboration.</li>
+                    <li><strong>Creating Adaptive, "Living" Business Systems:</strong> Helps build intelligence systems that learn and evolve, enabling resilience and proactive shaping of market dynamics.</li>
+                </ul>
+            </section>
+
+            <!-- Core Concepts Section -->
+            <section id="core-concepts" class="mb-12">
+                <h2>Core Concepts of PEOS</h2>
+                <h3>The "Operating System" Paradigm for AI</h3>
+                <p>Just as a computer operating system manages hardware resources to enable software applications, PEOS manages organizational intelligence to enable effective AI operations. It transforms fragmented prompt engineering into unified infrastructure.</p>
+                <h3>Operationalizing Human Expertise / Organizational DNA</h3>
+                <p>PEOS systematically captures, codifies, and deploys an organization's unique collective expertise, strategic insights, proprietary processes, brand voice, and ethical values (its "Organizational DNA") as the guiding force for AI systems.</p>
+                <h3>Systematic Human-AI Communication</h3>
+                <p>PEOS elevates prompt engineering from an individual skill to an organizational capability, establishing standardized, strategic, and scalable communication protocols between humans and AI, and between different AI systems.</p>
+                <h3>Stateful AI Interactions</h3>
+                <p>PEOS actively maintains dynamic context, memory, and continuity across all AI interactions. This enables it to manage complex, multi-step processes, adapt to evolving situations, and ensure AI behavior is coherent and intelligent over time, rather than treating each query in isolation.</p>
+                <h3>Living Contextual Intelligence</h3>
+                <p>PEOS functions as an evolving intelligence system. It continuously ingests organizational knowledge, market signals, and performance data, transforming it into dynamic strategic narratives and actionable insights. This "living" system adapts and grows more valuable with each use.</p>
+                <h3>The Abstraction Layer</h3>
+                <p>PEOS provides a crucial abstraction layer between an organization's strategic human intent and the technical complexities of interacting with diverse AI models. It simplifies and standardizes how organizational expertise is translated into effective AI operations, empowering non-technical users.</p>
+            </section>
+
+            <!-- Key Features & Capabilities Section -->
+            <section id="key-features" class="mb-12">
+                <h2>Key Features & Capabilities</h2>
+                <p>PEOS is comprised of several interconnected components designed to deliver "Intelligence That's Not Artificial":</p>
+                <ul>
+                    <li><strong>Knowledge Ingestion & Dynamic Contextualization Engine:</strong> Systematically ingests, structures, and continuously updates an organization's unique "DNA" into a "living," actionable intelligence layer for AI. It operationalizes relevant data protocols to manage this contextual intelligence.</li>
+                    <li><strong>Systematic Prompt Orchestration & Generation Module:</strong> Dynamically constructs, manages, and deploys contextually-rich, strategically-aligned prompt sequences ("intelligent pathways") for diverse AI models, enabling complex, multi-stage AI workflows and automations.</li>
+                    <li><strong>Precision Output Engineering & Integration Framework:</strong> Parses, validates, transforms, and standardizes raw AI outputs into precisely defined, structured data fields. This ensures outputs are immediately actionable and seamlessly integratable with downstream enterprise systems and automated processes.</li>
+                    <li><strong>Active Governance, Control & Evolution Subsystem:</strong> Implements and enforces organizational standards, ethical guidelines, and compliance requirements across all AI interactions. It provides robust logging, monitoring, and feedback mechanisms for continuous system learning, adaptation, and auditable oversight.</li>
+                    <li><strong>AI Resource Abstraction & Management Layer:</strong> Provides a unified interface to orchestrate diverse AI models, tools, and external data sources, managing them as integrated resources accessible to various AI applications and business processes.</li>
+                    <li><strong>Intelligent Context Operations Network Interface:</strong> The primary human-computer interface for domain experts and administrators to configure, manage, monitor, and interact with PEOS, ensuring human-centric control.</li>
+                </ul>
+            </section>
+
+            <!-- PEOS Architecture (High-Level) Section -->
+            <section id="peos-architecture" class="mb-12">
+                <h2>PEOS Architecture (High-Level)</h2>
+                <p>PEOS functions as a comprehensive, multi-layered software infrastructure. It acts as a dynamic control plane, mediating and enriching interactions between users, applications, and various AI models.</p>
+                <figure class="my-4 p-4 border rounded-lg bg-gray-100 text-center">
+                    <!-- Placeholder for an architectural diagram -->
+                    <img src="https://placehold.co/600x400/e2e8f0/4a5568?text=PEOS+High-Level+Architecture+Diagram" alt="PEOS Architecture Diagram Placeholder" class="mx-auto rounded-md">
+                    <figcaption class="text-sm text-gray-600 mt-2">Fig 1: Conceptual overview of PEOS components and interactions.</figcaption>
+                </figure>
+                <p>At its core, organizational "DNA" (expertise, strategy, values) is ingested and transformed into "Living Contextual Intelligence." The Prompt Orchestration Layer uses this intelligence to dynamically construct and manage prompts for various AI Resources (LLMs, other AI models, tools). AI outputs are then processed by the Precision Output Engineering module for standardization and integration. The entire process is overseen by the Governance & Evolution Subsystem, with users interacting via the Network Interface.</p>
+            </section>
+
+            <!-- Methodology & Implementation Section -->
+            <section id="methodology" class="mb-12">
+                <h2>Methodology & Implementation</h2>
+                <p>Adopting PEOS is a strategic initiative involving a phased approach to ensure alignment and deliver incremental value:</p>
+                <ol class="list-decimal ml-6 space-y-2">
+                    <li><strong>Strategic Alignment & Vision Workshop:</strong> Define core strategic problems PEOS will solve and identify high-impact pilot areas. Establish a clear vision and success metrics.</li>
+                    <li><strong>Expertise Mobilization & Initial Context Build:</strong> Capture essential "Organizational DNA" relevant to the pilot. Begin configuring the PEOS knowledge base with domain expert involvement.</li>
+                    <li><strong>Pilot Pathway Design & Prototyping:</strong> Design and prototype the first "intelligent pathways" within PEOS for pilot use cases, including prompt orchestration and AI model integration.</li>
+                    <li><strong>Pilot Go-Live & Performance Monitoring:</strong> Launch the PEOS-driven pilot, closely monitor performance against metrics, and gather user feedback for real-world validation.</li>
+                    <li><strong>Review, Refine & Scale Planning:</strong> Analyze pilot results, refine PEOS configurations, and develop a roadmap for broader organizational rollout.</li>
+                </ol>
+                <p>A key supporting methodology is the **Structured Insight-to-Impact Workflow**, which provides a complete, documented pathway from initial data insight through strategic formulation, detailed task planning, cross-functional coordination, prioritized execution, and rigorous measurement of business impact (ROI).</p>
+            </section>
+
+            <!-- Value Proposition & Benefits Section -->
+            <section id="value-proposition" class="mb-12">
+                <h2>Value Proposition & Benefits</h2>
+                <p>PEOS delivers transformative value by ensuring AI becomes a true extension of your organization's core strengths:</p>
+                <ul>
+                    <li><strong>Achieve "Intelligence That's Not Artificial":</strong> AI outputs genuinely reflect your unique expertise, brand voice, and strategic intent.</li>
+                    <li><strong>Systematically Operationalize & Scale Expertise:</strong> Transform tacit human knowledge into an operational asset, amplifying your best thinking across the enterprise.</li>
+                    <li><strong>Gain Unprecedented Control & Governance:</strong> Manage AI interactions systematically, ensuring consistency, compliance, and ethical deployment.</li>
+                    <li><strong>Accelerate Time-to-Value & ROI from AI:</strong> Streamline complex AI integrations and operationalize intelligence faster for measurable results.</li>
+                    <li><strong>Empower Your Entire Workforce:</strong> Enable non-technical users to strategically guide AI, fostering human-AI collaboration.</li>
+                    <li><strong>Build Sustainable, Proprietary Competitive Advantage:</strong> Develop a unique AI capability rooted in your own intelligence, difficult for competitors to replicate.</li>
+                    <li><strong>Enhance Agility and Adaptability:</strong> Create "living" intelligence systems that evolve with your business and market dynamics.</li>
+                </ul>
+            </section>
+
+            <!-- Tommy Saunders' Philosophy Section -->
+            <section id="philosophy" class="mb-12">
+                <h2>Tommy Saunders' Philosophy: The Architect of PEOS</h2>
+                <p>The design and vision of PEOS are deeply rooted in the core philosophies of its architect, Tommy Saunders. His approach combines a Hyperrealist understanding of AI's impact with a profound belief in the power of Creative and Contextual Intelligence.</p>
+                <h3>Core Philosophy: Transforming Digital Signals into Decisive Action</h3>
+                <p>Tommy's overarching philosophy centers on achieving sustainable competitive advantage by transforming raw digital signals into decisive action via an AI-powered data lifecycle. This systematic process combines deep analytics with creative strategy to detect hidden patterns, convert complex data into actionable insights, and transform these insights into strategic initiatives that drive measurable business outcomes. He operates at the intersection of analytics, innovation, and storytelling, fusing data science, AI, and creative thinking.</p>
+                <h3>Strategic Approaches:</h3>
+                <ul>
+                    <li><strong>The Hyperrealist Lens:</strong> Critically examining the implications of AI-driven algorithmic causality and how AI shapes our perception of reality. This perspective informs the design of systems that navigate and leverage this "hyperreality" with strategic clarity and operational integrity.</li>
+                    <li><strong>Creative Intelligence:</strong> Believing that data insights gain their true power only through compelling creative execution. The focus is on transforming analytical findings into resonant messages and experiences that forge genuine emotional connections, differentiate brands, and drive customer action.</li>
+                    <li><strong>Contextual Intelligence & The AI Operations Workflow:</strong> Recognizing the vast "invisible infrastructure" of digital signals, and using AI as "digital X-ray vision" to make it understandable and actionable. This is operationalized through a Structured Insight-to-Impact AI Operations Workflow, ensuring data translates directly into strategic actions with accountability.</li>
+                </ul>
+                <p>This blend of analytical rigor, strategic foresight, and creative sensibility underpins PEOS's mission to make AI an authentic and powerful extension of human and organizational intelligence.</p>
+            </section>
+
+             <!-- Use Cases & Applications Section -->
+            <section id="use-cases" class="mb-12">
+                <h2>Use Cases & Applications</h2>
+                <p>PEOS is designed to be a foundational layer applicable across numerous organizational functions where strategic communication with AI can deliver significant value:</p>
+                <ul>
+                    <li><strong>Brand Strategy & Marketing:</strong> Ensuring consistent brand voice, generating contextually relevant campaign narratives, personalizing customer communications at scale, and transforming brand guidelines into dynamic, AI-enforceable intelligence.</li>
+                    <li><strong>Customer Service & Support:</strong> Empowering AI chatbots and virtual assistants with deep organizational knowledge and nuanced communication styles to handle complex queries and provide truly helpful, empathetic support.</li>
+                    <li><strong>Operations & Process Automation:</strong> Guiding AI agents in executing complex workflows, making decisions based on codified operational expertise, and ensuring automated processes adhere to strategic guidelines.</li>
+                    <li><strong>Research & Development:</strong> Assisting researchers by enabling AI to understand and synthesize complex domain-specific knowledge, accelerate discovery, and generate novel hypotheses based on established principles.</li>
+                    <li><strong>Sales Enablement:</strong> Equipping sales teams with AI tools that provide contextually relevant information, talking points, and proposal elements, all aligned with core strategies and product knowledge.</li>
+                    <li><strong>Internal Communications & Knowledge Management:</strong> Creating intelligent systems that can answer employee queries accurately, disseminate internal knowledge effectively, and ensure consistent messaging across the organization.</li>
+                    <li><strong>Risk Management & Compliance:</strong> Ensuring AI-driven analyses and recommendations in sensitive areas adhere to regulatory requirements and internal ethical frameworks.</li>
+                </ul>
+                 <p>The core principle is that anywhere an organization needs AI to interact with information or people based on its unique knowledge and strategic intent, PEOS provides the operating system to make that interaction intelligent, authentic, and effective.</p>
+            </section>
+
+            <!-- HTML/CSS Style Guide Development Introduction -->
+            <section id="html-css-style-guide-dev" class="mb-12">
+                <h2>HTML/CSS Style Guide Development with PEOS Libraries</h2>
+                <p>Beyond strategic AI communication, PEOS principles and its Prompt Library framework can be adapted to establish and maintain other critical organizational standards, such as coding style guides. A well-defined HTML/CSS style guide is crucial for improving collaboration, ensuring code quality, and enabling supporting infrastructure for web development projects.</p>
+                <p>This section provides a framework for defining your organization's formatting and style rules for HTML and CSS code. By systematically addressing the prompts in the subsequent "HTML/CSS Style Guide Table," your team can collaboratively build a comprehensive, clear, and actionable style guide. This guide will apply to raw, working files, including Sass and GSS, and can be integrated into PEOS as a knowledge asset to inform AI-assisted code generation, review, and documentation tasks.</p>
+                <h3>Purpose of This Style Guide Development Tool:</h3>
+                <ul>
+                    <li>To generate a detailed HTML/CSS Style Guide document tailored to your organization.</li>
+                    <li>To prompt your team for decisions on general coding conventions, HTML-specific rules, and CSS-specific rules.</li>
+                    <li>To cover aspects like syntax, formatting, naming conventions, accessibility considerations, and best practices.</li>
+                    <li>To create a reference document for developers, designers, and even AI agents involved in web development.</li>
+                </ul>
+                <p>The following table uses the "Prompt Library" concept to break down the style guide creation process into manageable decisions, complete with examples and templates to facilitate clear responses.</p>
+            </section>
+
+            <!-- HTML/CSS Style Guide Table Section -->
+            <section id="html-css-style-guide-table" class="mb-12">
+                <h2>HTML/CSS Style Guide Development Table</h2>
+                <p>Use the following table to define the specific rules for your organization's HTML/CSS Style Guide. Each row represents a "Column Prompt" guiding you through a particular decision point.</p>
+
+                <!-- 00: Style Guide Introduction & Background -->
+                <h3>00: Style Guide Introduction & Background</h3>
+                <div class="responsive-table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Output (in the Style Guide Document)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>StyleGuide_Purpose_Statement</code></td>
+                                <td>What is the primary purpose or overarching goal your HTML/CSS Style Guide aims to achieve for your organization?</td>
+                                <td><pre><code>"Our HTML/CSS Style Guide aims to achieve [Benefit 1, e.g., improved collaboration], [Benefit 2, e.g., code quality], and [Benefit 3, e.g., consistency] across [Scope, e.g., web projects]."</code></pre></td>
+                                <td>"To improve collaboration, ensure code quality, enable supporting infrastructure, and maintain consistency across web projects."</td>
+                                <td><pre><code>"Our HTML/CSS Style Guide aims to achieve improved collaboration, code quality, and consistency across web projects."</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Scope_Definition</code></td>
+                                <td>What specific projects, files, or types of development work will this style guide apply to?</td>
+                                <td><pre><code>"This style guide applies to [File Types, e.g., all raw HTML and CSS working files, including Sass and GSS], for [Project Types, e.g., all new and ongoing web projects]."</code></pre></td>
+                                <td>"All raw HTML and CSS working files, including Sass and GSS, for all new and ongoing web projects."</td>
+                                <td><pre><code>"This style guide applies to all raw HTML and CSS working files, including Sass and GSS, for all new and ongoing web projects."</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Tooling_Note</code></td>
+                                <td>What is your organization's stance on using automated tools (linters, formatters) to enforce these guidelines?</td>
+                                <td><pre><code>"Automated tools (linters, formatters) are [Stance, e.g., mandatory/encouraged/optional] to enforce these guidelines. Minification/compilation processes should [Requirement, e.g., maintain the spirit of these quality rules/strictly adhere]."</code></pre></td>
+                                <td>"Automated tools are mandatory. Minification/compilation should maintain the spirit of these quality rules."</td>
+                                <td><pre><code>"Automated tools (linters, formatters) are mandatory to enforce these guidelines. Minification and compilation processes should maintain the spirit of these quality rules."</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Version</code></td>
+                                <td>What is the current version number for this style guide?</td>
+                                <td><pre><code>"Version: [Number, e.g., 1.0]"</code></pre></td>
+                                <td>"1.0"</td>
+                                <td><pre><code>"Current Style Guide Version: 1.0"</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Last_Updated</code></td>
+                                <td>When was this style guide last updated?</td>
+                                <td><pre><code>"Date: [YYYY-MM-DD]"</code></pre></td>
+                                <td>"2025-06-05"</td>
+                                <td><pre><code>"Last Updated On: 2025-06-05"</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Primary_Contact</code></td>
+                                <td>Who is the primary contact person or team for questions or clarifications regarding this style guide?</td>
+                                <td><pre><code>"Contact: [Name/Team, e.g., Lead Frontend Developer / Tech Standards Committee]"</code></pre></td>
+                                <td>"Tech Lead - Frontend Development"</td>
+                                <td><pre><code>"For questions regarding this style guide, contact: Tech Lead - Frontend Development."</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 01: General Style Rules -->
+                <h3>01: General Style Rules (Applicable to both HTML & CSS)</h3>
+                <div class="responsive-table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>General_Protocol_EmbeddedResources</code></td>
+                                <td>For embedded resources (images, media, stylesheets, scripts), what protocol will your organization primarily use, and what is the brief rationale if not always HTTPS?</td>
+                                <td><pre><code>"Our primary protocol for embedded resources is: [Protocol Choice, e.g., HTTPS (secure) only / HTTPS preferred, HTTP if necessary / Protocol-relative URLs]. Rationale (if needed): [Brief justification]."</code></pre></td>
+                                <td>"HTTPS (secure) only. Rationale: Security is paramount, and all our assets are served over HTTPS."</td>
+                                <td><pre><code class="language-html">&lt;!-- Recommended --&gt;
+&lt;script src="https://example.com/script.js"&gt;&lt;/script&gt;</code></pre><pre><code class="language-css">/* Recommended */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>General_Protocol_Justification_If_Not_HTTPS</code></td>
+                                <td>If there are specific exceptions or justifications for *not* always using HTTPS for embedded resources, please state them here.</td>
+                                <td><pre><code>"Exceptions for not using HTTPS: [List exceptions or state 'Not applicable']. Justification for exceptions: [Provide reasoning if applicable]."</code></pre></td>
+                                <td>"Not applicable, we mandate HTTPS."</td>
+                                <td>(Textual note in the guide: "All embedded resources must use HTTPS without exception.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Protocol_Example_Recommended_Script</code></td>
+                                <td>Provide an example of how a script link should be formatted according to your protocol rule.</td>
+                                <td><pre><code>"Recommended script link: &lt;script src=\"[URL]\"&gt;&lt;/script&gt;"</code></pre></td>
+                                <td><code>&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"&gt;&lt;/script&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"&gt;&lt;/script&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Protocol_Example_NotRecommended_Script</code></td>
+                                <td>Provide an example of a script link format that should be avoided based on your protocol rule.</td>
+                                <td><pre><code>"Not recommended script link: &lt;script src=\"[URL]\"&gt;&lt;/script&gt; (because [reason, e.g., it uses HTTP/it's protocol-relative])"</code></pre></td>
+                                <td><code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"&gt;&lt;/script&gt;</code> (protocol-relative)</td>
+                                <td><pre><code class="language-html">&lt;!-- Not recommended --&gt;
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"&gt;&lt;/script&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Protocol_Example_Recommended_CSSImport</code></td>
+                                <td>Provide an example of how a CSS import should be formatted according to your protocol rule.</td>
+                                <td><pre><code>"Recommended CSS import: @import '[URL]';"</code></pre></td>
+                                <td><code>@import 'https://fonts.googleapis.com/css?family=Open+Sans';</code></td>
+                                <td><pre><code class="language-css">@import 'https://fonts.googleapis.com/css?family=Open+Sans';</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Protocol_Example_NotRecommended_CSSImport</code></td>
+                                <td>Provide an example of a CSS import format that should be avoided based on your protocol rule.</td>
+                                <td><pre><code>"Not recommended CSS import: @import '[URL]'; (because [reason, e.g., it uses HTTP/it's protocol-relative])"</code></pre></td>
+                                <td><code>@import 'http://fonts.googleapis.com/css?family=Open+Sans';</code> (HTTP)</td>
+                                <td><pre><code class="language-css">/* Not recommended */
+@import 'http://fonts.googleapis.com/css?family=Open+Sans';</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 02: General Formatting Rules -->
+                <h3>02: General Formatting Rules (Applicable to both HTML & CSS)</h3>
+                 <div class="responsive-table-container">
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>General_Indentation_Type</code></td>
+                                <td>What is your organization's standard for code indentation: using spaces or tabs?</td>
+                                <td><pre><code>"Our code indentation standard is: [Spaces Only / Tabs Only]."</code></pre></td>
+                                <td>"Spaces Only"</td>
+                                <td><pre><code class="language-html">&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+&lt;/ul&gt;</code></pre><pre><code class="language-css">.selector {
+  color: blue;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Indentation_Amount</code></td>
+                                <td>How many spaces or tabs will constitute one level of indentation?</td>
+                                <td><pre><code>"One level of indentation will be: [Number] [spaces/tabs] (e.g., 2 spaces)."</code></pre></td>
+                                <td>"2 spaces"</td>
+                                <td><pre><code class="language-html">&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+&lt;/ul&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Indentation_Mixing_Rule</code></td>
+                                <td>What is your policy on mixing tabs and spaces for indentation?</td>
+                                <td><pre><code>"Mixing tabs and spaces for indentation is: [Strictly Prohibited / Discouraged / Allowed]."</code></pre></td>
+                                <td>"Strictly Prohibited"</td>
+                                <td>(Rule: "Do not mix tabs and spaces for indentation.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Indentation_Example_HTML</code></td>
+                                <td>Provide a brief HTML code snippet that clearly demonstrates your correct indentation rule.</td>
+                                <td><pre><code>"Correct HTML Indentation Example:\n&lt;div&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/div&gt;"</code></pre></td>
+                                <td><code>&lt;div&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/div&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;div&gt;
+  &lt;p&gt;Text&lt;/p&gt;
+&lt;/div&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Indentation_Example_CSS</code></td>
+                                <td>Provide a brief CSS code snippet that clearly demonstrates your correct indentation rule.</td>
+                                <td><pre><code>"Correct CSS Indentation Example:\n.class {\n  property: value;\n}"</code></pre></td>
+                                <td><code>.class {\n  property: value;\n}</code></td>
+                                <td><pre><code class="language-css">.class {
+  property: value;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Capitalization_Policy</code></td>
+                                <td>What is your policy for capitalization in code (HTML elements, attributes, CSS selectors, properties, values, etc.)? Specify if different for certain parts.</td>
+                                <td><pre><code>"Our capitalization policy is: [e.g., Lowercase only for all code parts (elements, attributes, selectors, properties, values except strings)]. Any exceptions: [List exceptions or 'None']."</code></pre></td>
+                                <td>"Lowercase only for all code elements, attributes, selectors, properties, and values (except strings)."</td>
+                                <td><pre><code class="language-html">&lt;!-- Recommended --&gt;
+&lt;a href="/"&gt;home&lt;/a&gt;</code></pre><pre><code class="language-css">/* Recommended */
+color: #e5e5e5;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Capitalization_Exception_List</code></td>
+                                <td>Are there any specific, documented exceptions to your capitalization rule (e.g., certain framework conventions, brand names in comments)?</td>
+                                <td><pre><code>"Specific exceptions to capitalization: [List or 'None']."</code></pre></td>
+                                <td>"None, adhere to lowercase strictly."</td>
+                                <td>(Textual rule: "All code must be lowercase. No exceptions.")</td>
+                            </tr>
+                             <tr>
+                                <td><code>General_Capitalization_Example_HTML_Recommended</code></td>
+                                <td>Provide an HTML example showing the recommended capitalization.</td>
+                                <td><pre><code>"Recommended HTML:\n&lt;img src="logo.png" alt="Company Logo"&gt;"</code></pre></td>
+                                <td><code>&lt;img src="logo.png" alt="Company Logo"&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;img src="logo.png" alt="Company Logo"&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Capitalization_Example_HTML_NotRecommended</code></td>
+                                <td>Provide an HTML example showing capitalization that is NOT recommended.</td>
+                                <td><pre><code>"NOT Recommended HTML:\n&lt;A HREF="/"&gt;Home&lt;/A&gt;"</code></pre></td>
+                                <td><code>&lt;A HREF="/"&gt;Home&lt;/A&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;A HREF="/"&gt;Home&lt;/A&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Capitalization_Example_CSS_Recommended</code></td>
+                                <td>Provide a CSS example showing the recommended capitalization.</td>
+                                <td><pre><code>"Recommended CSS:\ncolor: #f0f0f0;"</code></pre></td>
+                                <td><code>color: #f0f0f0;</code></td>
+                                <td><pre><code class="language-css">color: #f0f0f0;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Capitalization_Example_CSS_NotRecommended</code></td>
+                                <td>Provide a CSS example showing capitalization that is NOT recommended.</td>
+                                <td><pre><code>"NOT Recommended CSS:\nColor: #F0F0F0;"</code></pre></td>
+                                <td><code>Color: #F0F0F0;</code></td>
+                                <td><pre><code class="language-css">Color: #F0F0F0;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_TrailingWhitespace_Policy</code></td>
+                                <td>What is your organization's policy on trailing white spaces at the end of lines in code?</td>
+                                <td><pre><code>"Trailing white spaces policy: [To be removed always / Ignored / Allowed]."</code></pre></td>
+                                <td>"To be removed always"</td>
+                                <td><pre><code class="language-html">&lt;!-- Recommended --&gt;&lt;p&gt;Text&lt;/p&gt;
+&lt;!-- Not recommended: &lt;p&gt;Text&lt;/p&gt;_ (where _ is a space) --&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_TrailingWhitespace_Reasoning</code></td>
+                                <td>Briefly state the reason behind your policy on trailing white spaces.</td>
+                                <td><pre><code>"Reason for trailing whitespace policy: [Your reasoning, e.g., 'to prevent unnecessary diffs and maintain clean code']."</code></pre></td>
+                                <td>"To avoid unnecessary diffs in version control and maintain clean code."</td>
+                                <td>(Textual note in style guide explaining reasoning.)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 03: General Meta Rules -->
+                <h3>03: General Meta Rules (Applicable to both HTML & CSS)</h3>
+                <div class="responsive-table-container">
+                    <table class="responsive-table">
+                         <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>General_Encoding_Standard</code></td>
+                                <td>What character encoding standard must be used for all HTML, CSS, and related project files?</td>
+                                <td><pre><code>"Standard character encoding for all files: [Encoding Standard, e.g., UTF-8 without BOM]."</code></pre></td>
+                                <td>"UTF-8 without BOM (Byte Order Mark)"</td>
+                                <td>(Guide: "All files must be saved as UTF-8 without BOM.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Encoding_HTML_Declaration</code></td>
+                                <td>How must the character encoding be declared within HTML documents?</td>
+                                <td><pre><code>"HTML encoding declaration: &lt;meta charset=\"[Your Chosen Encoding]\"&gt; within the &lt;head&gt;."</code></pre></td>
+                                <td>"Using <code>&lt;meta charset=\"utf-8\"&gt;</code> in the <code>&lt;head&gt;</code> section."</td>
+                                <td><pre><code class="language-html">&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+&lt;/head&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Encoding_CSS_Assumption</code></td>
+                                <td>What encoding do CSS files assume, and should encoding be specified within CSS files?</td>
+                                <td><pre><code>"CSS files assume [Encoding, e.g., UTF-8]. Specification within CSS files is [Not Required / Required / Optional]."</code></pre></td>
+                                <td>"CSS files assume UTF-8. Encoding should not be specified within CSS files."</td>
+                                <td><pre><code class="language-css">/* No @charset rule needed if UTF-8 is assumed and used */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Comments_Policy</code></td>
+                                <td>What is your policy on using comments in code? What aspects should comments typically explain?</td>
+                                <td><pre><code>"Comments should be used to explain: [Aspect 1, e.g., complex logic], [Aspect 2, e.g., purpose of non-obvious code], and [Aspect 3, e.g., any workarounds]."</code></pre></td>
+                                <td>"Comments should explain complex logic, the purpose of non-obvious code sections, and any workarounds."</td>
+                                <td><pre><code class="language-html">&lt;!-- Explains a complex section --&gt;
+&lt;div&gt;...&lt;/div&gt;</code></pre><pre><code class="language-css">/* Complex calculation for layout adjustment */
+.element { ... }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Comments_RequirementLevel</code></td>
+                                <td>What is the requirement level for adding comments to code (e.g., optional, mandatory for certain parts)?</td>
+                                <td><pre><code>"Commenting requirement: [Optional but encouraged / Mandatory for X / Mandatory for all Y]."</code></pre></td>
+                                <td>"Optional but highly encouraged for clarity, mandatory for complex functions or modules."</td>
+                                <td>(Guide: "Comments are mandatory for complex functions...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>General_Comments_Style_Example</code></td>
+                                <td>What is the preferred style or format for comments in your HTML and CSS (or preprocessor files)?</td>
+                                <td><pre><code>"Preferred HTML comment style: &lt;!-- [Comment Text] --&gt;\nPreferred CSS comment style: /* [Comment Text] */"</code></pre></td>
+                                <td>"HTML: <code>&lt;!-- Comment --&gt;</code>, CSS: <code>/* Comment */</code>"</td>
+                                <td><pre><code class="language-html">&lt;!-- This is an HTML comment --&gt;</code></pre><pre><code class="language-css">/* This is a CSS comment */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_ActionItems_Keyword</code></td>
+                                <td>What specific keyword must be used to mark action items or TODOs within the code?</td>
+                                <td><pre><code>"Keyword for action items/TODOs: [Keyword, e.g., TODO]."</code></pre></td>
+                                <td>"TODO"</td>
+                                <td><pre><code class="language-html">&lt;!-- TODO: Refactor this section for accessibility --&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_ActionItems_Format</code></td>
+                                <td>What is the required format for these action items (e.g., how should the description, assignee, or ticket number be included)?</td>
+                                <td><pre><code>"Action item format: `[Keyword]: ([Assignee/Ticket# if applicable]) [Description of action item]`"</code></pre></td>
+                                <td>"TODO: [Ticket JIRA-123] Revisit responsive breakpoints for tablet."</td>
+                                <td><pre><code class="language-html">{# TODO: [UserStory-456] Implement dynamic loading #}
+&lt;!-- TODO: [Bug-789] Fix image scaling on mobile --&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>General_ActionItems_OtherFormats_Policy</code></td>
+                                <td>What is the policy on using other common action item formats (like @@, FIXME)?</td>
+                                <td><pre><code>"Policy on other action item formats (e.g., @@, FIXME): [Not Permitted / Discouraged]."</code></pre></td>
+                                <td>"Not Permitted. Only TODO should be used."</td>
+                                <td>(Guide: "Only the 'TODO:' format is permitted...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>General_ActionItems_Example</code></td>
+                                <td>Provide a clear example of a correctly formatted action item according to your rules.</td>
+                                <td><pre><code>"Correctly formatted action item example:\n&lt;!-- [Keyword]: ([Context/Ticket]) [Action] --&gt;"</code></pre></td>
+                                <td><code>&lt;!-- TODO: [TechDebt-001] Optimize image compression for homepage. --&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;!-- TODO: [Optimize-002] Review performance of this script under load. --&gt;</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 04: HTML - Style Rules -->
+                <h3>04: HTML - Style Rules</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>HTML_DocumentType_Declaration</code></td>
+                                <td>What exact doctype declaration must be at the beginning of all HTML documents?</td>
+                                <td><pre><code>"Doctype declaration: `&lt;!doctype html&gt;`"</code></pre></td>
+                                <td>"<code>&lt;!doctype html&gt;</code>"</td>
+                                <td><pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;...&lt;/html&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_DocumentType_Reasoning</code></td>
+                                <td>What is the primary reason for mandating this specific doctype?</td>
+                                <td><pre><code>"Reason for this doctype: To ensure browsers render pages in [Rendering Mode, e.g., no-quirks mode] for [Benefit, e.g., predictable and consistent behavior across browsers]."</code></pre></td>
+                                <td>"To ensure browsers render pages in no-quirks mode for predictable and consistent behavior across different browsers and to adhere to modern web standards."</td>
+                                <td>(Guide: "Using `&lt;!doctype html&gt;` ensures rendering in no-quirks mode...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Validity_Policy</code></td>
+                                <td>What is your organization's policy regarding HTML validity (e.g., strict adherence, valid where possible)?</td>
+                                <td><pre><code>"HTML validity policy: [Strictly Valid / Valid where possible according to W3C standards]."</code></pre></td>
+                                <td>"Valid HTML according to W3C standards where possible."</td>
+                                <td><pre><code class="language-html">&lt;!-- Recommended: Valid Structure --&gt;
+&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Valid Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;Content.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Validity_Exceptions</code></td>
+                                <td>Under what specific, documented circumstances are exceptions to HTML validity permitted?</td>
+                                <td><pre><code>"Exceptions to HTML validity allowed for: [Condition 1, e.g., unavoidable third-party code], [Condition 2, e.g., documented performance gains]. Must be [Action, e.g., documented and approved]."</code></pre></td>
+                                <td>"Only for unavoidable third-party embed code that doesn't validate, or documented performance gains from omitting optional closing tags in specific, controlled scenarios."</td>
+                                <td>(Guide: "Exceptions to HTML validity require documentation and approval...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Validity_TestingTool_Recommendation</code></td>
+                                <td>What tool(s) do you recommend or require for testing HTML validity?</td>
+                                <td><pre><code>"Recommended HTML validation tool(s): [Tool Name/URL, e.g., W3C HTML Validator (validator.w3.org)]."</code></pre></td>
+                                <td>"W3C HTML Validator (validator.w3.org)"</td>
+                                <td>(Guide: "Use the W3C HTML Validator...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Semantics_UsagePolicy</code></td>
+                                <td>How strictly must HTML elements be used according to their semantic purpose? Provide examples for common elements like headings, paragraphs, and anchors.</td>
+                                <td><pre><code>"HTML elements must be used [Strictly / Generally] according to their semantic purpose. E.g., Headings: `h1`-`h6`; Paragraphs: `p`; Anchors: `a`."</code></pre></td>
+                                <td>"Strictly. Headings use <code>&lt;h1&gt;</code>-<code>&lt;h6&gt;</code>, paragraphs <code>&lt;p&gt;</code>, anchors <code>&lt;a&gt;</code>."</td>
+                                <td><pre><code class="language-html">&lt;!-- Recommended --&gt;
+&lt;nav aria-label="Main navigation"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;!-- Not recommended --&gt;
+&lt;div class="nav"&gt;
+  &lt;span class="nav-item" onclick="location.href='/'"&gt;Home&lt;/span&gt;
+&lt;/div&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Semantics_Importance</code></td>
+                                <td>Why is using HTML semantically important for your organization (e.g., accessibility, SEO)?</td>
+                                <td><pre><code>"Semantic HTML is important for: [Reason 1, e.g., accessibility (screen readers)], [Reason 2, e.g., SEO], [Reason 3, e.g., code maintainability]."</code></pre></td>
+                                <td>"For accessibility (screen readers), SEO (search engine understanding), reusability of components, and overall code efficiency and maintainability."</td>
+                                <td>(Guide: "Using HTML semantically improves accessibility...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Semantics_Example_Recommended</code></td>
+                                <td>Provide a clear example of good semantic HTML usage.</td>
+                                <td><pre><code>"Good Semantic HTML Example:\n&lt;article&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Paragraph.&lt;/p&gt;\n&lt;/article&gt;"</code></pre></td>
+                                <td><code>&lt;article&gt;\n  &lt;h2&gt;Article Title&lt;/h2&gt;\n  &lt;p&gt;First paragraph.&lt;/p&gt;\n&lt;/article&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;button type="submit"&gt;Submit Form&lt;/button&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Semantics_Example_NotRecommended</code></td>
+                                <td>Provide a clear example of HTML usage that is NOT semantic and should be avoided.</td>
+                                <td><pre><code>"Non-Semantic HTML Example (Avoid):\n&lt;div class="button" onclick="submit()"&gt;Submit&lt;/div&gt;"</code></pre></td>
+                                <td><code>&lt;div class="button" onclick="submitForm()"&gt;Submit Form&lt;/div&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;span style="font-weight:bold; display:block;"&gt;This is a heading&lt;/span&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_MultimediaFallback_Policy</code></td>
+                                <td>What is the policy for providing alternative access for multimedia content (images, video, audio, canvas)? What attribute is key for images?</td>
+                                <td><pre><code>"Policy for multimedia fallback: Alternative access must [Always / Generally] be provided. For images, this means meaningful `alt` attributes."</code></pre></td>
+                                <td>"Alternative access must always be provided. For images, this means meaningful `alt` attributes."</td>
+                                <td><pre><code class="language-html">&lt;img src="chart.png" alt="Bar chart showing Q1 sales figures."&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_MultimediaFallback_VideoAudio</code></td>
+                                <td>For video and audio content, what forms of alternative access must be provided (e.g., transcripts, captions)?</td>
+                                <td><pre><code>"For video/audio, provide: [e.g., Transcripts for audio, Captions and transcripts for video]."</code></pre></td>
+                                <td>"Transcripts and captions are required if the content contains spoken words or essential audio information."</td>
+                                <td><pre><code class="language-html">&lt;video src="tutorial.mp4"&gt;
+  &lt;track label="English" kind="captions" srclang="en" src="captions_en.vtt" default&gt;
+  &lt;p&gt;Your browser does not support the video tag. &lt;a href="tutorial_transcript.txt"&gt;View transcript.&lt;/a&gt;&lt;/p&gt;
+&lt;/video&gt;</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>HTML_MultimediaFallback_DecorativeImages_Policy</code></td>
+                                <td>What is the policy for `alt` attributes on images that are purely decorative and cannot be implemented via CSS?</td>
+                                <td><pre><code>"For purely decorative images (not CSS-implementable), `alt` attribute should be: [e.g., empty (`alt=\"\"`)]."</code></pre></td>
+                                <td>"Use an empty `alt` attribute (`alt=\"\"`)."</td>
+                                <td><pre><code class="language-html">&lt;img src="decorative-swirl.png" alt=""&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_MultimediaFallback_Example_Recommended</code></td>
+                                <td>Provide a concise example of a recommended image tag with appropriate alternative text.</td>
+                                <td><pre><code>"Recommended image with alt:\n&lt;img src=\"[path]\" alt=\"[Descriptive Text]\"&gt;"</code></pre></td>
+                                <td><code>&lt;img src="user-avatar.jpg" alt="Profile picture of Jane Doe"&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;img src="product-image.jpg" alt="Red Model X Super Widget"&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_SeparationOfConcerns_Policy</code></td>
+                                <td>How strictly must structure (HTML), presentation (CSS), and behavior (JavaScript) be separated? What should HTML documents solely contain?</td>
+                                <td><pre><code>"Separation of concerns (HTML, CSS, JS) is: [Strictly Enforced / Strongly Recommended]. HTML documents should solely contain [e.g., markup for structural purposes]."</code></pre></td>
+                                <td>"Strictly separated. HTML documents should contain only markup serving structural purposes."</td>
+                                <td><pre><code class="language-html">&lt;!-- HTML (Structure) --&gt;
+&lt;div class="alert alert-warning"&gt;Important message!&lt;/div&gt;</code></pre><pre><code class="language-css">/* CSS (Presentation) */
+.alert { padding: 10px; border: 1px solid; }
+.alert-warning { background-color: #ffc; border-color: #dda; }</code></pre><pre><code class="language-javascript">// JS (Behavior - if any)
+document.querySelector('.alert').addEventListener('click', () => console.log('Alert clicked!'));</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_SeparationOfConcerns_StylingLocation</code></td>
+                                <td>Where must all presentational aspects (styling) be located?</td>
+                                <td><pre><code>"All presentational styling must be located in: [External CSS stylesheets]."</code></pre></td>
+                                <td>"Moved to external CSS style sheets."</td>
+                                <td><pre><code class="language-html">&lt;link rel="stylesheet" href="styles.css"&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_SeparationOfConcerns_BehaviorLocation</code></td>
+                                <td>Where must all behavioral aspects (scripting) be located?</td>
+                                <td><pre><code>"All behavioral scripting must be located in: [External JavaScript files]."</code></pre></td>
+                                <td>"Moved to external JavaScript files."</td>
+                                <td><pre><code class="language-html">&lt;script src="scripts.js"&gt;&lt;/script&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_SeparationOfConcerns_LinkingMinimize</code></td>
+                                <td>What is the approach to linking style sheets and scripts from HTML documents to keep interaction minimal?</td>
+                                <td><pre><code>"To minimize interaction points, we will: [e.g., Link as few external files as possible, bundle/minify where appropriate]."</code></pre></td>
+                                <td>"Strive to link as few style sheets and scripts as possible, bundling where appropriate."</td>
+                                <td>(Guide: "Bundle CSS and JS files to reduce HTTP requests.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_SeparationOfConcerns_MaintenanceReason</code></td>
+                                <td>What is the primary reason for enforcing this separation of concerns?</td>
+                                <td><pre><code>"Primary reason for separation: [e.g., Improved maintainability and scalability, as changes to presentation or behavior should not require HTML modifications]."</code></pre></td>
+                                <td>"Improved maintainability and scalability. Changes to presentation or behavior should ideally not require HTML modifications."</td>
+                                <td>(Guide: "Separation of concerns enhances code maintainability...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_EntityReferences_Policy</code></td>
+                                <td>What is your policy on using named or numeric HTML entity references (e.g., <code>&amp;mdash;</code>, <code>&amp;rdquo;</code>)?</td>
+                                <td><pre><code>"Policy on HTML entity references: [Generally Not Permitted / Permitted only for specific characters listed below]."</code></pre></td>
+                                <td>"Generally not permitted, assuming UTF-8 encoding is used consistently."</td>
+                                <td><pre><code class="language-html">&lt;p&gt;This is a dash — and these are “smart quotes”.&lt;/p&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_EntityReferences_PermittedCharacters</code></td>
+                                <td>If entity references are permitted only for specific characters, list those characters.</td>
+                                <td><pre><code>"Permitted entity references for: [Character 1 (e.g., `&lt;` as `&amp;lt;`)], [Character 2 (e.g., `&amp;` as `&amp;amp;`)], [Character 3 (e.g., no-break space as `&amp;nbsp;`)]..."</code></pre></td>
+                                <td>"Only for characters with special meaning in HTML like <code>&lt;</code> (<code>&amp;lt;</code>), <code>&amp;</code> (<code>&amp;amp;</code>), and essential invisible characters like no-break spaces (<code>&amp;nbsp;</code>)."</td>
+                                <td><pre><code class="language-html">&lt;p&gt;5 &amp;lt; 10 and Q&amp;amp;A&lt;/p&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_EntityReferences_Reasoning</code></td>
+                                <td>What encoding assumption underlies your entity reference policy?</td>
+                                <td><pre><code>"This policy assumes all files, editors, and teams use [Encoding, e.g., UTF-8] encoding."</code></pre></td>
+                                <td>"That all files, editors, and team members use UTF-8 encoding."</td>
+                                <td>(Guide: "Assuming UTF-8, direct characters are preferred...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_EntityReferences_Example_Recommended</code></td>
+                                <td>Provide an example of recommended character usage (directly or permitted entities).</td>
+                                <td><pre><code>"Recommended: The currency symbol for the Euro is “[€]”."</code></pre></td>
+                                <td>"The currency symbol for the Euro is “€”, not <code>&amp;ldquo;&amp;eur;&amp;rdquo;</code>."</td>
+                                <td><pre><code class="language-html">&lt;span&gt;Cost: €100&lt;/span&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_EntityReferences_Example_NotRecommended</code></td>
+                                <td>Provide an example of entity reference usage that is NOT recommended.</td>
+                                <td><pre><code>"Not Recommended: The em dash — [Symbol for em-dash or type 'should be typed directly']."</code></pre></td>
+                                <td>"The em dash <code>&amp;mdash;</code> should be typed directly."</td>
+                                <td><pre><code class="language-html">&lt;!-- Not Recommended: The currency symbol for the Euro is &amp;ldquo;&amp;eur;&amp;rdquo;. --&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_OptionalTags_Policy</code></td>
+                                <td>What is your policy on omitting optional HTML tags (like <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;/li&gt;</code>, <code>&lt;/p&gt;</code> closing tags) as defined by HTML5?</td>
+                                <td><pre><code>"Policy on omitting optional HTML tags: [Encouraged for X / Discouraged for Y / Prohibited]."</code></pre></td>
+                                <td>"Encouraged for file size optimization and improved scannability where it doesn't harm clarity or tooling."</td>
+                                <td><pre><code class="language-html">&lt;!doctype html&gt;
+&lt;title&gt;Minimal Page&lt;/title&gt;
+&lt;p&gt;Some content 
+&lt;!-- Example shows omitted &lt;html&gt;, &lt;head&gt;, &lt;body&gt; and &lt;p&gt; closing tag --&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_OptionalTags_ConsistencyNote</code></td>
+                                <td>If omitting optional tags is allowed, what is the approach to ensure consistency?</td>
+                                <td><pre><code>"Consistency for optional tags: If omitting, [e.g., do so consistently for all possible optional tags within a project]."</code></pre></td>
+                                <td>"If used, it should be done consistently across a project, ideally omitting all possible optional tags rather than a mix."</td>
+                                <td>(Guide: "When omitting optional tags, apply the practice consistently...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_OptionalTags_Example_Recommended</code></td>
+                                <td>Provide a concise, recommended example of HTML with optional tags omitted (if your policy allows it).</td>
+                                <td><pre><code>"Recommended HTML (optional tags omitted):\n&lt;!doctype html&gt;\n&lt;title&gt;[Title]&lt;/title&gt;\n&lt;p&gt;[Content]"</code></pre></td>
+                                <td><code>&lt;!doctype html&gt;&lt;meta charset=utf-8&gt;&lt;title&gt;Brevity&lt;/title&gt;&lt;p&gt;Concise.</code></td>
+                                <td><pre><code class="language-html">&lt;!doctype html&gt;&lt;title&gt;Minimal&lt;/title&gt;&lt;p&gt;Text</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_TypeAttributes_CSSJS_Policy</code></td>
+                                <td>Is the <code>type</code> attribute required for <code>&lt;link rel='stylesheet'&gt;</code> (CSS) and <code>&lt;script&gt;</code> (JavaScript) tags?</td>
+                                <td><pre><code>"`type` attribute for CSS/JS links is: [To be omitted / Required]."</code></pre></td>
+                                <td>"To be omitted."</td>
+                                <td><pre><code class="language-html">&lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>HTML_TypeAttributes_Reasoning</code></td>
+                                <td>Why is this your policy for `type` attributes in these contexts?</td>
+                                <td><pre><code>"Reason: HTML5 implies `text/css` and `text/javascript` as defaults, making the attribute [e.g., redundant]."</code></pre></td>
+                                <td>"HTML5 implies `text/css` and `text/javascript` as defaults, making the attribute redundant even for older browsers."</td>
+                                <td>(Guide: "The `type` attribute is not necessary for CSS and JS...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_IdAttributes_Usage_Policy</code></td>
+                                <td>What is your policy on using `id` attributes for general styling? What is preferred for styling and scripting?</td>
+                                <td><pre><code>"Usage of `id` attributes for general styling: [Discouraged / Permitted]. Preferred for styling: `[class]` attributes. Preferred for scripting hooks: `[data-* attributes / classes]`."</code></pre></td>
+                                <td>"Discouraged for general styling; prefer `class` attributes for styling and `data-*` attributes or classes for scripting hooks."</td>
+                                <td><pre><code class="language-css">.user-profile { border: 1px solid #ccc; }</code></pre><pre><code class="language-html">&lt;div class="user-profile" data-user-id="123"&gt;...&lt;/div&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_IdAttributes_Naming_Convention_If_Required</code></td>
+                                <td>If `id` attributes are strictly required (e.g., for ARIA, fragment identifiers), what naming convention must their values follow?</td>
+                                <td><pre><code>"Naming convention for required `id` attributes: Values must [e.g., include a hyphen (e.g., user-profile) / follow camelCase]."</code></pre></td>
+                                <td>"Values must include a hyphen (e.g., `user-profile`) to avoid conflicts with global JavaScript variable names."</td>
+                                <td><pre><code class="language-html">&lt;section aria-labelledby="section-heading-1"&gt;
+  &lt;h2 id="section-heading-1"&gt;Section Title&lt;/h2&gt;
+&lt;/section&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_IdAttributes_GlobalWindow_Reasoning</code></td>
+                                <td>What is the reason for this specific naming convention for `id` attributes when they are used?</td>
+                                <td><pre><code>"Reason for `id` naming convention: To prevent [e.g., conflicts with global JavaScript variables created by browsers]."</code></pre></td>
+                                <td>"To prevent browsers from creating global JavaScript variables from ID values, which can cause unexpected behavior if hyphens are not used."</td>
+                                <td>(Guide: "Use hyphens in `id` values to prevent global namespace pollution...")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 05: HTML - Formatting Rules -->
+                <h3>05: HTML - Formatting Rules</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>HTML_Formatting_BlockListTable_NewLinePolicy</code></td>
+                                <td>Should every block, list, or table element always start on a new line in your HTML code?</td>
+                                <td><pre><code>"Policy for new lines with block/list/table elements: [Always start on a new line / Can be inline if short]."</code></pre></td>
+                                <td>"Always start on a new line."</td>
+                                <td><pre><code class="language-html">&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Space&lt;/em&gt;, the final frontier.&lt;/p&gt;
+&lt;/blockquote&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Formatting_ChildElement_IndentationPolicy</code></td>
+                                <td>How should child elements of block, list, or table elements be indented?</td>
+                                <td><pre><code>"Child elements of block/list/table elements must be: [Indented per general rule / Not indented / Other]."</code></pre></td>
+                                <td>"Indented according to the general indentation rule (2 spaces)."</td>
+                                <td><pre><code class="language-html">&lt;ul&gt;
+  &lt;li&gt;Moe&lt;/li&gt;
+  &lt;li&gt;Larry&lt;/li&gt;
+  &lt;li&gt;Curly&lt;/li&gt;
+&lt;/ul&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Formatting_ListItem_Exception</code></td>
+                                <td>Is there an exception for formatting <code>&lt;li&gt;</code> elements, especially if whitespace between them causes rendering issues?</td>
+                                <td><pre><code>"Exception for `&lt;li&gt;` elements: If whitespace causes issues, it is [Acceptable / Not acceptable] to [Action, e.g., place all `&lt;li&gt;` on one line]. Linter should [e.g., warn / error / ignore]."</code></pre></td>
+                                <td>"Acceptable to place all <code>&lt;li&gt;</code> elements in one line if inline-block display causes issues. A linter should warn rather than error."</td>
+                                <td><pre><code class="language-html">&lt;ul&gt;&lt;li&gt;Moe&lt;/li&gt;&lt;li&gt;Larry&lt;/li&gt;&lt;li&gt;Curly&lt;/li&gt;&lt;/ul&gt;
+&lt;!-- Or, if on separate lines and whitespace is an issue: --&gt;
+&lt;ul&gt;
+  &lt;li&gt;Moe&lt;/li&gt;&lt;!--
+  --&gt;&lt;li&gt;Larry&lt;/li&gt;&lt;!--
+  --&gt;&lt;li&gt;Curly&lt;/li&gt;
+&lt;/ul&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Formatting_Example_Block</code></td>
+                                <td>Provide a brief HTML example clearly showing your formatting rule for general block elements (e.g., <code>&lt;div&gt;</code>, <code>&lt;blockquote&gt;</code>).</td>
+                                <td><pre><code>"Block Element Formatting Example:\n&lt;blockquote&gt;\n  &lt;p&gt;&lt;em&gt;Content&lt;/em&gt;.&lt;/p&gt;\n&lt;/blockquote&gt;"</code></pre></td>
+                                <td><code>&lt;blockquote&gt;\n  &lt;p&gt;&lt;em&gt;Space&lt;/em&gt;.&lt;/p&gt;\n&lt;/blockquote&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Space&lt;/em&gt;, the final frontier.&lt;/p&gt;
+&lt;/blockquote&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Formatting_Example_List</code></td>
+                                <td>Provide a brief HTML example clearly showing your formatting rule for list elements (<code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>).</td>
+                                <td><pre><code>"List Element Formatting Example:\n&lt;ul&gt;\n  &lt;li&gt;Item 1&lt;/li&gt;\n  &lt;li&gt;Item 2&lt;/li&gt;\n&lt;/ul&gt;"</code></pre></td>
+                                <td><code>&lt;ul&gt;\n  &lt;li&gt;Moe&lt;/li&gt;\n  &lt;li&gt;Larry&lt;/li&gt;\n  &lt;li&gt;Curly&lt;/li&gt;\n&lt;/ul&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;ul&gt;
+  &lt;li&gt;Moe&lt;/li&gt;
+  &lt;li&gt;Larry&lt;/li&gt;
+  &lt;li&gt;Curly&lt;/li&gt;
+&lt;/ul&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_Formatting_Example_Table</code></td>
+                                <td>Provide a brief HTML example clearly showing your formatting rule for table elements (<code>&lt;table&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code>).</td>
+                                <td><pre><code>"Table Element Formatting Example:\n&lt;table&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th&gt;Head1&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;Data1&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;"</code></pre></td>
+                                <td><code>&lt;table&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th scope="col"&gt;Income&lt;/th&gt;\n      &lt;th scope="col"&gt;Taxes&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;$ 5.00&lt;/td&gt;\n      &lt;td&gt;$ 4.50&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></td>
+                                <td><pre><code class="language-html">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope="col"&gt;Income&lt;/th&gt;
+      &lt;th scope="col"&gt;Taxes&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$ 5.00&lt;/td&gt;
+      &lt;td&gt;$ 4.50&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_LineWrapping_Policy</code></td>
+                                <td>What is your policy on wrapping long lines of HTML code, particularly for tags with many attributes? Is there a character limit?</td>
+                                <td><pre><code>"Policy on HTML line-wrapping: [Optional, for readability / Required beyond X characters / Discouraged]. If wrapping, [Describe how, e.g., indent attributes consistently]."</code></pre></td>
+                                <td>"Optional, for readability if it significantly improves it. No strict column limit. When wrapping, indent attributes for clarity."</td>
+                                <td><pre><code class="language-html">&lt;button
+  type="button"
+  class="btn btn-primary"
+  data-action="submit"
+  aria-label="Submit Form"&gt;
+  Submit
+&lt;/button&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_LineWrapping_Indentation_Style</code></td>
+                                <td>When line-wrapping attributes within an HTML tag, how should each continuation line be indented?</td>
+                                <td><pre><code>"Indentation for wrapped attributes: Each continuation line should be [e.g., Indented to align with the first attribute / Indented by one general indent level from the element]."</code></pre></td>
+                                <td>"Indented to distinguish wrapped attributes clearly from child elements, typically aligned with the first attribute or by one additional general indent level."</td>
+                                <td><pre><code class="language-html">&lt;a href="long/url/path/to/page.html"
+   class="complex-link button-primary active"
+   title="A very descriptive title for this link"&gt;Link Text&lt;/a&gt;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_LineWrapping_Consistency</code></td>
+                                <td>How important is consistency in line-wrapping practices within a project? Should tools enforce this?</td>
+                                <td><pre><code>"Line-wrapping consistency: [Very important / Somewhat important / Not critical]. Enforcement by automated tools is [Encouraged / Optional / Not required]."</code></pre></td>
+                                <td>"Consistency within a project is encouraged. Automated code formatting tools should ideally enforce the chosen style."</td>
+                                <td>(Guide: "Ensure consistent line-wrapping for attributes...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>HTML_QuotationMarks_AttributeValues_Policy</code></td>
+                                <td>What type of quotation marks must be used around attribute values in HTML?</td>
+                                <td><pre><code>"Quotation marks for HTML attribute values: [Double quotation marks \"\" only / Single quotation marks '' only / Double preferred, single allowed]."</code></pre></td>
+                                <td>"Double quotation marks (\"\") only."</td>
+                                <td><pre><code class="language-html">&lt;a class="maia-button maia-button-secondary" href="#"&gt;Sign in&lt;/a&gt;</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 06: CSS - Style Rules -->
+                <h3>06: CSS - Style Rules</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CSS_Validity_Policy</code></td>
+                                <td>What is your organization's policy regarding CSS validity (e.g., strict adherence, valid where possible)?</td>
+                                <td><pre><code>"CSS validity policy: [Strictly Valid / Valid where possible according to W3C standards]."</code></pre></td>
+                                <td>"Valid CSS according to W3C standards where possible."</td>
+                                <td><pre><code class="language-css">.valid-class {
+  color: #333;
+  margin: 10px;
+} /* This is valid CSS */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Validity_Exceptions</code></td>
+                                <td>Under what specific, documented circumstances are exceptions to CSS validity permitted (e.g., validator bugs, proprietary syntax)?</td>
+                                <td><pre><code>"Exceptions to CSS validity allowed for: [Condition 1, e.g., known CSS validator bugs], [Condition 2, e.g., required proprietary vendor syntax]. Must be [Action, e.g., documented]."</code></pre></td>
+                                <td>"Only for dealing with known CSS validator bugs or when requiring proprietary syntax essential for a specific browser or framework, with clear comments justifying the exception."</td>
+                                <td><pre><code class="language-css">/* Example of a hypothetical exception with comment */
+/* CSS_VALIDITY_EXCEPTION: Proprietary -moz-gradient needed for specific Firefox version */
+.button {
+  background: -moz-linear-gradient(top, #fff, #eee);
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Validity_TestingTool_Recommendation</code></td>
+                                <td>What tool(s) do you recommend or require for testing CSS validity?</td>
+                                <td><pre><code>"Recommended CSS validation tool(s): [Tool Name/URL, e.g., W3C CSS Validator (jigsaw.w3.org/css-validator/)]."</code></pre></td>
+                                <td>"W3C CSS Validator (jigsaw.w3.org/css-validator/)"</td>
+                                <td>(Guide: "Test CSS with W3C CSS Validator.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Nature</code></td>
+                                <td>What kind of names should CSS classes have (e.g., meaningful/semantic, generic for helpers, presentational)?</td>
+                                <td><pre><code>"CSS class names should primarily be: [Meaningful/Semantic, reflecting purpose]. Generic names are acceptable for [e.g., helper classes]. Presentational names are [Discouraged/Avoided]."</code></pre></td>
+                                <td>"Meaningful/semantic, reflecting the purpose of the element. Generic names are acceptable for helper classes (e.g., <code>.text-center</code>). Presentational names (e.g., <code>.red-text</code>) are strongly discouraged."</td>
+                                <td><pre><code class="language-css">/* Recommended: specific */
+.article-header { font-size: 2em; }
+.user-profile { padding: 15px; }
+
+/* Recommended: generic */
+.is-hidden { display: none; }
+.clearfix::after { content: ""; clear: both; display: table; }</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_ClassName_Preference</code></td>
+                                <td>Which type of class name is generally preferred and why?</td>
+                                <td><pre><code>"Preferred class names are: [Type, e.g., Specific and reflect purpose] because they are [Benefit, e.g., most understandable and least likely to change]."</code></pre></td>
+                                <td>"Specific names reflecting purpose are preferred as they are most understandable and least likely to change."</td>
+                                <td>(Guide: "Prefer class names that reflect purpose...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_GenericUse</code></td>
+                                <td>When are generic class names (e.g., <code>.aux</code>, <code>.alt</code>, <code>.is-active</code>) considered acceptable?</td>
+                                <td><pre><code>"Generic class names are acceptable for: [Purpose, e.g., utility/helper elements with no unique semantic meaning, state indication]."</code></pre></td>
+                                <td>"Utility/helper elements with no specific semantic meaning beyond their function (e.g., <code>.text-right</code>, <code>.pull-left</code>) or for state indication (e.g., <code>.is-visible</code>, <code>.is-disabled</code>)."</td>
+                                <td><pre><code class="language-css">.sr-only { position: absolute; width: 1px; height: 1px; ... }
+.button.is-loading::after { content: ' Loading...'; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Style_Length</code></td>
+                                <td>What is your guideline for the length of class names (e.g., short but descriptive)?</td>
+                                <td><pre><code>"Class names should be: [Guideline, e.g., as short as possible but as long as necessary to convey meaning clearly]."</code></pre></td>
+                                <td>"As short as possible but as long as necessary to be descriptive and understandable."</td>
+                                <td><pre><code class="language-css">/* Recommended */
+.nav {}
+.btn-primary {}
+
+/* Not Recommended (too vague or too verbose) */
+.n {}
+.buttonThatIsUsedForThePrimaryCallToActionOnThePage {}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Example_GoodLength</code></td>
+                                <td>Provide a few examples of class names that adhere to your length guideline.</td>
+                                <td><pre><code>"Good class name length examples: `[e.g., .nav, .author, .feature-card]`"</code></pre></td>
+                                <td>"<code>.nav</code>, <code>.author</code>, <code>.product-image</code>"</td>
+                                <td><pre><code class="language-css">.nav { ... }
+.author { ... }
+.product-image { ... }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Example_BadLength</code></td>
+                                <td>Provide a few examples of class names that do NOT adhere to your length guideline (either too short/cryptic or too long).</td>
+                                <td><pre><code>"Bad class name length examples: `[e.g., .n, .auth, .veryImportantButtonWithBlueBackground]`"</code></pre></td>
+                                <td>"<code>.n</code>, <code>.auth</code>, <code>.theMainNavigationComponentForThePrimaryHeader</code>"</td>
+                                <td>(Guide: "Avoid overly vague or excessively long class names.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Delimiters</code></td>
+                                <td>What character(s) must be used to separate words within multi-word class names?</td>
+                                <td><pre><code>"Words in multi-word class names must be separated by: [Character, e.g., a hyphen (-)]. Other methods like underscores or camelCase are [Not Permitted/Discouraged]."</code></pre></td>
+                                <td>"A hyphen (-). Underscores (_) and camelCase (videoID) are not permitted for class names."</td>
+                                <td><pre><code class="language-css">.video-id { ... }
+.ads-sample { ... }
+
+/* Not recommended */
+.demoimage {}
+.error_status {}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Delimiter_Reasoning</code></td>
+                                <td>Why was this specific delimiter chosen for class names?</td>
+                                <td><pre><code>"The chosen delimiter ([Chosen Delimiter]) improves: [Benefit, e.g., readability and scannability, common convention]."</code></pre></td>
+                                <td>"Hyphens improve readability, scannability, and are a common convention in CSS."</td>
+                                <td>(Guide: "Use hyphens to separate words in class names...")</td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_ClassName_Delimiter_Example_Recommended</code></td>
+                                <td>Provide an example of a correctly delimited multi-word class name.</td>
+                                <td><pre><code>"Recommended delimited class name: `.[prefix-if-any]-[word1]-[word2]`"</code></pre></td>
+                                <td>"<code>.main-navigation-item</code>"</td>
+                                <td><pre><code class="language-css">.main-navigation-item { color: blue; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ClassName_Delimiter_Example_NotRecommended</code></td>
+                                <td>Provide examples of incorrectly delimited class names that should be avoided.</td>
+                                <td><pre><code>"Not recommended class name delimiters: `.[word1]_[word2]`, `.[word1Word2]`, `.[word1] [word2InAnotherClass]`"</code></pre></td>
+                                <td>"<code>.main_navigation_item</code>, <code>.mainNavigationItem</code>"</td>
+                                <td><pre><code class="language-css">/* Not Recommended */
+.main_navigation_item { ... }
+.mainNavigationItem { ... }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Prefixes_Policy</code></td>
+                                <td>What is your policy on using application-specific prefixes (namespaces) for class names (e.g., <code>.app-button</code>)? When should they be used?</td>
+                                <td><pre><code>"Application-specific prefixes for class names are: [Optional / Recommended for X / Mandatory for Y]. They should be used in [Situations, e.g., large projects, embeddable code]."</code></pre></td>
+                                <td>"Recommended for large projects or components intended for reuse across different sites/applications to prevent naming collisions."</td>
+                                <td><pre><code class="language-css">.myproject-header { ... }
+.myproject-button { ... }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Prefixes_Format</code></td>
+                                <td>If prefixes are used, what should their format be (e.g., length, characters, separator)?</td>
+                                <td><pre><code>"If used, prefixes should be [Format, e.g., short, unique, followed by a dash (-)]."</code></pre></td>
+                                <td>"A short, unique identifier (e.g., 3-5 characters representing the project or module) followed by a dash (-)."</td>
+                                <td><pre><code class="language-css">.abc-widget { ... } /* where 'abc' is the prefix */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Prefixes_Example</code></td>
+                                <td>Provide an example of a class name correctly using your defined prefix.</td>
+                                <td><pre><code>"Prefixed class example: `.[prefix]-[component-name]`"</code></pre></td>
+                                <td>"<code>.acme-modal-header</code>"</td>
+                                <td><pre><code class="language-css">.acme-modal-header { font-size: 1.5rem; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_TypeSelectors_WithClasses_Policy</code></td>
+                                <td>What is your policy on qualifying class names with HTML element type selectors (e.g., <code>ul.nav-list</code>, <code>div.error-message</code>)?</td>
+                                <td><pre><code>"Qualifying class names with type selectors (e.g., `ul.example`) is: [Generally avoided unless strictly necessary / Permitted freely]."</code></pre></td>
+                                <td>"Generally avoided unless strictly necessary for specificity (e.g., differentiating a generic helper class when applied to different element types, though this itself is often a sign to rethink the class name or structure)."</td>
+                                <td><pre><code class="language-css">/* Recommended */
+.nav-list { list-style: none; }
+.error-message { color: red; }
+
+/* Not Recommended (usually) */
+ul.nav-list { ... }
+div.error-message { ... }</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_TypeSelectors_Reasoning</code></td>
+                                <td>Why is this your policy for qualifying class names with type selectors?</td>
+                                <td><pre><code>"Reasoning for type selector qualification policy: Avoiding unnecessary qualification is preferred for [Benefit, e.g., performance, selector reusability, reduced specificity]."</code></pre></td>
+                                <td>"Avoiding unnecessary qualification is preferred for better CSS performance, selector reusability, and to keep specificity lower, making overrides easier when needed."</td>
+                                <td>(Guide: "Avoid qualifying classes with type selectors...")</td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_IdSelectors_Policy</code></td>
+                                <td>What is your policy on using ID selectors (<code>#example</code>) for styling in CSS? What is the preferred alternative and why?</td>
+                                <td><pre><code>"Usage of ID selectors (`#example`) for styling is: [Strongly discouraged/Avoided / Permitted for unique page elements only]. Preferred alternative: [Class selectors] because [Reason, e.g., reusability, lower specificity]."</code></pre></td>
+                                <td>"Strongly discouraged/avoided for styling. Class selectors are preferred due to their reusability and lower specificity, which makes CSS easier to manage and scale. IDs should be reserved for JavaScript hooks or page fragment identifiers."</td>
+                                <td><pre><code class="language-css">/* Recommended */
+.main-header { background: #333; }
+
+/* Not Recommended for styling */
+#main-header { background: #333; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ShorthandProperties_Policy</code></td>
+                                <td>Should CSS shorthand properties (e.g., <code>font</code>, <code>padding</code>, <code>margin</code>, <code>border</code>) be used? If so, when?</td>
+                                <td><pre><code>"CSS shorthand properties should be used: [Whenever possible, even if only one value is explicitly set / Only when setting multiple values / Other]."</code></pre></td>
+                                <td>"Whenever possible, even if only one value is explicitly set, for code efficiency and understandability."</td>
+                                <td><pre><code class="language-css">/* Recommended */
+padding: 10px 15px 10px 5px;
+font: bold 1em/1.5 sans-serif;
+border-top: 0;
+
+/* Not Recommended (if shorthand is preferred) */
+padding-top: 10px;
+padding-right: 15px;
+padding-bottom: 10px;
+padding-left: 5px;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ShorthandProperties_Reasoning</code></td>
+                                <td>Why is this your policy on using shorthand properties?</td>
+                                <td><pre><code>"Reasoning for shorthand policy: Using shorthand is beneficial for [Benefit 1, e.g., code efficiency (fewer lines)], [Benefit 2, e.g., better readability once understood]."</code></pre></td>
+                                <td>"Using shorthand properties is useful for code efficiency (conciseness) and better overall understandability once familiar with the syntax."</td>
+                                <td>(Guide: "Utilize shorthand properties for conciseness...")</td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_ShorthandProperties_Example_Recommended</code></td>
+                                <td>Provide a clear example of recommended shorthand property usage.</td>
+                                <td><pre><code>"Recommended shorthand usage:\n.element {\n  margin: [top] [right] [bottom] [left];\n  font: [style] [weight] [size]/[line-height] [family];\n}"</code></pre></td>
+                                <td><code>.box {\n  padding: 10px 20px; /* top/bottom 10px, left/right 20px */\n  font: italic small-caps bold 16px/1.4 Georgia, serif;\n}</code></td>
+                                <td><pre><code class="language-css">.element {
+  margin: 0 auto 20px;
+  border: 1px solid #ccc;
+  background: #f0f0f0 url('bg.png') no-repeat top left;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ZeroValues_Units_Policy</code></td>
+                                <td>What is your policy on specifying units (e.g., px, em, %) after "0" values in CSS?</td>
+                                <td><pre><code>"Unit specification after '0' values is: [To be omitted unless technically required by the property / Always included for clarity / Other]."</code></pre></td>
+                                <td>"To be omitted, unless they are technically required by the specific CSS property (e.g., some <code>flex-basis</code> cases or angles like <code>0deg</code>)."</td>
+                                <td><pre><code class="language-css">margin: 0;
+padding: 0;
+opacity: 0;
+
+/* Exception where unit might be needed */
+flex: 1 1 0px;</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ZeroValues_Units_Exceptions</code></td>
+                                <td>List any specific CSS properties or contexts where a unit IS explicitly required even for a "0" value.</td>
+                                <td><pre><code>"Units ARE required for '0' values in these CSS properties/contexts: [List property/context, e.g., `flex-basis: 0px` in IE11, `transform: rotate(0deg)`]."</code></pre></td>
+                                <td>"<code>flex-basis</code> (e.g., <code>0px</code>) if a length is expected, angles (e.g., <code>0deg</code>), times (e.g., <code>0s</code>)."</td>
+                                <td><pre><code class="language-css">div {
+  animation-duration: 0s;
+  transform: rotate(0deg);
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_LeadingZeros_Policy</code></td>
+                                <td>What is your policy on including leading zeros for decimal values between -1 and 1 (e.g., <code>0.5em</code> vs <code>.5em</code>)?</td>
+                                <td><pre><code>"Leading zeros for decimal values (e.g., `0.5em` vs `.5em`) are: [Always required (e.g., 0.8em) / Optional, but consistent style X preferred]."</code></pre></td>
+                                <td>"Always required (e.g., <code>0.8em</code>)."</td>
+                                <td><pre><code class="language-css">line-height: 1.5;
+opacity: 0.75;
+font-size: 0.8em; /* Recommended if leading zero is required */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_HexadecimalNotation_Length_Policy</code></td>
+                                <td>For hexadecimal color values that permit it, is 3-character notation (e.g., <code>#ebc</code>) preferred over 6-character, or vice-versa?</td>
+                                <td><pre><code>"For hex color values, 3-character notation (e.g., `#RGB`) is: [Preferred over 6-character for brevity when possible / Discouraged, always use 6-character for clarity]."</code></pre></td>
+                                <td>"Preferred over 6-character notation for brevity when the color permits it (e.g., <code>#FF0000</code> can be <code>#F00</code>)."</td>
+                                <td><pre><code class="language-css">/* Recommended */
+color: #f00; /* for red */
+background: #ebc;
+
+/* Acceptable (or required if not shortenable) */
+border-color: #fa0c88;</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_ImportantDeclarations_Policy</code></td>
+                                <td>What is your organization's policy on using <code>!important</code> in CSS declarations?</td>
+                                <td><pre><code>"The use of `!important` in CSS is: [Strictly avoided / Permitted only as a last resort with documented justification and team lead approval]."</code></pre></td>
+                                <td>"Strictly avoided. Its use is only permissible as an absolute last resort for overriding third-party styles or in critical utility classes, and must be clearly commented with justification and approved by the tech lead."</td>
+                                <td><pre><code class="language-css">/* Generally Not Recommended */
+.some-class { color: red !important; }
+
+/* If an exception is made, it must be justified */
+/* !IMPORTANT: Overriding external library style for critical accessibility fix - JIRA-TICKET-777 */
+.third-party-widget .text { font-size: 1rem !important; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_ImportantDeclarations_Alternative</code></td>
+                                <td>What is the preferred alternative to using <code>!important</code> for overriding CSS properties?</td>
+                                <td><pre><code>"To override properties, prefer using: [Alternative, e.g., Higher selector specificity / Refactoring CSS structure]."</code></pre></td>
+                                <td>"Higher selector specificity, adjusting the source order of stylesheets, or refactoring the component's CSS to avoid conflicts."</td>
+                                <td><pre><code class="language-css">/* Instead of !important, use higher specificity */
+body .container .special-widget .title { font-size: 22px; } /* More specific than .title { font-size: 20px; } */</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Hacks_Policy</code></td>
+                                <td>What is your policy on using CSS "hacks" or user agent-specific detections for styling differences?</td>
+                                <td><pre><code>"CSS hacks or user agent-specific detections are: [To be avoided; seek alternative solutions first / Permitted with clear commenting and justification when no other standard solution exists]."</code></pre></td>
+                                <td>"To be avoided. Alternative, standards-compliant solutions must be sought first. Hacks are only permissible as a documented last resort when all other options are exhausted and the issue is critical."</td>
+                                <td><pre><code class="language-css">/* Generally Not Recommended */
+_color: blue; /* IE6 hack */
+.element { *zoom: 1; /* IE7 hack */ }
+
+/* If an exception, document thoroughly: */
+/* CSS_HACK: Addressing specific rendering bug in BrowserXYZ v.1.0 for critical UI element. See Ticket-451 */
+.component { property: value\9; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_Hacks_Reasoning</code></td>
+                                <td>Briefly explain the reasoning behind your policy on CSS hacks.</td>
+                                <td><pre><code>"Our policy on CSS hacks is because: [Reason, e.g., they reduce long-term maintainability, can be brittle with browser updates, and often indicate a need for a better structural solution]."</code></pre></td>
+                                <td>"They reduce long-term maintainability, can be brittle with browser updates, often indicate a need for a better structural or CSS architecture, and make debugging harder."</td>
+                                <td>(Guide: "Avoid CSS hacks due to maintainability issues...")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 07: CSS - Formatting Rules -->
+                <h3>07: CSS - Formatting Rules</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CSS_DeclarationOrder_Policy</code></td>
+                                <td>What is the required or recommended order for CSS declarations within a rule block (e.g., alphabetical, grouped by type)?</td>
+                                <td><pre><code>"Order of declarations within a CSS rule block: [Alphabetical / Grouped by type (specify groups) / No specific order but consistent / Enforced by tooling to X]."</code></pre></td>
+                                <td>"Alphabetical, ignoring vendor prefixes for sorting purposes but keeping prefixed groups together and sorted."</td>
+                                <td><pre><code class="language-css">.example {
+  background: fuchsia;
+  border: 1px solid;
+  border-radius: 4px; /* Standard property after vendor-specific if sorted this way */
+  color: black;
+  -moz-border-radius: 4px;
+  text-align: center;
+  text-indent: 2em;
+  -webkit-border-radius: 4px;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_DeclarationOrder_VendorPrefix_Handling</code></td>
+                                <td>When ordering declarations, how should vendor-specific prefixes be treated in relation to the standard property?</td>
+                                <td><pre><code>"Vendor-specific prefixes in declaration order: [Ignored for sorting main property / Prefixed properties grouped before standard / Prefixed sorted together alphabetically]."</code></pre></td>
+                                <td>"Ignored for sorting purposes of the main property. However, multiple vendor-specific prefixes for a certain CSS property should be kept sorted together (e.g., -moz prefix comes before -webkit), usually preceding the standard property."</td>
+                                <td><pre><code class="language-css">.selector {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  /* ... other properties alphabetically ... */
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_DeclarationOrder_Example</code></td>
+                                <td>Provide a brief CSS example clearly demonstrating your chosen declaration order.</td>
+                                <td><pre><code>"CSS Declaration Order Example:\n.selector {\n  [Declaration1];\n  [Declaration2];\n  /* ...according to your order... */\n}"</code></pre></td>
+                                <td><code>.widget {\n  border: 1px solid #ccc;\n  color: #333;\n  display: block;\n  font-size: 1rem;\n  margin-bottom: 10px;\n  padding: 15px;\n}</code> (Alphabetical)</td>
+                                <td><pre><code class="language-css">.widget {
+  border: 1px solid #ccc;
+  color: #333;
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  padding: 15px;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_BlockContentIndentation_Policy</code></td>
+                                <td>How must block content within CSS (e.g., rules within media queries, declarations within rules) be indented?</td>
+                                <td><pre><code>"CSS block content indentation: Must be [Indented per general rule / Other style]."</code></pre></td>
+                                <td>"Indented according to the general indentation rule (2 spaces)."</td>
+                                <td><pre><code class="language-css">@media screen, projection {
+  html {
+    background: #fff;
+    color: #444;
+  }
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_BlockContentIndentation_Example</code></td>
+                                <td>Provide a CSS example illustrating correct block content indentation.</td>
+                                <td><pre><code>"CSS Block Indentation Example:\n@media (min-width: 600px) {\n  .element {\n    property: value;\n  }\n}"</code></pre></td>
+                                <td><code>@media (min-width: 768px) {\n  .container {\n    max-width: 720px;\n  }\n}</code></td>
+                                <td><pre><code class="language-css">@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}</code></pre></td>
+                            </tr>
+                             <tr>
+                                <td><code>CSS_DeclarationStops_Semicolon_Policy</code></td>
+                                <td>Must every CSS declaration end with a semicolon?</td>
+                                <td><pre><code>"Every CSS declaration must end with a: [Semicolon (;) / Other, specify]."</code></pre></td>
+                                <td>"Semicolon (;)."</td>
+                                <td><pre><code class="language-css">.test {
+  display: block;
+  height: 100px;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_DeclarationStops_Reasoning</code></td>
+                                <td>What is the reasoning for your policy on semicolons at the end of declarations?</td>
+                                <td><pre><code>"Reasoning for semicolon policy: For [Benefit 1, e.g., consistency] and [Benefit 2, e.g., extensibility/preventing errors when adding new declarations]."</code></pre></td>
+                                <td>"For consistency and extensibility reasons (prevents errors when adding new declarations)."</td>
+                                <td>(Guide: "Always use a semicolon at the end of each declaration.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_PropertyNameStops_Space_Policy</code></td>
+                                <td>What is the rule for spaces after the colon (`:`) in a property-value pair, and between the property name and the colon?</td>
+                                <td><pre><code>"Space after property name's colon: [A single space / No space / Other]. Space between property and colon: [No space / A single space]."</code></pre></td>
+                                <td>"A single space after the property name's colon. No space between the property name and the colon."</td>
+                                <td><pre><code class="language-css">h3 {
+  font-weight: bold;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_PropertyNameStops_Example_Recommended</code></td>
+                                <td>Provide a recommended example of a property-value pair showing correct spacing.</td>
+                                <td><pre><code>"Recommended property-value spacing:\n.selector {\n  property: value;\n}"</code></pre></td>
+                                <td><code>h3 { font-weight: bold; }</code></td>
+                                <td><pre><code class="language-css">h3 {
+  font-weight: bold;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_DeclarationBlock_OpeningBrace_Policy</code></td>
+                                <td>What is the rule for the placement of the opening brace (`{`) of a CSS declaration block relative to the last selector?</td>
+                                <td><pre><code>"Opening brace (`{`) of a declaration block: Must be [Placement, e.g., on the same line as the last selector, preceded by a single space / on a new line]."</code></pre></td>
+                                <td>"On the same line as the last selector, preceded by a single space."</td>
+                                <td><pre><code class="language-css">.video {
+  margin-top: 1em;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_DeclarationBlock_OpeningBrace_Example_Recommended</code></td>
+                                <td>Provide a recommended example showing the correct placement of the opening brace.</td>
+                                <td><pre><code>"Recommended opening brace placement:\n.selector { [declarations] }"</code></pre></td>
+                                <td><code>.video { margin-top: 1em; }</code></td>
+                                <td><pre><code class="language-css">.video {
+  margin-top: 1em;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_SelectorAndDeclaration_Separation_Policy</code></td>
+                                <td>Should each selector (if multiple are grouped) and each declaration start on a new line?</td>
+                                <td><pre><code>"Separation of selectors/declarations: Each selector (if grouped) and each declaration must [Start on a new line / Can be on the same line if rule is short]."</code></pre></td>
+                                <td>"Always start a new line for each selector (if grouped) and each declaration."</td>
+                                <td><pre><code class="language-css">h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.2;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_SelectorAndDeclaration_Example_Recommended_MultiSelector</code></td>
+                                <td>Provide a recommended example of a rule with multiple selectors, showing correct new line usage.</td>
+                                <td><pre><code>"Recommended multi-selector format:\nselector1,\nselector2 {\n  property: value;\n}"</code></pre></td>
+                                <td><code>h1,\nh2,\nh3 {\n  font-weight: normal;\n  line-height: 1.2;\n}</code></td>
+                                <td><pre><code class="language-css">h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.2;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_SelectorAndDeclaration_Example_Recommended_SingleSelector</code></td>
+                                <td>Provide a recommended example of a rule with a single selector, showing correct new line usage for declarations.</td>
+                                <td><pre><code>"Recommended single-selector format:\n.selector {\n  property1: value1;\n  property2: value2;\n}"</code></pre></td>
+                                <td><code>p {\n  color: black;\n  margin-bottom: 1em;\n}</code></td>
+                                <td><pre><code class="language-css">p {
+  color: black;
+  margin-bottom: 1em;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_RuleSeparation_Policy</code></td>
+                                <td>How should distinct CSS rules be separated from each other in a stylesheet?</td>
+                                <td><pre><code>"Separate distinct CSS rules with: [e.g., One blank line (two line breaks) / No blank line]."</code></pre></td>
+                                <td>"One blank line (two line breaks)."</td>
+                                <td><pre><code class="language-css">html {
+  background: #fff;
+}
+
+body {
+  margin: auto;
+  width: 50%;
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_QuotationMarks_Policy</code></td>
+                                <td>What type of quotation marks should be used for attribute selectors (e.g., `[type='text']`) and property values (e.g., `font-family: 'Open Sans'`) in CSS?</td>
+                                <td><pre><code>"Quotation marks for CSS attribute selectors and property values: [Single quotation marks ('') / Double quotation marks (\"\")]."</code></pre></td>
+                                <td>"Single quotation marks ('')."</td>
+                                <td><pre><code class="language-css">html {
+  font-family: 'open sans', arial, sans-serif;
+}
+input[type='text'] {
+  border: 1px solid '#ccc';
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_QuotationMarks_URI_Policy</code></td>
+                                <td>Are quotation marks to be used in URI values (e.g., `url(...)`) in CSS?</td>
+                                <td><pre><code>"Quotation marks in CSS URI values (`url(...)`) are: [Not to be used / Optional / Required]."</code></pre></td>
+                                <td>"Not to be used."</td>
+                                <td><pre><code class="language-css">@import url(https://www.google.com/css/maia.css);
+.background {
+  background-image: url(images/bg.png);
+}</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_QuotationMarks_Charset_Exception</code></td>
+                                <td>What type of quotation marks are required if the `@charset` rule is used in CSS?</td>
+                                <td><pre><code>"The `@charset` rule, if used, requires: [Double quotation marks (\"\") / Single quotation marks ('')]."</code></pre></td>
+                                <td>"Double quotation marks (\"\")."</td>
+                                <td><pre><code class="language-css">@charset "UTF-8";</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_QuotationMarks_Example_Recommended</code></td>
+                                <td>Provide a CSS example demonstrating the recommended use of quotation marks.</td>
+                                <td><pre><code>"Recommended CSS quotation mark usage:\n@import url([URL]);\nhtml {\n  font-family: '[Font Name]', [fallback];\n}\na[href^='http'] { ... }"</code></pre></td>
+                                <td><code>@import url(https://fonts.googleapis.com/css?family=Roboto);\nhtml {\n  font-family: 'Roboto', sans-serif;\n}\n[data-tooltip]:hover::after {\n  content: attr(data-tooltip);\n}</code></td>
+                                <td><pre><code class="language-css">@import url(https://www.google.com/css/maia.css);
+
+html {
+  font-family: 'open sans', arial, sans-serif;
+}
+a[href^='https'] {
+  text-decoration: underline;
+}</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 08: CSS - Meta Rules -->
+                <h3>08: CSS - Meta Rules</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Code/Output (Illustrating the Rule)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CSS_SectionComments_Policy</code></td>
+                                <td>What is your policy on using comments to group logical sections within a CSS file (e.g., /* Header */, /* Footer */)?</td>
+                                <td><pre><code>"Grouping CSS sections with comments is: [Optional but encouraged for readability / Mandatory for logical sections / Other]."</code></pre></td>
+                                <td>"Optional but highly encouraged for readability in larger stylesheets."</td>
+                                <td><pre><code class="language-css">/* --- Header Styles --- */
+.main-header { ... }
+.logo { ... }
+
+/* --- Footer Styles --- */
+.main-footer { ... }
+.copyright { ... }
+
+/* --- Gallery Component --- */
+.gallery-container { ... }
+.gallery-image { ... }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_SectionComments_Format</code></td>
+                                <td>What is the preferred format for these section comments?</td>
+                                <td><pre><code>"Section comments preferred format: [e.g., /* Section Name */, /* ---------- Section Name ---------- */, /* === Section Name === */]."</code></pre></td>
+                                <td>"<code>/* === Section Name === */</code> or <code>/* --- Section Name --- */</code> for major sections."</td>
+                                <td><pre><code class="language-css">/* === Global Resets === */
+html, body { margin: 0; padding: 0; }
+
+/* --- Typography --- */
+h1 { font-size: 2rem; }</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><code>CSS_SectionComments_Separation</code></td>
+                                <td>How should commented sections be visually separated from each other and from rule blocks?</td>
+                                <td><pre><code>"Separate commented sections with: [e.g., Additional new lines above and below the comment block]."</code></pre></td>
+                                <td>"One blank line above and below the section comment block."</td>
+                                <td><pre><code class="language-css">
+/* --- Navigation --- */
+.nav { ... }
+
+
+/* --- Buttons --- */
+.button { ... }
+</code></pre></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 09: Style Guide - Parting Words & Consistency -->
+                <h3>09: Style Guide - Parting Words & Consistency</h3>
+                <div class="responsive-table-container">
+                     <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Column Prompt ID</th>
+                                <th>User Prompt Question (What to Define)</th>
+                                <th>Response Template/Framework (Fill-in-the-Blank)</th>
+                                <th>Example User Response</th>
+                                <th>Example Final Output (in the Style Guide Document)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>StyleGuide_Overarching_Consistency_Statement</code></td>
+                                <td>What is the single most important overarching principle for developers to follow when contributing code (e.g., regarding consistency)?</td>
+                                <td><pre><code>"The most important overarching rule is: [e.g., Be consistent. If editing existing code, match its style and patterns.]."</code></pre></td>
+                                <td>"Be consistent. If you’re editing code, take a few minutes to look at the code around you and determine its style. If they use spaces around all their arithmetic operators, you should too."</td>
+                                <td>(Text: "The primary guiding principle is **consistency**. When contributing to an existing codebase, strive to match the established style.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Purpose_Recap</code></td>
+                                <td>Briefly reiterate the main purpose of having these style guidelines.</td>
+                                <td><pre><code>"The purpose of these guidelines is to: [e.g., Provide a common vocabulary for coding, allowing focus on *what* is being said rather than *how* it is said]."</code></pre></td>
+                                <td>"Provide a common vocabulary of coding so people can concentrate on what you’re saying rather than on how you’re saying it."</td>
+                                <td>(Text: "These guidelines aim to establish a common coding vocabulary, enabling teams to focus on problem-solving rather than stylistic debates.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Local_vs_Global_Style</code></td>
+                                <td>What is the relationship between these global style rules and any local styles that might exist within specific files or modules?</td>
+                                <td><pre><code>"While these are global style rules, [e.g., local style within a specific file or module is also important to maintain reader rhythm and should align where possible]."</code></pre></td>
+                                <td>"While these are global style rules, local style is also important. If code you add to a file looks drastically different from the existing code around it, it throws readers out of their rhythm. Avoid this."</td>
+                                <td>(Text: "These global rules provide a baseline. Consistency with the local style of the specific file or module being edited is also paramount.")</td>
+                            </tr>
+                            <tr>
+                                <td><code>StyleGuide_Deviation_Policy</code></td>
+                                <td>What is the process or policy for deviating from this style guide if a specific situation warrants it?</td>
+                                <td><pre><code>"Deviations from this style guide are: [e.g., Permitted only with documented approval from the lead developer/tech standards committee, and the deviation should be commented in the code]."</code></pre></td>
+                                <td>"Permitted only with documented approval from the Tech Lead, and the reason for deviation must be clearly commented in the code."</td>
+                                <td>(Text: "Any deviation from this style guide requires explicit approval from the project's Tech Lead and must be documented with a clear justification within the codebase.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- Getting Started Section -->
+            <section id="getting-started" class="mb-12">
+                <h2>Getting Started with PEOS</h2>
+                <p>Transforming your organization's AI capabilities with PEOS is a strategic journey. We begin by understanding your unique challenges and objectives.</p>
+                <h3>1. Request a Systematic Intelligence Diagnostic:</h3>
+                <p>Engage with The Prompt Engineering Project for a focused diagnostic session. We will work with your team to:</p>
+                <ul>
+                    <li>Identify critical areas where PEOS can demonstrate rapid, significant impact.</li>
+                    <li>Begin mapping your existing "Organizational DNA" relevant to these areas.</li>
+                    <li>Outline what a PEOS-driven "intelligent pathway" could look like for your specific needs, and discuss potential ROI.</li>
+                </ul>
+                <h3>2. Pilot the Paradigm:</h3>
+                <p>If the diagnostic reveals a compelling case, the next step is a tightly scoped pilot project. The goal is to experience firsthand the shift from ad-hoc AI to systematic, intelligence-driven operations, designed for measurable outcomes.</p>
+                <p>Contact us to learn more about how PEOS can help your organization achieve "Intelligence That's Not Artificial" and build a sustainable competitive advantage in the AI era.</p>
+            </section>
+
+            <!-- Footer (Simulated) -->
+            <footer class="mt-12 pt-8 border-t border-gray-300 text-center text-sm text-gray-500">
+                <p>&copy; <span id="currentYear"></span> The Prompt Engineering Project. All rights reserved.</p>
+                <p>Last updated: <span id="lastUpdatedDate"></span></p> <!-- Changed ID for clarity -->
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Simple script for dynamic year and last updated date
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        // For a real site, this would be a build date or CMS-managed date
+        document.getElementById('lastUpdatedDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        // Active sidebar link highlighting based on scroll
+        const sections = document.querySelectorAll("main section[id]"); // Target sections within main
+        const navLinks = document.querySelectorAll("#sidebar-nav a");
+        const headerOffset = document.querySelector('header').offsetHeight + 20; // Offset for sticky header + some margin
+
+        function highlightNavLink() {
+            let currentSectionId = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - headerOffset; // Adjust for sticky header
+                if (window.pageYOffset >= sectionTop) {
+                    currentSectionId = section.getAttribute("id");
+                }
+            });
+
+            // If scrolled to the very bottom, highlight the last nav item
+            if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 50) { // 50px buffer
+                const lastSection = sections[sections.length -1];
+                if(lastSection) currentSectionId = lastSection.getAttribute("id");
+            }
+
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active", "bg-blue-500", "text-white", "font-semibold");
+                link.classList.add("text-gray-700", "hover:bg-gray-200"); // Ensure hover styles are reapplied
+                if (link.getAttribute("href").substring(1) === currentSectionId) {
+                    link.classList.add("active", "bg-blue-500", "text-white", "font-semibold");
+                    link.classList.remove("text-gray-700", "hover:bg-gray-200");
+                }
+            });
+        }
+
+        window.addEventListener("scroll", highlightNavLink);
+        window.addEventListener("resize", highlightNavLink); // Re-check on resize
+        document.addEventListener("DOMContentLoaded", highlightNavLink); // Initial check
+    </script>
+</body>
+</html>
