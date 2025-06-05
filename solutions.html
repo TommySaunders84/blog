@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions | The Prompt Engineering Project</title>
+    <meta name="description" content="Discover our comprehensive solutions for transforming AI implementation through systematically architected Prompt Libraries, Column Prompts, and Knowledge Base integration.">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #9333ea;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .cta-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .cta-button-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            padding: 80px 0;
+            background: linear-gradient(120deg, #f9fafb, #e2e8f0);
+            text-align: center;
+        }
+        
+        .page-header-descriptor {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            margin-bottom: 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .breadcrumbs-list {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumbs-list li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs-list li:not(:last-child)::after {
+            content: '/';
+            margin: 0 10px;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs-list a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs-list a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs-list li:last-child a {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding-right: 40px;
+        }
+        
+        .section-descriptor {
+            background-color: rgba(147, 51, 234, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        h2 {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .section-content p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 1.125rem;
+        }
+        
+        .section-image {
+            position: relative;
+        }
+        
+        .section-image img {
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            height: auto;
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .solution-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .solution-image {
+            height: 200px;
+            background-color: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .solution-content {
+            padding: 30px;
+        }
+        
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .solution-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .prompt-system {
+            padding: 60px 0;
+            background-color: var(--secondary);
+        }
+        
+        .prompt-system-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .prompt-system-heading h2 {
+            color: white;
+        }
+        
+        .prompt-system-heading p {
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.125rem;
+        }
+        
+        .components {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .component-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+        }
+        
+        .component-icon {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .component-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .component-card p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .tabs {
+            margin-top: 50px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            padding: 15px 30px;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .tab-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .tab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .feature-list {
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon {
+            color: var(--primary);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .process-steps {
+            margin-top: 50px;
+            counter-reset: step;
+        }
+        
+        .process-step {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .process-step::before {
+            counter-increment: step;
+            content: counter(step);
+            background-color: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 17px;
+            top: 36px;
+            width: 2px;
+            height: calc(100% - 36px);
+            background-color: var(--gray-light);
+        }
+        
+        .process-step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .process-step p {
+            color: var(--gray);
+        }
+        
+        .cta-section {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 40px;
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .cta-white {
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .cta-transparent {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+        
+        .case-studies {
+            margin-top: 50px;
+        }
+        
+        .case-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+        
+        .case-content {
+            padding: 30px;
+        }
+        
+        .case-industry {
+            display: inline-block;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .case-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .case-metrics {
+            display: flex;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .metric {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        .pricing {
+            background-color: var(--light);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .pricing-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 2px solid var(--primary);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-bottom-left-radius: 10px;
+        }
+        
+        .pricing-header {
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            text-align: center;
+        }
+        
+        .pricing-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .pricing-period {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .pricing-features {
+            padding: 30px;
+            list-style: none;
+        }
+        
+        .pricing-features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--success);
+            margin-right: 10px;
+            font-weight: 700;
+        }
+        
+        .pricing-footer {
+            padding: 0 30px 30px;
+            text-align: center;
+        }
+        
+        .featured-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        .new-tag {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .popular-tag {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 1024px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section-content {
+                padding-right: 0;
+            }
+            
+            .solutions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .components {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+                order: -1;
+            }
+            
+            .tab-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .components {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">The Prompt Engineering Project</div>
+                <div class="nav-links">
+                    <a href="#" class="active">Solutions</a>
+                    <a href="#">Our Approach</a>
+                    <a href="#">Prompt Libraries</a>
+                    <a href="#">Resources</a>
+                    <a href="#">About Us</a>
+                </div>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <ul class="breadcrumbs-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Solutions</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-descriptor">Our Solutions</div>
+            <h1>Comprehensive AI Implementation Solutions for Modern Organizations</h1>
+            <p>We provide systematically architected frameworks that transform how organizations translate expertise into effective, aligned, and scalable AI operations.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-descriptor">Core Technology</div>
+            <h2>The Prompt Engineering Operating System</h2>
+            <p>Our foundational technology that bridges the gap between human expertise and AI execution, ensuring strategic alignment and consistent results.</p>
+            
+            <div class="section-grid">
+                <div class="section-content">
+                    <p>The Prompt Engineering Operating System (PEOS) is our comprehensive infrastructure that serves as the control plane for all AI operations in your organization. Unlike simple prompt templates or isolated AI tools, PEOS is an integrated system that redefines how you interact with and manage AI.</p>
+                    
+                    <p>Through this system, we transform tacit, often siloed human expertise into explicit, structured assets that become the verifiable "single source of truth" for AI. We elevate prompt engineering from an ad-hoc art to a systematic science with standardized communication channels between human intent and AI execution.</p>
+                    
+                    <p>The true "magic" of our system lies in how these elements—structured knowledge, standardized prompts, orchestration protocols, and integratable outputs—work together to bridge the gap between human strategic intent and AI operational execution.</p>
+                    
+                    <a href="#how-it-works" class="cta-button">How It Works</a>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Prompt Engineering Operating System diagram">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="prompt-system">
+        <div class="container">
+            <div class="prompt-system-heading">
+                <h2>Three Core Components Working in Perfect Harmony</h2>
+                <p>Our solution integrates these essential elements to create a comprehensive system for strategic AI implementation.</p>
+            </div>
+            
+            <div class="components">
+                <div class="component-card">
+                    <div class="component-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>
+                    </div>
+                    <h3>Prompt Libraries</h3>
+                    <p>Systematically architected frameworks of interconnected Column Prompts, designed for specific business functions or industry needs. These libraries provide structured, reusable components that ensure consistent, high-quality AI outputs aligned with your strategic objectives.</p>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <h3>Column Prompts</h3>
+                    <p>The core operational units within our Prompt Libraries - systematically structured, standardized commands that direct AI models with precision. Each Column Prompt explicitly references specific sections of your Knowledge Base, grounding every AI action in verified organizational knowledge.</p>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                    <h3>Knowledge Base Core</h3>
+                    <p>The structured foundation of organizational expertise that serves as the verifiable "single source of truth" for all AI operations. We transform tacit, often siloed knowledge into explicit, AI-consumable assets organized in interconnected Knowledge Base Pages, ensuring contextual accuracy and strategic alignment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-descriptor">Our Approach</div>
+            <h2>How The Prompt Engineering Operating System Works</h2>
+            <p>Our solution transforms how organizations leverage AI through a systematic approach to knowledge integration and prompt structuring.</p>
+            
+            <div class="tabs">
+                <div class="tab-nav">
+                    <div class="tab-button active" data-tab="knowledge-integration">Knowledge Integration</div>
+                    <div class="tab-button" data-tab="column-prompts">Column Prompts</div>
+                    <div class="tab-button" data-tab="prompt-libraries">Prompt Libraries</div>
+                    <div class="tab-button" data-tab="implementation">Implementation Process</div>
+                </div>
+                
+                <div class="tab-content active" id="knowledge-integration">
+                    <div class="tab-grid">
+                        <div>
+                            <h3>Transforming Expertise Into AI-Ready Assets</h3>
+                            <p>The foundation of our approach is the systematic operationalization of your organization's unique knowledge. We transform tacit, often siloed human expertise into explicit, structured, and AI-consumable assets within the Knowledge Base Core.</p>
+                            
+                            <p>This curated knowledge becomes the verifiable "single source of truth" for all AI operations, ensuring contextual accuracy and strategic alignment while preserving the value of your organization's unique intellectual capital.</p>
+                            
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Knowledge Architecture</strong> - Structure information in interconnected Knowledge Base Pages optimized for AI utilization
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Context Connectivity</strong> - Establish explicit references between prompts and knowledge, ensuring informed AI responses
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Expertise Preservation</strong> - Capture and operationalize the insights of your domain experts as scalable organizational assets
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-image">
+                            <img src="/api/placeholder/500/400" alt="Knowledge Base Architecture">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="column-prompts">
+                    <div class="tab-grid">
+                        <div>
+                            <h3>The Structured Commands for Expert-Guided AI</h3>
+                            <p>Column Prompts are the core operational units within our Prompt Libraries - systematically structured, standardized commands designed to direct AI models with precision. Unlike simple, ad-hoc instructions, they are interconnected components that translate expert requirements into executable AI tasks.</p>
+                            
+                            <p>Each Column Prompt explicitly references specific sections of the relevant Knowledge Base Page, grounding every AI action in verified organizational knowledge and ensuring outputs align with your strategic objectives.</p>
+                            
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Standardized & Structured</strong> - Follow a defined framework ensuring consistency in how AI is instructed across the organization
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Knowledge-Driven Execution</strong> - Ground every AI action in verified organizational knowledge through explicit references
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Precise Output Specification</strong> - Generate content structured for seamless integration with downstream systems
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-image">
+                            <img src="/api/placeholder/500/400" alt="Column Prompt Structure">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="prompt-libraries">
+                    <div class="tab-grid">
+                        <div>
+                            <h3>Pre-Built & Customizable AI Frameworks</h3>
+                            <p>Our Prompt Libraries are far more than simple collections of prompts; they are systematically architected frameworks of interconnected Column Prompts, deeply integrated with your organization's unique knowledge and designed to drive specific, high-value Intelligent Operations.</p>
+                            
+                            <p>We offer pre-developed (but fully customizable) Prompt Libraries designed for common business functions or specific industry needs, providing a robust starting point that accelerates your AI implementation while allowing for deep customization.</p>
+                            
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Accelerated Development</strong> - Start with field-tested frameworks that can be quickly deployed and customized
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Targeted Functionality</strong> - Select libraries designed for specific business functions or industry requirements
+                                    </div>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </div>
+                                    <div>
+                                        <strong>Deep Customization</strong> - Adapt to your specific organizational context, brand voice, and strategic nuances
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-image">
+                            <img src="/api/placeholder/500/400" alt="Prompt Library Structure">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="implementation">
+                    <h3>Our Systematic Implementation Process</h3>
+                    <p>We enable the creation and management of Prompt Libraries through a collaborative methodology that ensures deep integration with your unique domain expertise and strategic objectives.</p>
+                    
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Knowledge Discovery</h3>
+                                <p>We capture your organization's unique expertise through structured Knowledge Base Briefs and Questionnaires, collaboratively mapping your strategic objectives, domain knowledge, and operational requirements to create the foundation for your Knowledge Base Pages.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Architectural Design</h3>
+                                <p>Our team designs the integrated system architecture, including Knowledge Base Page structures, Prompt Library frameworks, and Column Prompt templates tailored to your specific operational needs. We establish the taxonomy and relationships that will drive your AI operations.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Column Prompt Development</h3>
+                                <p>We create the systematic, structured prompts that will drive your AI operations, ensuring each one follows best practices, explicitly references your Knowledge Base, and produces precisely defined outputs that align with your requirements.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Integration & Training</h3>
+                                <p>Your Prompt Libraries are integrated with existing systems and workflows through our System Integration frameworks, with comprehensive training for your team on effective implementation, management, and optimization of the system.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Continuous Refinement</h3>
+                                <p>We establish ongoing measurement and optimization protocols, using the Performance Metrics from your AI operations to continuously refine and improve your Prompt Libraries, ensuring they evolve with your business needs and AI capabilities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-descriptor">Our Offerings</div>
+            <h2>Pre-Built Prompt Libraries for Common Business Functions</h2>
+            <p>Accelerate your AI implementation with field-tested, best-practice prompt frameworks that can be quickly deployed and customized to your specific organizational context.</p>
+            
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Marketing & Content Generation">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Marketing & Content Generation <span class="featured-tag popular-tag">Popular</span></h3>
+                        <p>Transform content creation from creative guesswork to strategic, on-brand messaging with libraries that ensure consistency across all channels while maintaining audience relevance and strategic alignment.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Sales Enablement">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Sales Enablement</h3>
+                        <p>Equip sales teams with intelligence-driven conversation tools that translate product features into compelling customer benefits, handle objections effectively, and drive consistent messaging across the sales organization.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Knowledge Management">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Knowledge Management <span class="featured-tag new-tag">New</span></h3>
+                        <p>Transform organizational knowledge into actionable intelligence with frameworks for synthesis, analysis, and distribution that ensure expertise is preserved and operationalized across your entire organization.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Customer Experience">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Customer Experience</h3>
+                        <p>Design cohesive customer journeys with libraries that optimize touchpoints from awareness through loyalty, ensuring consistent messaging, personalized experiences, and effective conversion at every stage.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Product Development">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Product Development</h3>
+                        <p>Accelerate innovation cycles with prompt libraries that structure ideation, feedback analysis, requirements generation, and documentation processes while maintaining strategic alignment with market needs.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-image">
+                        <img src="/api/placeholder/400/200" alt="Operations & Process">
+                    </div>
+                    <div class="solution-content">
+                        <h3>Operations & Process <span class="featured-tag new-tag">New</span></h3>
+                        <p>Streamline workflows with libraries that automate complex operational tasks while maintaining human oversight, ensuring compliance with organizational policies and strategic objectives.</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-descriptor">Implementation Success</div>
+            <h2>Real Results from Our Clients</h2>
+            <p>Organizations across industries are achieving significant business impact through our systematic approach to AI implementation.</p>
+            
+            <div class="case-studies">
+                <div class="case-card">
+                    <div class="case-content">
+                        <div class="case-industry">Enterprise Technology</div>
+                        <h3>Global Tech Company Accelerates Content Production by 65%</h3>
+                        <p>A leading enterprise technology company implemented our Marketing & Content Generation Prompt Library to transform their content production process. By systematically integrating their product knowledge, brand guidelines, and customer insights, they created a framework that enabled consistent, high-quality content generation across all marketing channels.</p>
+                        
+                        <div class="case-metrics">
+                            <div class="metric">
+                                <div class="metric-value">65%</div>
+                                <div class="metric-label">Faster Content Creation</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">80%</div>
+                                <div class="metric-label">Reduction in Revisions</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">3.5x</div>
+                                <div class="metric-label">Content Output Volume</div>
+                            </div>
+                        </div>
+                        
+                        <p>"The Prompt Engineering Project transformed how we utilize AI across our marketing department. Their systematic approach has given us a competitive edge in how we leverage our expertise at scale."</p>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-content">
+                        <div class="case-industry">Financial Services</div>
+                        <h3>Investment Firm Enhances Client Communication with Personalized Insights</h3>
+                        <p>A mid-sized investment management firm implemented our Customer Experience and Sales Enablement Prompt Libraries to transform client communications. By integrating market analysis, client profiles, and personalized investment strategies, they created a system that generates highly relevant, personalized client communications that drive engagement and retention.</p>
+                        
+                        <div class="case-metrics">
+                            <div class="metric">
+                                <div class="metric-value">47%</div>
+                                <div class="metric-label">Higher Client Engagement</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">28%</div>
+                                <div class="metric-label">Increase in AUM Retention</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">68%</div>
+                                <div class="metric-label">Faster Client Response</div>
+                            </div>
+                        </div>
+                        
+                        <p>"What sets The Prompt Engineering Project apart is their understanding that effective AI implementation isn't about technology—it's about systematic communication between human expertise and AI capabilities."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <div class="container">
+            <div class="section-descriptor">Engagement Models</div>
+            <h2>Flexible Implementation Options</h2>
+            <p>We offer multiple engagement models to suit your organization's specific needs, resources, and implementation timeline.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Pre-Built Library</div>
+                        <div class="pricing-price">From $5,000</div>
+                        <div class="pricing-period">per library</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Access to one pre-built Prompt Library</li>
+                        <li>Self-implementation guidance</li>
+                        <li>Basic customization tools</li>
+                        <li>Documentation and support</li>
+                        <li>30-day implementation assistance</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="cta-button">Get Started</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Custom Implementation</div>
+                        <div class="pricing-price">From $25,000</div>
+                        <div class="pricing-period">per project</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Tailored Prompt Library development</li>
+                        <li>Knowledge Base architecture design</li>
+                        <li>Full implementation support</li>
+                        <li>Training and enablement</li>
+                        <li>90-day optimization period</li>
+                        <li>Dedicated implementation manager</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="cta-button">Request Quote</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Enterprise Solution</div>
+                        <div class="pricing-price">Custom</div>
+                        <div class="pricing-period">tailored pricing</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Enterprise-wide implementation</li>
+                        <li>Multiple Prompt Libraries</li>
+                        <li>Advanced system integration</li>
+                        <li>Custom Column Prompt development</li>
+                        <li>Ongoing optimization and support</li>
+                        <li>Executive strategy consulting</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="cta-button">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your AI Implementation?</h2>
+            <p>Discover how our systematic approach can help your organization bridge the gap between AI potential and business value with Prompt Libraries designed for your specific needs.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-white">Schedule a Consultation</a>
+                <a href="#resources" class="cta-transparent">Explore Resources</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">The Prompt Engineering Project</div>
+                    <p>Transforming how organizations implement AI through systematically architected Prompt Libraries and knowledge-driven operations.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Solutions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Prompt Libraries</a></li>
+                        <li><a href="#">Column Prompts</a></li>
+                        <li><a href="#">Knowledge Integration</a></li>
+                        <li><a href="#">System Implementation</a></li>
+                        <li><a href="#">Training & Enablement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Whitepapers</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 The Prompt Engineering Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
