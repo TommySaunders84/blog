@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Approach | The Prompt Engineering Project</title>
+    <meta name="description" content="Discover our systematic methodology for transforming AI implementation through structured knowledge, standardized prompt engineering, and strategic alignment with business objectives.">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #9333ea;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .cta-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .cta-button-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            padding: 80px 0;
+            background: linear-gradient(120deg, #f9fafb, #e2e8f0);
+            text-align: center;
+        }
+        
+        .page-header-descriptor {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            margin-bottom: 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .breadcrumbs-list {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumbs-list li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs-list li:not(:last-child)::after {
+            content: '/';
+            margin: 0 10px;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs-list a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs-list a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs-list li:last-child a {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding-right: 40px;
+        }
+        
+        .section-descriptor {
+            background-color: rgba(147, 51, 234, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        h2 {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .section-content p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 1.125rem;
+        }
+        
+        .section-image {
+            position: relative;
+        }
+        
+        .section-image img {
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            height: auto;
+        }
+        
+        .philosophy-section {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .philosophy-section .section-descriptor {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .philosophy-section h2 {
+            color: white;
+        }
+        
+        .philosophy-section p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .philosophy-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .philosophy-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .philosophy-icon {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .philosophy-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .philosophy-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+        }
+        
+        .methodology-section {
+            background-color: white;
+        }
+        
+        .timeline {
+            margin-top: 60px;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: var(--gray-light);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-circle {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            z-index: 2;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-circle {
+            background-color: var(--primary);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-circle {
+            background-color: var(--accent);
+        }
+        
+        .timeline-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .timeline-content p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+        
+        .principles-section {
+            background-color: var(--light);
+        }
+        
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .principle-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .principle-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 700;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        
+        .principle-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .principle-card p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+        
+        .process-section {
+            background-color: white;
+        }
+        
+        .process-steps {
+            margin-top: 50px;
+            counter-reset: step;
+        }
+        
+        .process-step {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .process-step::before {
+            counter-increment: step;
+            content: counter(step);
+            background-color: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 17px;
+            top: 36px;
+            width: 2px;
+            height: calc(100% - 36px);
+            background-color: var(--gray-light);
+        }
+        
+        .process-step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .process-step p {
+            color: var(--gray);
+        }
+        
+        .results-section {
+            background-color: var(--light);
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .result-icon {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .result-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .result-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .result-stats {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--gray-light);
+            padding-top: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        .team-section {
+            background-color: white;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .team-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .team-photo {
+            height: 250px;
+            background-color: var(--gray-light);
+        }
+        
+        .team-bio {
+            padding: 20px;
+        }
+        
+        .team-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+        
+        .team-role {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .team-bio p {
+            color: var(--gray);
+            font-size: 0.875rem;
+            margin-bottom: 15px;
+        }
+        
+        .team-links {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .team-link {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+        
+        .team-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .cta-section {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 40px;
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .cta-white {
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .cta-transparent {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+        
+        .recognition-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+            gap: 30px;
+        }
+        
+        .recognition-logo {
+            height: 50px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .recognition-logo:hover {
+            opacity: 1;
+        }
+        
+        .featured-quote {
+            background-color: var(--primary);
+            border-radius: 10px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            margin-top: 60px;
+        }
+        
+        .featured-quote::before {
+            content: '"';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 100px;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .quote-attribution {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quote-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+        
+        .quote-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .quote-title {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .checklist {
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .checklist-icon {
+            color: var(--success);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .comparison-table th:first-child {
+            border-top-left-radius: 10px;
+        }
+        
+        .comparison-table th:last-child {
+            border-top-right-radius: 10px;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: var(--light);
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table .check {
+            color: var(--success);
+            text-align: center;
+        }
+        
+        .comparison-table .cross {
+            color: var(--danger);
+            text-align: center;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 1024px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section-content {
+                padding-right: 0;
+            }
+            
+            .philosophy-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 30px);
+                margin-left: 30px !important;
+            }
+            
+            .timeline-circle {
+                left: 15px;
+                transform: none;
+            }
+            
+            .principles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 20px;
+            }
+            
+            .recognition-logos {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            .featured-quote {
+                padding: 30px;
+            }
+            
+            .quote-text {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">The Prompt Engineering Project</div>
+                <div class="nav-links">
+                    <a href="#">Solutions</a>
+                    <a href="#" class="active">Our Approach</a>
+                    <a href="#">Prompt Libraries</a>
+                    <a href="#">Resources</a>
+                    <a href="#">About Us</a>
+                </div>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <ul class="breadcrumbs-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Our Approach</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-descriptor">Our Methodology</div>
+            <h1>A Revolutionary Approach to AI Implementation</h1>
+            <p>We've reimagined how organizations interact with AI by addressing the fundamental barrier: communication quality between human expertise and AI execution.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-content">
+                    <div class="section-descriptor">Our Insight</div>
+                    <h2>The Human-AI Communication Gap</h2>
+                    <p>The Prompt Engineering Project's revolutionary insight is recognizing that the critical barrier limiting AI's effective implementation isn't technical capability but communication quality.</p>
+                    
+                    <p>Despite significant investments in AI capabilities, organizations struggle to achieve mature, integrated deployments that deliver tangible business value. The gap exists because generic AI models lack the deep understanding of specific organizational knowledge, nuanced domain expertise, and strategic objectives that define meaningful work.</p>
+                    
+                    <p>By solving this fundamental communication problem, we transform how organizations leverage AI – ensuring that in the age of increasingly sophisticated artificial intelligence, the power truly remains with the people who possess the expertise, judgment, and values.</p>
+                    
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <div class="checklist-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Bridging expertise and AI capability</strong> through systematic knowledge operationalization
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <div class="checklist-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Ensuring strategic alignment</strong> by embedding business context directly in AI instructions
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item">
+                            <div class="checklist-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Maintaining human agency</strong> by designing AI operations that amplify rather than replace expertise
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Human-AI communication diagram">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="philosophy-section">
+        <div class="container">
+            <div class="section-descriptor">Guiding Philosophy</div>
+            <h2>Our Core Beliefs About AI Implementation</h2>
+            <p>The Prompt Engineering Project is built upon fundamental beliefs about how organizations should approach AI implementation to achieve genuine business value.</p>
+            
+            <div class="philosophy-cards">
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                    </div>
+                    <h3>Human Expertise is Irreplaceable</h3>
+                    <p>We believe that human domain expertise, judgment, and values are the foundation of meaningful work. AI should amplify this expertise rather than replace it, serving as a powerful tool guided by human intelligence.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-ruler"><path d="m15 5 4 4"></path><path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"></path><path d="m8 6 2-2"></path><path d="m2 22 5.5-1.5L21.17 6.83a2.82 2.82 0 0 0-4-4L3.5 16.5Z"></path><path d="m18 16 2-2"></path><path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"></path></svg>
+                    </div>
+                    <h3>Communication is the Critical Barrier</h3>
+                    <p>The gap between AI's potential and realized business value isn't a technology problem—it's a communication problem. Systematic, structured communication between human knowledge and AI capabilities is the key to unlocking value.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-network"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+                    </div>
+                    <h3>Systems Outperform Ad-hoc Approaches</h3>
+                    <p>Consistent, high-quality AI implementation requires systematic frameworks, not isolated efforts. Architectured systems for knowledge management and prompt engineering deliver reliable, scalable results that ad-hoc prompting cannot match.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fingerprint"><path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"></path><path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"></path><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path><path d="M8.65 22c.21-.66.45-1.32.57-2"></path><path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path><path d="M2 16h.01"></path><path d="M21.8 16c.2-2 .131-5.354 0-6"></path><path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"></path></svg>
+                    </div>
+                    <h3>Uniqueness Creates Competitive Advantage</h3>
+                    <p>An organization's unique expertise is its most valuable asset. By systematically operationalizing proprietary knowledge through AI, companies create sustainable competitive advantages that generic AI approaches cannot match.</p>
+                </div>
+            </div>
+            
+            <div class="featured-quote">
+                <div class="quote-text">
+                    "The critical barrier limiting AI's effective implementation isn't technical capability but communication quality. By solving this fundamental problem, we transform how organizations leverage AI – ensuring that in the age of increasingly sophisticated artificial intelligence, the power truly remains with the people who possess the expertise, judgment, and values."
+                </div>
+                <div class="quote-attribution">
+                    <div class="quote-avatar">
+                        <img src="/api/placeholder/50/50" alt="Founder">
+                    </div>
+                    <div>
+                        <div class="quote-name">Dr. Sarah Chen</div>
+                        <div class="quote-title">Founder, The Prompt Engineering Project</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="methodology-section">
+        <div class="container">
+            <div class="section-descriptor">Core Methodology</div>
+            <h2>The Prompt Engineering Operating System</h2>
+            <p>Our approach is built around a comprehensive infrastructure that serves as the control plane for all AI operations in your organization.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <h3>Knowledge Operationalization</h3>
+                        <p>We transform tacit, often siloed human expertise into explicit, structured, and AI-consumable assets within the Knowledge Base Core. This curated knowledge becomes the verifiable "single source of truth" for AI operations, ensuring contextual accuracy and strategic alignment.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <h3>Structured Human-AI Communication</h3>
+                        <p>We elevate prompt engineering from an ad-hoc art to a systematic science through Column Prompts. These standardized, structured commands establish clear, consistent, and controlled communication channels between human intent and AI execution, ensuring every output is purposeful and aligned.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <h3>Precision Output Engineering</h3>
+                        <p>Through the deliberate design of AI outputs as precisely defined data fields, we ensure that what AI produces is immediately actionable and integratable with other business systems. This enables true automation and operational impact across your organization.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <h3>Synergistic Integration</h3>
+                        <p>The true "magic" lies in how these elements—structured knowledge, standardized prompts, orchestration protocols, and integratable outputs—work together as an end-to-end system. Each component reinforces the others to bridge the gap between human strategic intent and AI operational execution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="principles-section">
+        <div class="container">
+            <div class="section-descriptor">Core Principles</div>
+            <h2>Our Guiding Principles for AI Implementation</h2>
+            <p>These fundamental principles guide our approach to transforming how organizations leverage AI.</p>
+            
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-number">1</div>
+                    <h3>Human-Centered Design</h3>
+                    <p>We design all systems with human expertise at the center, ensuring AI amplifies rather than replaces human judgment, creativity, and strategic thinking. The best AI implementations enhance human capabilities rather than attempting to substitute for them.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-number">2</div>
+                    <h3>Systematic Architecture</h3>
+                    <p>We believe in the power of systematic, architected approaches over ad-hoc solutions. By designing comprehensive frameworks rather than isolated prompts, we create scalable, consistent, and governable AI operations that deliver reliable results.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-number">3</div>
+                    <h3>Knowledge Integration</h3>
+                    <p>We systematically integrate organizational knowledge and domain expertise directly into AI operations. This ensures that AI actions are grounded in verified information, strategic context, and specialized insight rather than generic understanding.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-number">4</div>
+                    <h3>Strategic Alignment</h3>
+                    <p>Every AI interaction should directly support specific business objectives. We ensure AI operations are explicitly linked to strategic goals through structured governance and intent-mapping within our prompt frameworks.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-number">5</div>
+                    <h3>Operational Integration</h3>
+                    <p>AI should seamlessly integrate with existing systems and workflows. We design outputs for immediate actionability, ensuring AI deliverables can be directly utilized by downstream processes without significant rework or manual intervention.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-number">6</div>
+                    <h3>Continuous Refinement</h3>
+                    <p>AI implementation is not a one-time effort but an ongoing process. We build measurement, feedback, and optimization directly into our frameworks, ensuring continuous improvement of AI operations over time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-content">
+                    <div class="section-descriptor">Implementation Process</div>
+                    <h2>How We Transform Your AI Operations</h2>
+                    <p>Our collaborative methodology ensures deep integration with your unique domain expertise and strategic objectives.</p>
+                    
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Discovery & Assessment</h3>
+                                <p>We begin by thoroughly understanding your organization's domain expertise, strategic objectives, and operational requirements. Through structured interviews, documentation review, and collaborative workshops, we capture your unique knowledge and identify the specific AI implementation opportunities that will deliver the most significant business value.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Knowledge Architecture Design</h3>
+                                <p>We design the structure of your Knowledge Base Core, organizing your organization's expertise into interconnected Knowledge Base Pages optimized for AI consumption. This creates a foundation of verified information that grounds all AI operations in your specific context and strategic priorities.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Prompt Library Development</h3>
+                                <p>We create systematically structured Column Prompts organized into purpose-specific Prompt Libraries that direct AI models with precision. Each prompt is designed to explicitly reference your Knowledge Base, ensure strategic alignment, and produce outputs that meet your exact requirements.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>System Integration & Training</h3>
+                                <p>We integrate your Prompt Libraries with existing systems and workflows, establishing seamless connections between AI operations and your business processes. Comprehensive training ensures your team can effectively implement, manage, and extend the framework as needed.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-content">
+                                <h3>Measurement & Optimization</h3>
+                                <p>We establish ongoing monitoring and refinement processes, using performance metrics to continuously improve your AI operations. This ensures your framework evolves with your business needs, remains aligned with strategic objectives, and delivers increasing value over time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Implementation Process">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <div class="section-descriptor">Business Impact</div>
+            <h2>Tangible Outcomes from Our Approach</h2>
+            <p>Our methodology consistently delivers significant business results across organizations and industries.</p>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-2"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+                    </div>
+                    <h3>Operational Efficiency</h3>
+                    <p>By establishing structured systems for AI operations, organizations achieve dramatic improvements in efficiency across content creation, analysis, decision support, and customer engagement processes.</p>
+                    
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">40-70%</div>
+                            <div class="stat-label">Faster Cycle Times</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">3-5x</div>
+                            <div class="stat-label">Output Volume</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">60-80%</div>
+                            <div class="stat-label">Less Rework</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-check"><path d="M18 6 7 17l-5-5"></path><path d="m22 10-7.5 7.5L13 16"></path></svg>
+                    </div>
+                    <h3>Quality Improvement</h3>
+                    <p>Our approach ensures AI outputs are consistently high-quality, aligned with brand standards, and strategically relevant, dramatically reducing errors, inconsistencies, and misalignments.</p>
+                    
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">75%</div>
+                            <div class="stat-label">Fewer Errors</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Brand Consistency</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">Strategic Alignment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain-circuit"><path d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0-1.32 4.24 3 3 0 0 0 .34 5.58 2.5 2.5 0 0 0 2.96 3.08 2.5 2.5 0 0 0 4.91.05L12 20V4.5Z"></path><path d="M16 8V5c0-1.1.9-2 2-2"></path><path d="M12 13h4"></path><path d="M12 18h6a2 2 0 0 1 2 2v1"></path><path d="M12 8h8"></path><path d="M20.5 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"></path><path d="M16.5 13a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"></path><path d="M20.5 21a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"></path><path d="M18.5 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"></path></svg>
+                    </div>
+                    <h3>Expert Amplification</h3>
+                    <p>By systematically extending expert knowledge through AI, organizations dramatically increase the reach and impact of their most valuable team members without requiring additional headcount.</p>
+                    
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">5-10x</div>
+                            <div class="stat-label">Expert Reach</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">More Time on Strategy</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">3x</div>
+                            <div class="stat-label">Knowledge Transfer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                    </div>
+                    <h3>Competitive Advantage</h3>
+                    <p>By operationalizing unique organizational knowledge through AI, companies create sustainable differentiation that competitors using generic AI approaches cannot match.</p>
+                    
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">3-5x</div>
+                            <div class="stat-label">ROI on AI Investment</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">28%</div>
+                            <div class="stat-label">Market Share Growth</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">40%</div>
+                            <div class="stat-label">Higher Customer Retention</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-descriptor">Approach Comparison</div>
+            <h2>How Our Approach Differs</h2>
+            <p>See how our systematic methodology compares to traditional AI implementation approaches.</p>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Implementation Aspect</th>
+                        <th>Ad-hoc Prompting</th>
+                        <th>Generic AI Tools</th>
+                        <th>The Prompt Engineering Project</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Knowledge Integration</td>
+                        <td>Manual per-prompt inclusion</td>
+                        <td>Basic RAG implementation</td>
+                        <td>Systematic Knowledge Base Core architecture</td>
+                    </tr>
+                    <tr>
+                        <td>Strategic Alignment</td>
+                        <td>Dependent on individual effort</td>
+                        <td>Generic alignment capabilities</td>
+                        <td>Built-in strategic context references</td>
+                    </tr>
+                    <tr>
+                        <td>Consistency</td>
+                        <td class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                        </td>
+                        <td class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                        </td>
+                        <td class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Scalability</td>
+                        <td class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                        </td>
+                        <td class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                        </td>
+                        <td class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>System Integration</td>
+                        <td>Manual data formatting</td>
+                        <td>Limited integration options</td>
+                        <td>Precision Output Engineering</td>
+                    </tr>
+                    <tr>
+                        <td>Governance & Control</td>
+                        <td class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                        </td>
+                        <td>Basic guardrails</td>
+                        <td>Comprehensive governance frameworks</td>
+                    </tr>
+                    <tr>
+                        <td>Human Expertise Amplification</td>
+                        <td>Limited by individual knowledge</td>
+                        <td>Generic knowledge only</td>
+                        <td>Systematic expertise operationalization</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your AI Implementation?</h2>
+            <p>Discover how our systematic approach can help your organization bridge the gap between AI potential and business value.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-white">Schedule a Consultation</a>
+                <a href="#casestudies" class="cta-transparent">View Case Studies</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">The Prompt Engineering Project</div>
+                    <p>Transforming how organizations implement AI through systematically architected Prompt Libraries and knowledge-driven operations.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Solutions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Prompt Libraries</a></li>
+                        <li><a href="#">Column Prompts</a></li>
+                        <li><a href="#">Knowledge Integration</a></li>
+                        <li><a href="#">System Implementation</a></li>
+                        <li><a href="#">Training & Enablement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Whitepapers</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 The Prompt Engineering Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
