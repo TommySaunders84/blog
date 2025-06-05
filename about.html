@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About – PDO Research Framework</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8f6f2;
+      color: #3d352e;
+    }
+    .nav-link {
+      transition: color 0.3s ease, border-bottom-color 0.3s ease;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #c0783f;
+      border-bottom-color: #c0783f;
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <header class="bg-[#F8F6F2] shadow-sm sticky top-0 z-50">
+    <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex-shrink-0">
+          <h1 class="text-xl font-bold text-[#3D352E]">PDO Research Framework</h1>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <!-- Home link -->
+            <a
+              href="index.html"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Home</a
+            >
+            <!-- About link (active) -->
+            <a
+              href="about.html"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium active"
+              >About</a
+            >
+            <!-- Section anchors from the main page (in case user navigates back) -->
+            <a
+              href="index.html#framework"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Framework</a
+            >
+            <a
+              href="index.html#foundations"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Foundations</a
+            >
+            <a
+              href="index.html#toolkit"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Toolkit</a
+            >
+            <a
+              href="index.html#strategy"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Strategy</a
+            >
+            <a
+              href="index.html#measurement"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Measurement</a
+            >
+            <a
+              href="index.html#cases"
+              class="nav-link px-3 py-2 rounded-md text-sm font-medium"
+              >Cases</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="about" class="py-20 sm:py-24 bg-[#E8E2D9]">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-[#3D352E]">About This Guide</h2>
+          <p class="mt-4 max-w-2xl mx-auto text-lg text-[#5a4f45]">
+            Welcome to the “About” page for the PDO Research Framework. Here you’ll find the background on why we
+            created this interactive guide, the vision behind its design, and how it can help purpose‐driven
+            organizations enhance their brand research process.
+          </p>
+        </div>
+
+        <div class="space-y-8 max-w-3xl mx-auto text-[#3D352E]">
+          <div>
+            <h3 class="text-2xl font-semibold mb-2">Our Mission</h3>
+            <p class="text-[#5a4f45]">
+              The PDO Research Framework is built to empower mission-driven organizations with a structured,
+              easy‐to‐navigate, and visually engaging guide. Our goal is to translate complex research methodologies
+              into clear, actionable steps that any team can follow.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-semibold mb-2">Why We Built This</h3>
+            <p class="text-[#5a4f45]">
+              Brand research for purpose-driven organizations can feel overwhelming—there are countless tools,
+              phases, and measurement frameworks. We designed this site to:
+            </p>
+            <ul class="list-disc list-inside text-[#5a4f45] space-y-2 mt-3">
+              <li>
+                <strong>Simplify the 5‐phase process:</strong> Provide an at‐a‐glance overview, with interactive
+                “phase cards” that let you dive deeper into each stage.
+              </li>
+              <li>
+                <strong>Compare tools side by side:</strong> Use dynamic charts to visualize benefits vs.
+                challenges, impact frameworks, and research methods.
+              </li>
+              <li>
+                <strong>Engage through interactivity:</strong> Offer toggles, dropdowns, and responsive charts so
+                you can explore what matters most to your organization.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-semibold mb-2">How to Use This Guide</h3>
+            <p class="text-[#5a4f45]">
+              Each section of the homepage corresponds to a phase or toolkit in your research journey:
+            </p>
+            <ol class="list-decimal list-inside text-[#5a4f45] space-y-2 mt-3">
+              <li>
+                <strong>Framework:</strong> See the 5‐phase research process and click any phase to scroll directly
+                to its toolkit or case examples.
+              </li>
+              <li>
+                <strong>Foundations:</strong> Learn the core principles of purpose-driven brands: characteristics,
+                leadership roles, and how to weigh benefits vs. challenges using the interactive chart.
+              </li>
+              <li>
+                <strong>Toolkit:</strong> Dive into research methods (both quantitative and qualitative) for
+                gathering stakeholder insights.
+              </li>
+              <li>
+                <strong>Strategy & Creative Solutions:</strong> Explore brand‐architecture models and creative best
+                practices for purpose-driven storytelling.
+              </li>
+              <li>
+                <strong>Measurement & Iteration:</strong> Compare B Impact Assessment, IRIS+, and UpMetrics
+                frameworks via the radar chart, and read about each framework’s focus.
+              </li>
+              <li>
+                <strong>Case Studies:</strong> Scroll down to see real-world examples of brands like Patagonia,
+                TOMS, and Warby Parker, and how they’ve integrated purpose into their strategy.
+              </li>
+            </ol>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-semibold mb-2">Who We Are</h3>
+            <p class="text-[#5a4f45]">
+              This guide was created by a coalition of brand strategists, designers, and purpose-driven consultants.
+              We believe the most powerful brands are built on genuine impact, and we aim to make rigorous research
+              accessible to every organization striving for meaningful change.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-semibold mb-2">Get in Touch</h3>
+            <p class="text-[#5a4f45]">
+              Have feedback or questions? Reach out to us at
+              <a href="mailto:info@pdomaplesearch.com" class="text-[#C0783F] hover:underline"
+                >info@pdomaplesearch.com</a
+              >. We’re always happy to hear how this guide is helping your team.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#3D352E] text-[#E8E2D9]">
+    <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+      <p>&copy; 2024 Interactive Guide to PDO Brand Research. All rights reserved.</p>
+      <p class="mt-1">
+        This application is an interactive synthesis of the report “Standardizing Brand Research for
+        Purpose-Driven Organizations.”
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
