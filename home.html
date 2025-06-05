@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project | Strategic AI Implementation</title>
+    <meta name="description" content="Transform how your organization leverages AI with our Prompt Libraries. Ensure consistent, high-quality outputs aligned with strategic objectives and expert knowledge.">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #9333ea;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .cta-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .cta-button-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .hero {
+            padding: 100px 0;
+            background: linear-gradient(120deg, #f9fafb, #e2e8f0);
+            text-align: center;
+        }
+        
+        .hero-descriptor {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--gray);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .problem {
+            background-color: white;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding-right: 40px;
+        }
+        
+        .section-descriptor {
+            background-color: rgba(147, 51, 234, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .section-content p {
+            margin-bottom: 30px;
+            color: var(--gray);
+            font-size: 1.125rem;
+        }
+        
+        .section-image {
+            position: relative;
+        }
+        
+        .section-image img {
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            height: auto;
+        }
+        
+        .solution {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .solution .section-descriptor {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .solution h2 {
+            color: white;
+        }
+        
+        .solution p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .features {
+            background-color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-icon {
+            background-color: rgba(37, 99, 235, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        .how-it-works {
+            background-color: var(--light);
+        }
+        
+        .steps {
+            margin-top: 50px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 40px;
+        }
+        
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 25px;
+        }
+        
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .step-content p {
+            color: var(--gray);
+        }
+        
+        .testimonials {
+            background-color: white;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .testimonial-text {
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: #ccc;
+            overflow: hidden;
+        }
+        
+        .author-info h4 {
+            font-size: 1.125rem;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .cta-section {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 40px;
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .cta-white {
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .cta-transparent {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        /* Special tag styles for features */
+        .featured-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        .new-tag {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .popular-tag {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        /* Benefits section */
+        .benefits {
+            background-color: var(--light);
+        }
+
+        .benefit-card {
+            border-left: 4px solid var(--primary);
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .benefit-card p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+
+        /* Stats section */
+        .stats {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 1024px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section-content {
+                padding-right: 0;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px 20px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons, .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">The Prompt Engineering Project</div>
+                <div class="nav-links">
+                    <a href="#solutions">Solutions</a>
+                    <a href="#approach">Our Approach</a>
+                    <a href="#libraries">Prompt Libraries</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#about">About Us</a>
+                </div>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-descriptor">AI Mastery</div>
+            <h1>Transform Expert Knowledge Into Strategic AI Operations At Scale</h1>
+            <p>Bridge the AI implementation gap with systematically architected Prompt Libraries that ensure consistent, high-quality outputs aligned with your business objectives</p>
+            <div class="hero-buttons">
+                <a href="#explore" class="cta-button">Explore Our Prompt Libraries</a>
+                <a href="#contact" class="cta-button-secondary">Schedule a Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-content">
+                    <div class="section-descriptor">AI Value Gap</div>
+                    <h2>Close The Gap Between AI Potential And Business Value</h2>
+                    <p>Organizations today face a critical AI implementation and value gap - investing heavily in capabilities but struggling to achieve tangible business results.</p>
+                    <p>Ad-hoc prompting and generic AI models lack the deep understanding of your specific organizational knowledge, domain expertise, and strategic objectives, leading to outputs that require significant human rework.</p>
+                    <a href="#solutions" class="cta-button">Discover Our Approach</a>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="AI implementation gap visualization">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solution">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Prompt Engineering Operating System visualization">
+                </div>
+                <div class="section-content">
+                    <div class="section-descriptor">Our Solution</div>
+                    <h2>The Prompt Engineering Operating System</h2>
+                    <p>The Prompt Engineering Project bridges this gap with our comprehensive Prompt Engineering Operating System - a systematic approach to operationalizing AI across your organization.</p>
+                    <p>We transform tacit, often siloed human expertise into explicit, structured, and AI-consumable assets. Our Column Prompts and Prompt Libraries establish clear, consistent, and controlled communication channels between human intent and AI execution.</p>
+                    <a href="#approach" class="cta-button cta-transparent">How It Works</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-descriptor">Core Capabilities</div>
+            <h2>Systematically Orchestrate AI Operations</h2>
+            <p>Our comprehensive framework transforms how organizations leverage AI by establishing structured systems for knowledge integration, strategic control, and operational scale.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                    </div>
+                    <h3>Knowledge Integration</h3>
+                    <p>Transform tacit expertise into structured assets that serve as the single source of truth for AI operations, ensuring contextual accuracy and strategic alignment.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal"><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg>
+                    </div>
+                    <h3>Strategic Control</h3>
+                    <p>Establish governed communication frameworks that ensure AI actions align with business objectives, maintaining oversight and building trust in AI-driven processes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-expand"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"></path><path d="M3 16.2V21m0 0h4.8m-4.8 0 6-6"></path><path d="M21 7.8V3m0 0h-4.8m4.8 0-6 6"></path><path d="M3 7.8V3m0 0h4.8m-4.8 0 6 6"></path></svg>
+                    </div>
+                    <h3>Operational Scale</h3>
+                    <p>Move beyond ad-hoc prompting to systematic approaches that deliver consistent results across your organization, scaling AI capabilities without proportional cost increases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-content">
+                    <div class="section-descriptor">Business Impact</div>
+                    <h2>Transform AI From Experimental Technology To Strategic Asset</h2>
+                    <p>Our systematic approach delivers significant business impact by ensuring every AI interaction is purposeful and aligned with your strategic objectives.</p>
+                    
+                    <div class="benefit-card">
+                        <h3>Quality Assurance</h3>
+                        <p>Reduce error rates and rework by 60-80% with knowledge-driven, contextually accurate AI outputs that consistently meet your standards.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <h3>Operational Efficiency</h3>
+                        <p>Accelerate content and process cycle times by 40-70% through streamlined, standardized AI interactions and workflows.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <h3>Strategic Differentiation</h3>
+                        <p>Create competitive advantage by operationalizing your unique expertise through AI at enterprise scale, driving innovation and growth.</p>
+                    </div>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Business impact visualization">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">60-80%</div>
+                    <div class="stat-label">Reduction in Rework</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">40-70%</div>
+                    <div class="stat-label">Faster Cycle Times</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3-5x</div>
+                    <div class="stat-label">ROI on AI Investment</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Strategic Alignment</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-descriptor">Project Roadmap</div>
+            <h2>Implement A Systematic AI Framework Through Proven Methodology</h2>
+            <p>Our collaborative approach transforms how your organization leverages AI through a structured implementation process that ensures deep integration with your unique domain expertise.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Knowledge Discovery</h3>
+                        <p>We capture your organization's unique expertise through structured briefs and collaborative mapping sessions, creating the foundation for your Knowledge Base Pages.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>System Architecture</h3>
+                        <p>Our team designs integrated prompt and knowledge frameworks tailored to your specific operational needs, establishing the structure of your Prompt Libraries.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Column Prompt Development</h3>
+                        <p>We create systematically structured, standardized commands that direct AI models with precision, connecting them to your Knowledge Base through explicit references.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Integration & Deployment</h3>
+                        <p>Your Prompt Libraries are integrated with existing systems and workflows, with comprehensive training for your team on effective implementation.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Iterative Optimization</h3>
+                        <p>We continuously refine based on performance data, ensuring consistent improvement in AI outputs and alignment with evolving business objectives.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="libraries">
+        <div class="container">
+            <div class="section-descriptor">AI Frameworks</div>
+            <h2>Deploy Pre-Built & Customizable Prompt Libraries</h2>
+            <p>Accelerate your AI implementation with field-tested, best-practice prompt frameworks adaptable to your specific organizational context.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Marketing & Content Generation <span class="featured-tag popular-tag">Popular</span></h3>
+                    <p>Generate consistent, on-brand content across channels with libraries that ensure strategic messaging alignment and audience relevance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Sales Enablement</h3>
+                    <p>Equip sales teams with intelligence-driven conversation tools that translate product features into compelling customer benefits.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Knowledge Management <span class="featured-tag new-tag">New</span></h3>
+                    <p>Transform organizational knowledge into actionable intelligence with frameworks for synthesis, analysis, and distribution.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Customer Experience</h3>
+                    <p>Design cohesive customer journeys with libraries that optimize touchpoints from awareness through loyalty and advocacy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Product Development</h3>
+                    <p>Accelerate innovation cycles with prompt libraries that structure ideation, feedback analysis, and requirements generation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Operations & Process <span class="featured-tag new-tag">New</span></h3>
+                    <p>Streamline workflows with libraries that automate complex tasks while maintaining human oversight and strategic alignment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-descriptor">Success Stories</div>
+            <h2>What Our Clients Are Saying</h2>
+            <p>Organizations across industries are transforming how they leverage AI with our systematic approach.</p>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The Prompt Engineering Project transformed how we utilize AI across our marketing department. We've reduced content creation time by 65% while maintaining perfect brand consistency. Their systematic approach has given us a competitive edge in how we leverage our expertise at scale."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Sarah Johnson">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>VP of Marketing, Enterprise Solutions Inc.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "We struggled to get consistent, usable outputs from our AI investments until implementing The Prompt Engineering Project's framework. Their Column Prompts approach has transformed how our product teams leverage AI, ensuring every interaction is strategically aligned and knowledge-driven."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Michael Chen">
+                        </div>
+                        <div class="author-info">
+                            <h4>Michael Chen</h4>
+                            <p>CTO, FutureTech Innovations</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The ROI on our Prompt Libraries implementation has been remarkable. Not only have we reduced operational costs, but we've created a sustainable competitive advantage through how we systematically leverage our domain expertise through AI. It's completely transformed our approach."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Alexandra Rodriguez">
+                        </div>
+                        <div class="author-info">
+                            <h4>Alexandra Rodriguez</h4>
+                            <p>Chief Innovation Officer, Global Finance Partners</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "What sets The Prompt Engineering Project apart is their understanding that effective AI implementation isn't about technology—it's about systematic communication between human expertise and AI capabilities. This insight has transformed how we operate."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="David Lawson">
+                        </div>
+                        <div class="author-info">
+                            <h4>David Lawson</h4>
+                            <p>Director of Knowledge Management, Healthcare Solutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your AI Implementation?</h2>
+            <p>Discover how our systematic approach can help your organization bridge the gap between AI potential and business value with Prompt Libraries designed for your specific needs.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-white">Schedule a Consultation</a>
+                <a href="#resources" class="cta-transparent">Explore Resources</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">The Prompt Engineering Project</div>
+                    <p>Transforming how organizations implement AI through systematically architected Prompt Libraries and knowledge-driven operations.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Solutions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Prompt Libraries</a></li>
+                        <li><a href="#">Column Prompts</a></li>
+                        <li><a href="#">Knowledge Integration</a></li>
+                        <li><a href="#">System Implementation</a></li>
+                        <li><a href="#">Training & Enablement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Whitepapers</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 The Prompt Engineering Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
