@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Intelligence in the Age of AI Workshop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+    Chosen Palette: Purpose-Driven Corporate (Background: slate-100, Main: white, Text: slate-800, Primary Accent: indigo-600, Secondary Accent: teal-500)
+    Application Structure Plan: A single-page application using a vertical sidebar navigation for the eleven main workshop modules. This structure is ideal for content-heavy pages, allowing users to maintain context by seeing their position in the navigation while scrolling through detailed module content. This improves usability and exploration over a horizontal tab bar that would require scrolling.
+    Visualization & Content Choices: The content remains text-focused. The primary presentation method is well-structured text using headings, lists, and styled cards. Data point lists are in scrollable containers. Interactivity is powered by vanilla JavaScript for the tab-like functionality of the sidebar navigation.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .sidebar-link.active {
+            color: white;
+            background-color: #4f46e5; /* indigo-600 */
+            font-weight: 600;
+        }
+         .sidebar-link.active:hover {
+            background-color: #4338ca; /* indigo-700 */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .lesson-card {
+            border-top: 4px solid #e2e8f0; /* slate-200 */
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+        .activity-card {
+            background-color: #f0fdfa; /* teal-50 */
+            border-left: 4px solid #14b8a6; /* teal-500 */
+            margin-top: 1rem;
+            padding: 1.25rem;
+        }
+        .discussion-card {
+            background-color: #eef2ff; /* indigo-50 */
+            border-left: 4px solid #4f46e5; /* indigo-600 */
+            margin-top: 1rem;
+            padding: 1.25rem;
+        }
+        .data-points-container {
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f8fafc; /* slate-50 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-600">Brand Intelligence in the Age of AI</h1>
+            <p class="mt-2 text-lg text-slate-600">A Workshop Series for Purpose-Driven Organizations</p>
+             <figure class="mt-6">
+                <img src="https://placehold.co/800x400/eef2ff/4f46e5?text=Conceptual+Image%3A+Data+%26+Brand" alt="Conceptual image representing the intersection of data, AI, and brand strategy" class="w-full h-auto max-w-3xl mx-auto rounded-lg shadow-lg">
+                <figcaption class="text-sm text-slate-500 mt-2">Image Description: An abstract, sophisticated graphic showing interconnected data points flowing into a central brand logo, symbolizing data integration and intelligence.</figcaption>
+            </figure>
+        </header>
+
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+            <!-- Vertical Sidebar Navigation -->
+            <aside class="lg:col-span-3 mb-8 lg:mb-0">
+                <div class="lg:sticky top-8">
+                    <h2 class="text-xl font-bold mb-4 text-slate-700">Workshop Modules</h2>
+                    <nav id="sidebar-nav" class="flex flex-col space-y-1">
+                        <a href="#" class="sidebar-link active text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module1">M1: The New Landscape</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module2">M2: Research Strategy</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module3">M3: Industry Analysis</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module4">M4: Competitor Landscape</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module5">M5: Company Data</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module6">M6: Content Data</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module7">M7: People Data</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module8">M8: Ads Data</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module9">M9: Brand Research</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module10">M10: Engagement Data</a>
+                        <a href="#" class="sidebar-link text-slate-700 hover:bg-slate-200 p-3 rounded-md" data-tab="module11">M11: Real-Time Data</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main id="tab-content-container" class="lg:col-span-9">
+                <!-- Module 1 -->
+                <div id="module1" class="tab-content active">
+                    <div class="card">
+                        <h2 class="text-3xl font-bold mb-4">Module 1: Understanding the New Landscape</h2>
+                        <p class="text-slate-600 mb-6">This foundational module explores how the digital world operates today, focusing on the underlying signals and AI's role in reshaping market perception and brand interactions. We establish the core challenges and opportunities that modern purpose-driven brands face.</p>
+                        
+                        <figure class="my-6">
+                            <img src="https://placehold.co/600x300/f0f9ff/0ea5e9?text=Image%3A+Invisible+Infrastructure" alt="Abstract visualization of digital signals and data flows" class="w-full h-auto max-w-xl mx-auto rounded-lg shadow-md">
+                            <figcaption class="text-sm text-slate-500 mt-2 text-center">Image Description: An abstract image depicting layers of digital signals, network connections, and data points, illustrating the "Invisible Infrastructure" concept.</figcaption>
+                        </figure>
+                        
+                        <div class="p-6 bg-indigo-50 rounded-lg border border-indigo-200">
+                            <h3 class="text-xl font-semibold mb-3 text-indigo-800">Learning Objectives</h3>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li>Recognize how AI and digital signals are fundamentally altering brand-consumer relationships.</li>
+                                <li>Understand the concept of the "invisible infrastructure" and its strategic importance.</li>
+                                <li>Identify the primary challenges (e.g., data overload, generic AI) brands face in this new era.</li>
+                                <li>Articulate the "AI Last Mile" problem as it relates to their own brand strategy.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 space-y-8">
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 1.1: The Invisible Infrastructure</h4>
+                                <p class="text-slate-600">Exploring the vast network of data flows, hidden interactions, and behavioral patterns that define the modern digital ecosystem.</p>
+                                 <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> How does the concept of an "invisible infrastructure" change how we think about our brand's online presence and data sources?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Brainstorm and list all the "invisible" digital touchpoints where audiences might interact with or form perceptions about your brand.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Map one customer journey and identify at least three "invisible" data signals that could be captured to better understand their experience or intent.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 1.2: AI as the "Digital X-Ray Vision"</h4>
+                                <p class="text-slate-600">Understanding how AI and Generative AI make the invisible infrastructure understandable and actionable, transforming complexity into clarity.</p>
+                                 <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> What are our organization's current hopes and fears regarding the use of AI for strategic insights?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> List three strategic questions about your market or audience that are currently difficult to answer. Speculate on how AI could help find the answers.</p>
+                                </div>
+                                 <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Take one of the strategic questions and outline what kind of data you believe an AI would need to answer it effectively.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 1.3: Common Pains in the AI Era</h4>
+                                <p class="text-slate-600">Addressing the core challenges that most brands encounter: Data Deluge, Insight Drought; Generic AI Outputs; and Fragmentation of efforts.</p>
+                                <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> Which of the "common pains" (data overload, generic outputs, fragmentation) resonates most strongly with our team's experience so far?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Share one example where an AI tool provided a generic or unhelpful output, and discuss why it fell short.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Document one internal workflow that currently suffers from fragmentation.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 1.4: Defining the "AI Last Mile"</h4>
+                                <p class="text-slate-600">Articulating the critical gap between possessing AI technology and successfully embedding its capabilities into daily operations to drive tangible, brand-aligned strategic value.</p>
+                                <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> In our organization, where does the "AI Last Mile" gap seem widest? Is it in strategy, execution, or measurement?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Write a one-sentence "Problem Statement" that defines your organization's primary "AI Last Mile" challenge.</p>
+                                </div>
+                                 <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Identify one recent AI-driven insight and trace the steps (or lack thereof) taken to operationalize it.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div id="module2" class="tab-content">
+                     <div class="card">
+                        <h2 class="text-3xl font-bold mb-4">Module 2: Developing a Brand Standardized Research Strategy</h2>
+                        <p class="text-slate-600 mb-6">This module focuses on creating a robust, repeatable framework for brand-focused research. We will identify the key signals that drive business outcomes and align research initiatives with the core purpose of your organization.</p>
+                        
+                         <figure class="my-6">
+                            <img src="https://placehold.co/600x300/eef2ff/4338ca?text=Image%3A+Strategic+Roadmap" alt="A stylized roadmap or compass pointing towards a goal" class="w-full h-auto max-w-xl mx-auto rounded-lg shadow-md">
+                            <figcaption class="text-sm text-slate-500 mt-2 text-center">Image Description: A clean, modern graphic of a strategic roadmap or a compass, symbolizing purpose-driven direction and planning.</figcaption>
+                        </figure>
+
+                        <div class="p-6 bg-indigo-50 rounded-lg border border-indigo-200">
+                            <h3 class="text-xl font-semibold mb-3 text-indigo-800">Learning Objectives</h3>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li>Understand the components of a comprehensive, purpose-driven brand research plan.</li>
+                                <li>Identify the core purpose, values, and brand perceptions that need to be measured.</li>
+                                <li>Define clear research objectives and scope to ensure actionable outcomes.</li>
+                                <li>Learn how to map stakeholder needs and competitor positioning as part of the research strategy.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 space-y-8">
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 2.1: Defining Your Core Purpose & Values</h4>
+                                <p class="text-slate-600">Articulating the fundamental "Why" behind your organization. This is the North Star for all brand research.</p>
+                                 <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> Do our current brand activities genuinely reflect our stated core purpose and values? Where are the gaps?</p>
+                                </div>
+                                 <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Draft or refine your organization's core purpose statement into a single, powerful sentence. List the top 5 values that support it.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Choose one core value and list three recent business decisions that exemplified or contradicted it.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 2.2: Mapping Stakeholders & Perceptions</h4>
+                                <p class="text-slate-600">Identifying all key audiences and forming hypotheses about their current perceptions of your brand and purpose.</p>
+                                 <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> Which stakeholder group's perception do we understand the least? Why is their perspective critical?</p>
+                                </div>
+                                 <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Create a stakeholder map (primary, secondary, tertiary). For each group, list their primary need from your organization.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Write down your team's current hypothesis for how your most important customer segment perceives your brand's purpose.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 2.3: Setting Clear Research Objectives</h4>
+                                <p class="text-slate-600">Defining the specific, critical questions that your research must answer to inform key business and brand decisions.</p>
+                                <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> If this research could only answer one question perfectly, what would be the most valuable question to ask?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Collaboratively write 3-5 key research objectives using the "SMART" framework.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> For one research objective, list the specific business decisions that will be made based on the findings.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-card">
+                                <h4 class="text-lg font-semibold text-slate-700">Lesson 2.4: Auditing Existing Data & Resources</h4>
+                                <p class="text-slate-600">Leveraging what you already know by identifying and cataloging existing data sources.</p>
+                                 <div class="discussion-card">
+                                    <p><strong>Discussion:</strong> What is the most valuable but underutilized data source our organization currently possesses?</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Group Activity:</strong> Create an inventory of all known internal and external data sources relevant to your research objectives.</p>
+                                </div>
+                                <div class="activity-card">
+                                    <p><strong>Practical Application Activity:</strong> Review one piece of past research and extract one key finding still relevant to your current objectives.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Dive Modules (3-11) are injected here by script -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const deepDiveModules = [
+            { 
+                id: 'module3', title: 'Module 3: Deep Dive on Industry & Market Analysis', 
+                dataPoints: ['Target Market Overview', 'Problem Statement', 'Industry Common Business Models', 'Common Software Used by Industry', 'Common Technology Limitations', 'Evolving Consumer Trends', 'Drivers of Innovation', 'Future Scenarios and Predictions', 'Global and Regional Market Size', 'Key Players, Competitors, and Market Share', 'Potential Disruptions and Market Shifts', 'Regulatory Changes and Compliance', 'Technological Adoption Rates'],
+                image: { src: 'https://placehold.co/600x300/dbeafe/1e40af?text=Image%3A+Market+Trends', alt: 'Abstract graph showing market trends and growth', desc: 'An illustrative chart with upward-trending lines and global map elements, symbolizing market growth and industry analysis.' }
+            },
+            { 
+                id: 'module4', title: 'Module 4: Deep Dive on the Competitor Landscape', 
+                dataPoints: ['Competitor Company Profile', 'Competitive advantage focus', 'Competitor Team & Key Personnel', 'Competitor Offerings & Value Propositions', 'Pricing models & monetization strategies', 'Competitor Digital Presence & Content', 'SEO rankings & keyword strategy', 'Marketing Strategies, Tactics, & Execution', 'Competitor Market Perception', 'Competitor Target Market', 'Competitor Customer Experience & Retention', 'Competitor Strengths, Weaknesses & Capabilities', 'Competitor Strategic Risks & Future Outlook'], 
+                image: { src: 'https://placehold.co/600x300/ccfbf1/0f766e?text=Image%3A+Competitor+Analysis', alt: 'Stylized chess board representing competitor strategy', desc: 'A clean, modern graphic resembling a chess board or strategic map, symbolizing competitor analysis and positioning.' } 
+            },
+            { 
+                id: 'module5', title: 'Module 5: Deep Dive on Company Data Points', 
+                dataPoints: ['Company Identification & General Information', 'Location & Presence', 'Workforce & Hiring Data', 'Financial & Business Performance', 'Technology & Digital Presence', 'Social Media & Marketing', 'Contact & Communication', 'Company News & Media', 'Products & Services'],
+                image: { src: 'https://placehold.co/600x300/f3e8ff/6b21a8?text=Image%3A+Company+Profile', alt: 'Iconic representation of a company headquarters with data points', desc: 'A graphic of a modern building facade integrated with icons representing workforce, finance, and technology, symbolizing a company profile.' }
+            },
+            { 
+                id: 'module6', title: 'Module 6: Deep Dive on Content Data Points', 
+                dataPoints: ['Content Type & Format', 'Content Performance & Engagement', 'Content Frequency & Posting Schedule', 'Content Sentiment & Quality', 'Content Topics & Themes', 'Content Discoverability & SEO', 'Influencer & Thought Leadership Content'],
+                image: { src: 'https://placehold.co/600x300/fefce8/854d0e?text=Image%3A+Content+Ecosystem', alt: 'A web of interconnected content type icons', desc: 'A network diagram connecting icons for video, articles, podcasts, and social media, representing a content ecosystem.' }
+            },
+            { 
+                id: 'module7', title: 'Module 7: Deep Dive on People Data Points', 
+                dataPoints: ['Personal Identification & Background', 'Education & Skills', 'Employment & Professional Details', 'Contact Information', 'Social Media & Online Presence', 'Content Creation & Thought Leadership', 'Influencer & Thought Leadership Metrics', 'Community & Network Influence'],
+                image: { src: 'https://placehold.co/600x300/fff7ed/c2410c?text=Image%3A+Audience+Personas', alt: 'Stylized user persona cards', desc: 'A collection of several clean, modern user persona cards, each with an avatar and key demographic/psychographic details.' }
+            },
+            { 
+                id: 'module8', title: 'Module 8: Deep Dive on Ads Data Points', 
+                dataPoints: ['Ad Identification & General Information', 'Targeting & Audience Insights', 'Ad Engagement & Performance Metrics', 'Competitive Analysis & Benchmarking', 'Ad Creative & Copy Analysis', 'Landing Page & Funnel Analysis', 'Audience Engagement & Feedback', 'Ad Retargeting & Follow-Ups'],
+                image: { src: 'https://placehold.co/600x300/fef2f2/b91c1c?text=Image%3A+Ad+Performance+Dashboard', alt: 'A dashboard showing ad campaign metrics', desc: 'A clean graphic of a digital advertising dashboard with key metrics like CTR, CPC, and Conversion Rate displayed in charts.' }
+            },
+            { 
+                id: 'module9', title: 'Module 9: Deep Dive on Brand-Focused Research', 
+                dataPoints: ['Company Mission & Vision Statements', 'Brand Values and Purpose', 'Brand Positioning Statements', 'Brand Personality Attributes', 'Brand Voice and Messaging Guidelines', 'Brand Perception', 'Audience Demographics and Psychographics', 'Competitive Brand Analysis', 'Brand Equity Metrics', 'Corporate Social Responsibility (CSR) Initiatives', 'Employee Advocacy and Brand Alignment', 'Brand Consistency Across Touchpoints'],
+                image: { src: 'https://placehold.co/600x300/faf5ff/7e22ce?text=Image%3A+Brand+Identity+Elements', alt: 'A collage of brand identity elements', desc: 'An artistic arrangement of a logo, color palette swatches, and typography examples, symbolizing brand research.' }
+            },
+            { 
+                id: 'module10', title: 'Module 10: Deep Dive on User Engagement & Conversion', 
+                dataPoints: ['Website Visitor Count', 'Pageviews and Session Duration', 'Conversion Rate', 'Click-Through Rate (CTR)', 'Form Submissions', 'User Journey Mapping', 'Source/Medium of Traffic', 'Heatmaps and Scroll Depth Analysis', 'Email Open and Click Rates', 'Social Media Engagement', 'Attribution Data', 'A/B Test Results'],
+                image: { src: 'https://placehold.co/600x300/f0fdf4/16a34a?text=Image%3A+Conversion+Funnel', alt: 'A modern conversion funnel diagram', desc: 'A clean, stylized graphic of a marketing conversion funnel, showing users moving from awareness to action.' }
+            },
+            { 
+                id: 'module11', title: 'Module 11: Deep Dive on Real-Time Opportunity & Events', 
+                dataPoints: ['Real-Time Social Media Mentions', 'Live Website Traffic Spikes', 'Breaking News and Industry Updates', 'Viral Content Detection', 'Real-Time Sentiment Shifts', 'Competitor Activity Monitoring', 'Crisis or Issue Detection', 'User-Generated Content (UGC) Monitoring', 'Newsjacking Opportunities', 'Live Webinar or Virtual Event Engagement'],
+                image: { src: 'https://placehold.co/600x300/eff6ff/3b82f6?text=Image%3A+Real-Time+Data+Stream', alt: 'An animation of data points appearing in real-time', desc: 'A dynamic graphic showing a live feed of data points, social media icons, and trending topics, conveying speed and immediacy.' }
+            }
+        ];
+
+        const mainContainer = document.getElementById('tab-content-container');
+        deepDiveModules.forEach(module => {
+            const lessons = [
+                { title: 'Lesson 1: Data Point Identification & Prioritization', desc: 'Identifying the most critical data points within this category that align with your primary research objectives and business goals.' },
+                { title: 'Lesson 2: Data Acquisition & Integration Strategy', desc: 'Developing a strategy for collecting and unifying the prioritized data points, whether from internal systems, third-party tools, or new research efforts.' },
+                { title: 'Lesson 3: From Data to Actionable Insight', desc: 'Exploring methodologies and AI-driven techniques to analyze this specific set of data, uncover patterns, and translate findings into clear, actionable insights.' },
+                { title: 'Lesson 4: Operationalizing Insights into Strategy', desc: 'Connecting the generated insights to tangible brand, marketing, or communication strategies, and defining how to measure the impact of those actions.' }
+            ];
+
+            let imageHTML = '';
+            if (module.image) {
+                imageHTML = `
+                <figure class="my-6">
+                    <img src="${module.image.src}" alt="${module.image.alt}" class="w-full h-auto max-w-xl mx-auto rounded-lg shadow-md">
+                    <figcaption class="text-sm text-slate-500 mt-2 text-center">${module.image.desc}</figcaption>
+                </figure>
+                `;
+            }
+
+            let moduleHTML = `
+                <div id="${module.id}" class="tab-content">
+                    <div class="card">
+                        <h2 class="text-3xl font-bold mb-4">${module.title}</h2>
+                        ${imageHTML}
+                        <div class="p-6 bg-indigo-50 rounded-lg border border-indigo-200 mb-8">
+                            <h3 class="text-xl font-semibold mb-3 text-indigo-800">Learning Objectives</h3>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li>Identify and prioritize the most impactful data points within this category for your brand.</li>
+                                <li>Develop a high-level strategy for acquiring and integrating this specific data.</li>
+                                <li>Understand how to apply AI-driven analysis to this data category to generate unique insights.</li>
+                                <li>Connect generated insights to specific, actionable strategic initiatives and define success metrics.</li>
+                            </ul>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Key Data Points for Exploration</h3>
+                        <div class="data-points-container">
+                            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
+                                ${module.dataPoints.map(dp => `<li class="p-2 bg-white rounded shadow-sm border border-slate-200">${dp}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 space-y-8">
+                            ${lessons.map((lesson, index) => `
+                                <div class="lesson-card">
+                                    <h4 class="text-lg font-semibold text-slate-700">${lesson.title}</h4>
+                                    <p class="text-slate-600">${lesson.desc}</p>
+                                    <div class="discussion-card">
+                                        <p><strong>Discussion:</strong> Considering '${lesson.title}', what is the biggest current challenge or opportunity for our organization in this area?</p>
+                                    </div>
+                                    <div class="activity-card">
+                                        <p><strong>Group Activity:</strong> From the list of data points above, select the top 3 that you believe would have the most immediate strategic impact if properly analyzed. Justify your choices.</p>
+                                    </div>
+                                    <div class="activity-card">
+                                        <p><strong>Practical Application Activity:</strong> For the #1 chosen data point, outline a practical first step your team could take to either begin collecting it or improve its analysis.</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            mainContainer.insertAdjacentHTML('beforeend', moduleHTML);
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabNav = document.getElementById('sidebar-nav');
+            const contentContainer = document.getElementById('tab-content-container');
+
+            if (tabNav) {
+                tabNav.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetLink = e.target.closest('.sidebar-link');
+                    if (targetLink) {
+                        const tabId = targetLink.dataset.tab;
+
+                        tabNav.querySelectorAll('.sidebar-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        targetLink.classList.add('active');
+
+                        contentContainer.querySelectorAll('.tab-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        const activeContent = document.getElementById(tabId);
+                        if (activeContent) {
+                            activeContent.classList.add('active');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
