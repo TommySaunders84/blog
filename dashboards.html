@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini: Innovative Data Visualizations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for mock visuals if needed */
+        .mock-dashboard-panel {
+            border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Tailwind shadow-md */
+        }
+        .mock-kpi {
+            border-left: 4px solid #4f46e5; /* Tailwind indigo-600 */
+        }
+        .network-node {
+            transition: transform 0.2s ease-in-out, fill 0.2s ease-in-out;
+        }
+        .network-node:hover {
+            transform: scale(1.1);
+            fill: #ec4899; /* Tailwind pink-500 */
+        }
+        .heatmap-dot {
+            transition: opacity 0.2s ease-in-out;
+        }
+        .heatmap-dot:hover {
+            opacity: 1 !important;
+        }
+        .treemap-block {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .treemap-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #4f46e5; /* Tailwind indigo-600 */
+            z-index:10;
+        }
+        .word-cloud span {
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .word-cloud span:hover {
+            color: #ec4899; /* Tailwind pink-500 */
+            transform: scale(1.05);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-12 shadow-lg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Visualizing Gemini: Innovative Data Insights</h1>
+            <p class="text-lg md:text-xl text-indigo-100">Exploring cutting-edge techniques to understand and present data from advanced AI research projects.</p>
+        </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="py-12 md:py-16">
+        <div class="container mx-auto px-6">
+            <p class="text-center text-lg text-slate-700 max-w-3xl mx-auto">
+                In the realm of advanced AI like Google's Gemini, effectively visualizing complex data is crucial for deriving insights, tracking performance, and communicating strategic impact. This page showcases innovative visualization techniques tailored for such a research project, illustrating how they can illuminate different facets of the model's development, usage, and interaction with the world.
+            </p>
+        </div>
+    </section>
+
+    <!-- Visualization Sections Container -->
+    <main class="container mx-auto px-6 pb-12 md:pb-20">
+        <div class="space-y-12 md:space-y-16">
+
+            <!-- 1. Interactive Dashboards -->
+            <section id="dashboards" class="bg-white p-6 md:p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-3xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">1. Interactive Dashboards</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Mock Visual -->
+                    <div class="bg-slate-100 p-4 rounded-lg mock-dashboard-panel">
+                        <h3 class="text-lg font-medium text-slate-700 mb-3 text-center">Gemini "Mission Control"</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-md shadow mock-kpi">
+                                <p class="text-sm text-slate-500">TTFT (ms)</p>
+                                <p class="text-2xl font-bold text-indigo-600">180</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow mock-kpi">
+                                <p class="text-sm text-slate-500">TPS</p>
+                                <p class="text-2xl font-bold text-indigo-600">75</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow mock-kpi">
+                                <p class="text-sm text-slate-500">CSAT</p>
+                                <p class="text-2xl font-bold text-indigo-600">4.7/5</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow mock-kpi">
+                                <p class="text-sm text-slate-500">API Requests</p>
+                                <p class="text-2xl font-bold text-indigo-600">1.2M</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-white p-3 rounded-md shadow">
+                            <p class="text-sm text-slate-500 mb-1">Usage Map (Live)</p>
+                            <svg viewBox="0 0 100 50" class="w-full h-auto rounded">
+                                <rect width="100" height="50" fill="#e0f2fe" /> <!-- Tailwind sky-100 -->
+                                <circle cx="30" cy="20" r="3" fill="#fb923c" /> <!-- Tailwind orange-400 -->
+                                <circle cx="70" cy="30" r="5" fill="#fb923c" />
+                                <circle cx="50" cy="15" r="2" fill="#f87171" /> <!-- Tailwind red-400 -->
+                                <text x="5" y="8" font-size="3" fill="#475569">Region A</text>
+                                <text x="60" y="40" font-size="3" fill="#475569">Region B</text>
+                            </svg>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded-md shadow">
+                            <p class="text-sm text-slate-500 mb-1">Benchmark Trends (MMLU)</p>
+                            <svg viewBox="0 0 100 30" class="w-full h-auto rounded">
+                                <rect width="100" height="30" fill="#f0fdf4" /> <!-- Tailwind green-50 -->
+                                <polyline points="5,25 25,15 45,20 65,10 85,12 95,5" fill="none" stroke="#22c55e" stroke-width="1"/> <!-- Tailwind green-500 -->
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Innovative Application for Gemini:</h4>
+                        <p class="text-slate-600 mb-4">Create a "Mission Control" dashboard for Gemini's performance. Stakeholders can filter by model version, task type (e.g., summarization, coding), and user region to see performance benchmarks in real time.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Metrics & Data Needed:</h4>
+                        <p class="text-slate-600 mb-4"><strong>Metrics:</strong> Time-to-first-token (TTFT), tokens per second (TPS), user satisfaction scores (CSAT), answer relevancy, hallucination index, and API request volume.<br><strong>Data:</strong> Live API logs, benchmark test results (e.g., MMLU, HellaSwag), and real-time user feedback data.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Content Needed for Visualization:</h4>
+                        <p class="text-slate-600">KPIs displayed as gauges and trend lines. A world map showing live usage and sentiment. Tables ranking performance on various benchmarks. User-selectable filters for date range, model, and region.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Network Diagrams -->
+            <section id="network" class="bg-white p-6 md:p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-3xl font-semibold mb-6 text-purple-700 border-b-2 border-purple-200 pb-2">2. Network Diagrams</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Mock Visual -->
+                    <div class="bg-slate-100 p-4 rounded-lg mock-dashboard-panel flex justify-center items-center h-80 md:h-96">
+                        <svg viewBox="0 0 200 100" class="w-full h-auto max-w-md">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="5" markerHeight="3.5" refX="0" refY="1.75" orient="auto">
+                                    <polygon points="0 0, 5 1.75, 0 3.5" fill="#64748b"/> <!-- Tailwind slate-500 -->
+                                </marker>
+                            </defs>
+                            <!-- Nodes -->
+                            <circle cx="30" cy="50" r="10" fill="#818cf8" class="network-node"/> <!-- Tailwind indigo-400 -->
+                            <text x="23" y="52" font-size="5" fill="white">Input</text>
+                            <circle cx="80" cy="30" r="12" fill="#a78bfa" class="network-node"/> <!-- Tailwind violet-400 -->
+                            <text x="68" y="32" font-size="5" fill="white">Expert A</text>
+                            <circle cx="80" cy="70" r="12" fill="#a78bfa" class="network-node"/>
+                            <text x="68" y="72" font-size="5" fill="white">Expert B</text>
+                            <circle cx="130" cy="50" r="10" fill="#c084fc" class="network-node"/> <!-- Tailwind purple-400 -->
+                            <text x="120" y="52" font-size="5" fill="white">Router</text>
+                            <circle cx="180" cy="50" r="10" fill="#f472b6" class="network-node"/> <!-- Tailwind pink-400 -->
+                            <text x="171" y="52" font-size="5" fill="white">Output</text>
+                            <!-- Edges -->
+                            <line x1="40" y1="50" x2="68" y2="35" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowhead)"/>
+                            <line x1="40" y1="50" x2="68" y2="65" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowhead)"/>
+                            <line x1="92" y1="35" x2="120" y2="48" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowhead)"/>
+                            <line x1="92" y1="65" x2="120" y2="52" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowhead)"/>
+                            <line x1="140" y1="50" x2="170" y2="50" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowhead)"/>
+                        </svg>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Innovative Application for Gemini:</h4>
+                        <p class="text-slate-600 mb-4">Visualize the "decision pathways" within Gemini's Mixture-of-Experts (MoE) architecture. The diagram can show which "expert" models are activated for different types of prompts (e.g., logic problems vs. creative writing).</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Metrics & Data Needed:</h4>
+                        <p class="text-slate-600 mb-4"><strong>Metrics:</strong> Activation frequency per expert, inter-token latency, and data routing paths.<br><strong>Data:</strong> Model architecture specifications (layers, nodes, connections) and tracing logs from inference requests that show the path taken through the neural network.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Content Needed for Visualization:</h4>
+                        <p class="text-slate-600">Nodes representing different "expert" models or neural layers. The thickness or color of connecting lines (edges) indicates the frequency or intensity of activation for specific tasks. Interactive labels provide details on each node.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Geospatial Heatmaps -->
+            <section id="heatmaps" class="bg-white p-6 md:p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-3xl font-semibold mb-6 text-teal-700 border-b-2 border-teal-200 pb-2">3. Geospatial Heatmaps</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Mock Visual -->
+                    <div class="bg-slate-100 p-4 rounded-lg mock-dashboard-panel flex justify-center items-center h-80 md:h-96">
+                        <svg viewBox="0 0 150 100" class="w-full h-auto max-w-md rounded">
+                            <!-- Base map (simplified world map outline) -->
+                            <path d="M10 50 Q15 20, 30 30 T50 30 Q60 10, 75 35 T100 30 Q120 10, 130 40 T140 50 Q130 90, 100 80 T70 90 Q40 100, 20 70 T10 50 Z" fill="#bfdbfe" stroke="#93c5fd" stroke-width="0.5"/> <!-- Tailwind blue-200 and blue-300 -->
+                            <!-- Heatmap dots -->
+                            <circle cx="40" cy="40" r="8" fill="#f87171" opacity="0.7" class="heatmap-dot"/> <!-- Tailwind red-400 -->
+                            <circle cx="45" cy="45" r="12" fill="#f87171" opacity="0.5" class="heatmap-dot"/>
+                            <circle cx="90" cy="30" r="15" fill="#fb923c" opacity="0.8" class="heatmap-dot"/> <!-- Tailwind orange-400 -->
+                            <circle cx="95" cy="35" r="10" fill="#fb923c" opacity="0.6" class="heatmap-dot"/>
+                            <circle cx="70" cy="65" r="7" fill="#a3e635" opacity="0.75" class="heatmap-dot"/> <!-- Tailwind lime-400 -->
+                            <text x="30" y="25" font-size="4" fill="#1e3a8a">Topic A</text>
+                            <text x="100" y="20" font-size="4" fill="#1e3a8a">Topic B</text>
+                            <text x="60" y="80" font-size="4" fill="#1e3a8a">Topic C</text>
+                        </svg>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Innovative Application for Gemini:</h4>
+                        <p class="text-slate-600 mb-4">Create a global heatmap showing real-time query topics. The map could illuminate emerging trends, showing where queries about a specific scientific breakthrough or cultural event are concentrated, revealing regional interests and knowledge gaps.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Metrics & Data Needed:</h4>
+                        <p class="text-slate-600 mb-4"><strong>Metrics:</strong> Query volume per capita, topic category frequency, and average sentiment score by location.<br><strong>Data:</strong> Anonymized user query data with geographic tags (country, state, city) and topic classifications derived from natural language processing (NLP).</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Content Needed for Visualization:</h4>
+                        <p class="text-slate-600">A world or country map. Color gradients (e.g., from cool to hot) represent the concentration of specific query themes. Pop-up data boxes can show the top 5 trending topics for a selected city or region.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Treemaps -->
+            <section id="treemaps" class="bg-white p-6 md:p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-3xl font-semibold mb-6 text-amber-700 border-b-2 border-amber-200 pb-2">4. Treemaps</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Mock Visual -->
+                    <div class="bg-slate-100 p-4 rounded-lg mock-dashboard-panel flex justify-center items-center h-80 md:h-96">
+                        <div class="w-full max-w-sm h-64 flex flex-wrap p-1 bg-white shadow-inner rounded">
+                            <!-- Web Text (Largest) -->
+                            <div class="w-3/5 h-3/5 bg-sky-500 text-white flex items-center justify-center text-sm font-medium p-1 treemap-block">Web Text (60%)
+                                <div class="w-full h-full flex flex-wrap p-0.5">
+                                    <div class="w-1/2 h-1/2 bg-sky-600 flex items-center justify-center text-xs p-0.5 treemap-block">Wikipedia</div>
+                                    <div class="w-1/2 h-1/2 bg-sky-700 flex items-center justify-center text-xs p-0.5 treemap-block">News</div>
+                                </div>
+                            </div>
+                            <!-- Code -->
+                            <div class="w-2/5 h-3/5 bg-emerald-500 text-white flex items-center justify-center text-sm font-medium p-1 treemap-block">Code (25%)
+                                <div class="w-full h-full bg-emerald-600 flex items-center justify-center text-xs p-0.5 treemap-block">GitHub</div>
+                            </div>
+                            <!-- Books -->
+                            <div class="w-2/3 h-2/5 bg-rose-500 text-white flex items-center justify-center text-sm font-medium p-1 treemap-block">Books (10%)</div>
+                            <!-- Images -->
+                            <div class="w-1/3 h-2/5 bg-violet-500 text-white flex items-center justify-center text-sm font-medium p-1 treemap-block">Images (5%)</div>
+                        </div>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Innovative Application for Gemini:</h4>
+                        <p class="text-slate-600 mb-4">Display the composition of the dataset used to train Gemini. The treemap can break down the data by source (e.g., web text, code, books, images), with the size of each rectangle representing its proportion in the total dataset.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Metrics & Data Needed:</h4>
+                        <p class="text-slate-600 mb-4"><strong>Metrics:</strong> Data volume (in terabytes or tokens) per source, and sub-category contribution percentages.<br><strong>Data:</strong> A hierarchical inventory of the training dataset, categorized by source type, language, and content domain (e.g., scientific papers, social media).</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Content Needed for Visualization:</h4>
+                        <p class="text-slate-600">Nested rectangles where top-level categories are sources like "Web Text" or "Code." Sub-rectangles represent more granular sources like "Wikipedia" or "GitHub." Color can be used to represent the language of the data.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Word Clouds & Thematic Bubbles -->
+            <section id="wordclouds" class="bg-white p-6 md:p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-3xl font-semibold mb-6 text-pink-700 border-b-2 border-pink-200 pb-2">5. Word Clouds & Thematic Bubbles</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Mock Visual -->
+                    <div class="bg-slate-100 p-6 rounded-lg mock-dashboard-panel flex justify-center items-center h-80 md:h-96">
+                        <div class="word-cloud text-center max-w-md">
+                            <span class="inline-block m-1 p-1 text-3xl font-bold text-pink-600">Accuracy</span>
+                            <span class="inline-block m-1 p-1 text-xl text-rose-500">Creativity</span>
+                            <span class="inline-block m-1 p-1 text-lg text-fuchsia-500">Speed</span>
+                            <span class="inline-block m-1 p-1 text-md text-purple-500">Helpful</span>
+                            <span class="inline-block m-1 p-1 text-2xl text-pink-500">Context</span>
+                            <span class="inline-block m-1 p-1 text-sm text-violet-500">Examples</span>
+                            <span class="inline-block m-1 p-1 text-lg text-rose-400">Understanding</span>
+                            <span class="inline-block m-1 p-1 text-xl text-fuchsia-600">Insightful</span>
+                            <span class="inline-block m-1 p-1 text-md text-pink-400">Fast</span>
+                            <span class="inline-block m-1 p-1 text-sm text-purple-400">Easy-to-use</span>
+                        </div>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Innovative Application for Gemini:</h4>
+                        <p class="text-slate-600 mb-4">Generate a dynamic "User Feedback Constellation" from open-ended survey responses and support tickets. Major themes like "accuracy," "creativity," and "speed" appear as large central bubbles, with smaller, connected bubbles showing related sub-themes or specific user phrases.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Metrics & Data Needed:</h4>
+                        <p class="text-slate-600 mb-4"><strong>Metrics:</strong> Frequency of keywords and key phrases, sentiment scores (positive, negative, neutral) associated with themes, and co-occurrence of topics.<br><strong>Data:</strong> A large corpus of unstructured text from user feedback surveys, app store reviews, social media mentions, and support chat logs.</p>
+                        <h4 class="text-xl font-medium mb-2 text-slate-700">Content Needed for Visualization:</h4>
+                        <p class="text-slate-600">A cluster of bubbles or a cloud of words. The size of the word/bubble indicates its frequency. The color indicates the average sentiment associated with that theme (e.g., green for positive, red for negative).</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-300 py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Gemini Visualization Showcase. For illustrative purposes.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
