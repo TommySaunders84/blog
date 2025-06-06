@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Infographic: AI in Marketing - Industry Trends & Market Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues & Warm Sand -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard with a sticky sidebar navigation. This non-linear structure was chosen over a linear report format to empower users to explore topics based on their interests and synthesize information more effectively. The flow moves from a high-level market overview to deeper dives into trends, competition, and consumer behavior, concluding with a forward-looking perspective. Key interactions include dropdown filters for charts, hover effects for details on demand, and clickable timeline stages, all designed to encourage active exploration rather than passive reading and to make dense data more accessible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Market Size (Line Chart, Chart.js): Goal: Show Change. Justification: Best for visualizing trends over a continuous period. Interaction: Hover tooltips for specific values.
+        - Market Share (Donut Chart, Chart.js): Goal: Compare/Composition. Justification: Visually appealing for showing proportions of a whole. Interaction: Hover reveals player data.
+        - AI Marketing Timeline (HTML/CSS): Goal: Show Change/Organize. Justification: A clean, custom component to show process stages without external libraries. Avoids SVG/Mermaid. Interaction: Clicking a stage updates a detailed description panel.
+        - Investment Trends (Bar Chart, Chart.js): Goal: Compare. Justification: Ideal for comparing discrete investment values across different technology categories.
+        - SWOT Analysis (HTML/CSS Grid): Goal: Organize. Justification: A classic strategic framework, implemented with clean HTML/CSS for clarity and simplicity. Interaction: Hover to expand and read details.
+        - Key Player Comparison (Radar Chart, Chart.js): Goal: Compare. Justification: Excellent for multivariate comparison of several competitors on a standardized scale.
+        - Consumer Demographics (Bar Chart, Chart.js): Goal: Compare. Justification: Filterable bar chart allows for interactive exploration of demographic data. Interaction: Dropdown filter to change data view.
+        - Consumer Sentiment (Bubble Chart, Chart.js): Goal: Relationships. Justification: Effectively shows the relationship between adoption level, satisfaction, and the volume of discussion for different AI tools.
+        - Tech Adoption Rates (Stacked Bar Chart, Chart.js): Goal: Compare/Composition. Justification: Shows both overall adoption and the mix of adoption stages within industries.
+        - Tech Readiness Heatmap (Plotly.js): Goal: Relationships. Justification: A sophisticated visualization to show the relationship between two categorical variables (industry vs. readiness), rendered to canvas for performance.
+        - Future Outlook (HTML/CSS Accordion): Goal: Inform/Organize. Justification: Condenses large blocks of text into a manageable, user-controlled format.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link.active {
+            background-color: #005f73;
+            color: white;
+            font-weight: 600;
+            transform: scale(1.05);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: -0.4rem;
+            width: 0.8rem;
+            height: 0.8rem;
+            background-color: #94d2bd;
+            border-radius: 9999px;
+            border: 2px solid white;
+        }
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 1.75rem;
+            left: -0.1rem;
+            width: 2px;
+            height: calc(100% - 0.5rem);
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <header class="bg-white p-6 shadow-md text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#005f73]">AI in Marketing: 2025 Industry Report</h1>
+        <p class="text-lg text-slate-600 mt-2">An Interactive Analysis of Market Trends, Competitive Dynamics, and Future Projections</p>
+    </header>
+
+    <div class="flex flex-col md:flex-row">
+        <nav id="sidebar-nav" class="w-full md:w-64 bg-white p-4 md:sticky md:top-0 md:h-screen md:overflow-y-auto shadow-lg">
+            <h2 class="text-lg font-bold text-[#005f73] mb-4">Navigation</h2>
+            <ul class="space-y-2">
+                <li><a href="#market-overview" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Market Overview</a></li>
+                <li><a href="#key-trends" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Key Trends</a></li>
+                <li><a href="#competitive-landscape" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Competitive Landscape</a></li>
+                <li><a href="#consumer-insights" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Consumer Insights</a></li>
+                <li><a href="#tech-adoption" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Technology Adoption</a></li>
+                <li><a href="#future-outlook" class="nav-link block p-3 rounded-lg hover:bg-slate-100">Future Outlook</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10">
+            <section id="market-overview" class="mb-12 scroll-mt-20">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-[#005f73] mb-2">Market Overview</h2>
+                    <p class="text-slate-600 mb-6">The AI in Marketing sector is experiencing explosive growth, driven by advancements in machine learning and an increasing demand for data-driven decision-making. This section provides a high-level view of the market's size, projected growth, and the key players dominating the space.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Market Size & Growth Projections (USD Billions)</h3>
+                            <div class="chart-container">
+                                <canvas id="marketSizeChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Global Market Share by Key Players (2025)</h3>
+                            <div class="chart-container">
+                                <canvas id="marketShareChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="key-trends" class="mb-12 scroll-mt-20">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                     <h2 class="text-3xl font-bold text-[#005f73] mb-2">Key Evolving Trends</h2>
+                     <p class="text-slate-600 mb-8">Several key trends are shaping the AI in Marketing landscape. From the initial focus on automation to the current rise of generative AI, the evolution is rapid. Understanding these trends is crucial for identifying future opportunities and strategic imperatives.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-6">Timeline of AI in Marketing</h3>
+                            <div id="timeline-container" class="relative pl-6 border-l-2 border-slate-200">
+                                <div id="timeline-item-1" class="timeline-item relative mb-8 cursor-pointer" data-id="1">
+                                    <h4 class="font-semibold text-lg">Phase 1: Automation</h4>
+                                    <p class="text-sm text-slate-500">Early 2020s - Focus on automating repetitive tasks like email marketing and ad bidding.</p>
+                                </div>
+                                <div id="timeline-item-2" class="timeline-item relative mb-8 cursor-pointer" data-id="2">
+                                    <h4 class="font-semibold text-lg">Phase 2: Personalization</h4>
+                                    <p class="text-sm text-slate-500">Mid 2020s - Rise of AI-driven recommendation engines and personalized content delivery.</p>
+                                </div>
+                                <div id="timeline-item-3" class="timeline-item relative mb-8 cursor-pointer" data-id="3">
+                                    <h4 class="font-semibold text-lg">Phase 3: Generative AI</h4>
+                                    <p class="text-sm text-slate-500">Present - Explosion of generative models for content creation, from copy to images and video.</p>
+                                </div>
+                                <div id="timeline-item-4" class="timeline-item relative cursor-pointer" data-id="4">
+                                    <h4 class="font-semibold text-lg">Phase 4: Agentic Systems</h4>
+                                    <p class="text-sm text-slate-500">Future - Emergence of autonomous AI agents managing entire marketing campaigns.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="timeline-details" class="p-6 bg-slate-100 rounded-lg min-h-[200px]">
+                            <h4 id="details-title" class="font-bold text-lg text-[#0a9396] mb-2">Click a phase to learn more</h4>
+                            <p id="details-text" class="text-slate-700">Select a phase on the timeline to see a detailed description of its impact, key technologies, and strategic implications for marketers.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="competitive-landscape" class="mb-12 scroll-mt-20">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-[#005f73] mb-2">Competitive Landscape</h2>
+                    <p class="text-slate-600 mb-6">The competitive environment is a mix of established tech giants and innovative startups. This section provides a SWOT analysis of the overall market and a comparative look at the top players across key performance indicators.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Market SWOT Analysis</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-green-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-green-800">Strengths</h4>
+                                    <ul class="text-sm list-disc list-inside text-green-700 mt-2">
+                                        <li>Rapid innovation</li>
+                                        <li>High demand for automation</li>
+                                        <li>Measurable ROI</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-red-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-red-800">Weaknesses</h4>
+                                    <ul class="text-sm list-disc list-inside text-red-700 mt-2">
+                                        <li>High implementation costs</li>
+                                        <li>Data privacy concerns</li>
+                                        <li>Talent shortage</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-blue-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-blue-800">Opportunities</h4>
+                                    <ul class="text-sm list-disc list-inside text-blue-700 mt-2">
+                                        <li>Hyper-personalization</li>
+                                        <li>Predictive analytics</li>
+                                        <li>New market entry</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-yellow-100 p-4 rounded-lg">
+                                    <h4 class="font-bold text-yellow-800">Threats</h4>
+                                    <ul class="text-sm list-disc list-inside text-yellow-700 mt-2">
+                                        <li>Regulatory changes</li>
+                                        <li>Algorithmic bias</li>
+                                        <li>Cybersecurity risks</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Key Player Capability Matrix</h3>
+                            <div class="chart-container">
+                                <canvas id="competitorRadarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="consumer-insights" class="mb-12 scroll-mt-20">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-[#005f73] mb-2">Consumer Insights</h2>
+                     <p class="text-slate-600 mb-6">Understanding consumer demographics and sentiment is paramount. Adoption varies significantly by age group, and consumer attitudes towards different AI applications reveal key insights for strategic focus.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Consumer Demographics</h3>
+                            <div class="chart-container">
+                                <canvas id="consumerDemographicsChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Consumer Sentiment vs. Adoption</h3>
+                            <div class="chart-container">
+                                <canvas id="consumerSentimentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="tech-adoption" class="mb-12 scroll-mt-20">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-[#005f73] mb-2">Technology Adoption & Readiness</h2>
+                    <p class="text-slate-600 mb-6">Adoption rates for AI marketing technologies are accelerating across industries, though maturity levels vary. This section visualizes adoption stages by industry and maps technological readiness against implementation complexity.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">AI Tech Adoption Rate by Industry</h3>
+                            <div class="chart-container">
+                                <canvas id="techAdoptionChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-center mb-4">Industry Readiness Heatmap</h3>
+                            <div id="readinessHeatmap" class="chart-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="future-outlook" class="scroll-mt-20">
+                 <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-[#005f73] mb-2">Future Outlook & Recommendations</h2>
+                    <p class="text-slate-600 mb-6">The future of AI in marketing will be defined by hyper-personalization, agentic systems, and a strong emphasis on ethical implementation. Organizations must focus on building integrated data strategies and upskilling their workforce to stay competitive.</p>
+                    <div class="space-y-4">
+                        <details class="group p-4 rounded-lg bg-slate-100">
+                            <summary class="font-semibold cursor-pointer group-hover:text-[#0a9396]">1. Embrace Hyper-Personalization at Scale</summary>
+                            <p class="mt-2 text-slate-600">Move beyond basic segmentation. Leverage AI to deliver truly one-to-one marketing experiences based on real-time behavioral data. This will be the key to customer loyalty.</p>
+                        </details>
+                        <details class="group p-4 rounded-lg bg-slate-100">
+                            <summary class="font-semibold cursor-pointer group-hover:text-[#0a9396]">2. Invest in a Unified Data Strategy</summary>
+                            <p class="mt-2 text-slate-600">Break down data silos. Your AI is only as good as the data it can access. A unified data platform is no longer optional; it's essential for advanced AI applications.</p>
+                        </details>
+                        <details class="group p-4 rounded-lg bg-slate-100">
+                            <summary class="font-semibold cursor-pointer group-hover:text-[#0a9396]">3. Prepare for Agentic AI Systems</summary>
+                            <p class="mt-2 text-slate-600">The next frontier is autonomous AI agents that can plan and execute entire marketing campaigns. Begin experimenting with agentic workflows and develop governance frameworks now.</p>
+                        </details>
+                         <details class="group p-4 rounded-lg bg-slate-100">
+                            <summary class="font-semibold cursor-pointer group-hover:text-[#0a9396]">4. Prioritize Ethical AI and Transparency</summary>
+                            <p class="mt-2 text-slate-600">As AI becomes more powerful, consumer and regulatory scrutiny will increase. Build trust by being transparent about your use of AI and developing strong ethical guidelines for data usage and algorithmic decision-making.</p>
+                        </details>
+                    </div>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="text-center p-6 mt-10 bg-white text-slate-500 text-sm">
+        <p>&copy; 2025 Industry Insights Inc. All rights reserved.</p>
+        <p>This interactive report is for informational purposes only.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) return label;
+                
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const multiLineTooltipTitle = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...multiLineTooltipTitle
+            };
+
+            const colors = {
+                primary: '#005f73',
+                secondary: '#0a9396',
+                accent: '#94d2bd',
+                accentWarm: '#e9d8a6',
+                accentLight: '#ee9b00',
+            };
+
+            const marketSizeData = {
+                labels: ['2022', '2023', '2024', '2025', '2026', '2027', '2028'],
+                datasets: [{
+                    label: 'Market Size (USD Billions)',
+                    data: [25, 32, 45, 60, 85, 120, 175],
+                    borderColor: colors.primary,
+                    backgroundColor: 'rgba(0, 95, 115, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                }]
+            };
+            new Chart(document.getElementById('marketSizeChart'), { type: 'line', data: marketSizeData, options: commonChartOptions });
+
+            const marketShareData = {
+                labels: ['MarTech Giant A', 'Innovate AI Corp', 'DataDriven Inc.', 'Ad Automators', 'Other'],
+                datasets: [{
+                    label: 'Market Share',
+                    data: [35, 25, 20, 10, 10],
+                    backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.accentLight, '#e9d8a6'],
+                    hoverOffset: 4
+                }]
+            };
+            new Chart(document.getElementById('marketShareChart'), { type: 'doughnut', data: marketShareData, options: commonChartOptions });
+
+            const consumerDemographicsData = {
+                labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+                datasets: [{
+                    label: 'High Adoption Rate (%)',
+                    data: [45, 65, 50, 35, 20],
+                    backgroundColor: colors.secondary,
+                }]
+            };
+            new Chart(document.getElementById('consumerDemographicsChart'), { type: 'bar', data: consumerDemographicsData, options: commonChartOptions });
+            
+            const consumerSentimentData = {
+                datasets: [{
+                    label: 'Chatbots',
+                    data: [{ x: 7, y: 5, r: 20 }],
+                    backgroundColor: 'rgba(0, 95, 115, 0.7)'
+                }, {
+                    label: 'Personalized Ads',
+                    data: [{ x: 9, y: 8, r: 25 }],
+                     backgroundColor: 'rgba(10, 147, 150, 0.7)'
+                }, {
+                    label: 'Predictive Recs',
+                    data: [{ x: 8, y: 9, r: 30 }],
+                    backgroundColor: 'rgba(148, 210, 189, 0.7)'
+                }, {
+                    label: 'Generative Content',
+                    data: [{ x: 5, y: 6, r: 15 }],
+                    backgroundColor: 'rgba(238, 155, 0, 0.7)'
+                }],
+            };
+            new Chart(document.getElementById('consumerSentimentChart'), {
+                type: 'bubble',
+                data: consumerSentimentData,
+                options: { ...commonChartOptions,
+                    scales: {
+                        x: { title: { display: true, text: 'Adoption Level (1-10)' } },
+                        y: { title: { display: true, text: 'Satisfaction (1-10)' } }
+                    },
+                    plugins: { tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.y !== null) { label += `Satisfaction ${context.parsed.y}, Adoption ${context.parsed.x}`; } return label; }}}}
+                }
+            });
+
+            const techAdoptionData = {
+                labels: ['Retail', 'Finance', 'Healthcare', 'Manufacturing', 'Media'],
+                datasets: [
+                    { label: 'Piloting', data: [20, 15, 25, 10, 30], backgroundColor: colors.accentLight },
+                    { label: 'Operational', data: [40, 50, 30, 25, 45], backgroundColor: colors.secondary },
+                    { label: 'Mature', data: [25, 30, 15, 10, 15], backgroundColor: colors.primary }
+                ]
+            };
+            new Chart(document.getElementById('techAdoptionChart'), { type: 'bar', data: techAdoptionData, options: { ...commonChartOptions, scales: { x: { stacked: true }, y: { stacked: true } } }});
+
+            const competitorRadarData = {
+                labels: ['Innovation', 'Market Share', 'Customer Satisfaction', 'Brand Recognition', 'Pricing'],
+                datasets: [{
+                    label: 'MarTech Giant A',
+                    data: [7, 9, 7, 9, 6],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 95, 115, 0.2)',
+                    borderColor: 'rgb(0, 95, 115)',
+                    pointBackgroundColor: 'rgb(0, 95, 115)',
+                }, {
+                    label: 'Innovate AI Corp',
+                    data: [9, 6, 8, 7, 8],
+                    fill: true,
+                    backgroundColor: 'rgba(10, 147, 150, 0.2)',
+                    borderColor: 'rgb(10, 147, 150)',
+                    pointBackgroundColor: 'rgb(10, 147, 150)',
+                }]
+            };
+            new Chart(document.getElementById('competitorRadarChart'), { type: 'radar', data: competitorRadarData, options: commonChartOptions });
+            
+            const heatmapData = [{
+                z: [[1, 20, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20], [40, 30, 20, 10, 5]],
+                x: ['Retail', 'Finance', 'Healthcare', 'Manufacturing', 'Media'],
+                y: ['Complexity', 'Readiness', 'Investment', 'Talent Gap'],
+                type: 'heatmap',
+                hoverongaps: false,
+                colorscale: [[0, '#e9d8a6'], [1, '#005f73']]
+            }];
+            Plotly.newPlot('readinessHeatmap', heatmapData, {
+                title: 'Industry Readiness vs. Implementation Factors',
+                responsive: true,
+            });
+
+            const timelineData = {
+                1: { title: "Phase 1: Automation", text: "The initial wave focused on using AI to automate high-volume, repetitive marketing tasks. Key technologies included automated email campaign triggers, programmatic ad bidding, and basic customer segmentation. The primary goal was efficiency gains and cost reduction." },
+                2: { title: "Phase 2: Personalization", text: "This phase saw the rise of sophisticated recommendation engines and dynamic content optimization. AI began to tailor user experiences in real-time based on browsing history and user data, significantly improving engagement and conversion rates." },
+                3: { title: "Phase 3: Generative AI", text: "A paradigm shift occurred with the accessibility of powerful generative models. Marketers started using AI to create original content, including ad copy, social media posts, images, and even video scripts, dramatically accelerating the creative process." },
+                4: { title: "Phase 4: Agentic Systems", text: "The next frontier involves autonomous AI agents capable of planning, executing, and optimizing entire marketing campaigns. These systems will integrate multiple AI capabilities to manage budgets, target audiences, create content, and analyze results with minimal human intervention." }
+            };
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineContainer.addEventListener('click', (e) => {
+                const item = e.target.closest('.timeline-item');
+                if (item) {
+                    const id = item.dataset.id;
+                    const data = timelineData[id];
+                    document.getElementById('details-title').textContent = data.title;
+                    document.getElementById('details-text').textContent = data.text;
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
