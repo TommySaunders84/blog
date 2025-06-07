@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst: The Interactive Content Refinery</title>
+    <style>
+        /* General Body & Scaffolding */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --brand-primary: #005f73;
+            --brand-secondary: #0a9396;
+            --brand-accent: #94d2bd;
+            --brand-light: #e9d8a6;
+            --brand-dark: #001219;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --line-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        #main-container {
+            display: flex;
+            width: 500vw; /* 5 sections * 100vw each */
+            height: 100vh;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .station {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 4rem;
+            box-sizing: border-box;
+            position: relative;
+            text-align: center;
+            border-right: 2px dashed var(--line-color);
+        }
+        .station:last-child {
+            border-right: none;
+        }
+
+        /* Headers and Text */
+        h1, h2 {
+            color: var(--brand-primary);
+            margin-bottom: 0.5rem;
+        }
+        h1 { font-size: 2rem; }
+        h2 { font-size: 2.5rem; }
+        p { max-width: 600px; font-size: 1.1rem; line-height: 1.6; color: #555;}
+        .step-label {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background-color: var(--brand-secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 700;
+        }
+
+        /* Interactive Elements & Animations */
+        .interactive-zone {
+            margin-top: 2rem;
+            padding: 2rem;
+            border: 2px solid var(--line-color);
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            min-width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .clickable {
+            cursor: pointer;
+            border: 2px solid var(--brand-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .clickable:hover {
+            background-color: var(--brand-accent);
+            color: var(--brand-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .clickable.selected {
+            background-color: var(--brand-primary);
+            color: white;
+            border-color: var(--brand-primary);
+        }
+
+        @keyframes flow {
+            to { background-position: -200% 0; }
+        }
+        .pipe {
+            position: absolute;
+            height: 10px;
+            width: 15vw;
+            top: 50%;
+            right: -15vw;
+            transform: translateY(-50%);
+            background: linear-gradient(90deg, var(--brand-accent) 50%, transparent 50%);
+            background-size: 50px 10px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .pipe.active {
+            opacity: 1;
+            animation: flow 1s linear infinite;
+        }
+
+        /* Specific Station Styles */
+        #station-1 .clickable span, #station-2 .clickable span {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        #station-3 .input-group { display: flex; flex-direction: column; width: 100%; }
+        #station-3 input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        #generate-btn {
+            background-color: var(--brand-secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #generate-btn:hover { background-color: var(--brand-primary); }
+
+        #station-4 .content-pair {
+            border: 2px solid var(--line-color);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #station-4 .content-pair:hover { border-color: var(--brand-secondary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #station-4 .content-pair img { width: 100px; border-radius: 5px; }
+        #station-4 .content-pair p { font-size: 0.9rem; margin: 0.5rem 0 0 0; }
+
+        #station-5 .api-box {
+            background-color: var(--brand-dark);
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: left;
+            width: 80%;
+            white-space: pre;
+            margin-bottom: 1.5rem;
+        }
+        #station-5 .icon-group img { width: 40px; margin: 0 10px; transition: transform 0.3s; }
+        .deployed .icon-group img { transform: scale(1.2); }
+
+
+        /* Navigation Controls */
+        #nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .nav-dot {
+            width: 15px;
+            height: 15px;
+            background-color: var(--line-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-dot.active {
+            background-color: var(--brand-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+
+        <section id="station-1" class="station">
+            <div class="step-label">Step 1: The Reservoir</div>
+            <h2>Select Your Foundational Models</h2>
+            <p>Begin by choosing the core AI engines from the Model Garden. These will be the foundation for your content generation.</p>
+            <div class="interactive-zone">
+                <div id="model-llm" class="clickable" onclick="selectModel('llm')">
+                    <span>&#128221;</span> Foundation Language Model
+                </div>
+                <div id="model-img" class="clickable" onclick="selectModel('img')">
+                    <span>&#128444;</span> Image Generation Model
+                </div>
+            </div>
+            <div class="pipe" id="pipe-1"></div>
+        </section>
+
+        <section id="station-2" class="station">
+            <div class="step-label">Step 2: The Infusion Chamber</div>
+            <h2>Tune with Model Context Protocol</h2>
+            <p>Infuse the AI with your brand's unique voice. Upload press releases, blog posts, and style guides to create a private, expert model.</p>
+            <div class="interactive-zone">
+                <div id="tune-btn" class="clickable" onclick="tuneModel()">
+                    <span>&#128229;</span> Upload Brand Documents & Tune Model
+                </div>
+                <div style="font-size: 3rem;">&#128274;</div>
+            </div>
+            <p id="tune-status" style="margin-top: 1rem; font-weight: bold; color: var(--brand-primary);"></p>
+            <div class="pipe" id="pipe-2"></div>
+        </section>
+
+        <section id="station-3" class="station">
+            <div class="step-label">Step 3: The Idea Crucible</div>
+            <h2>Generate Campaign Assets</h2>
+            <p>Use simple text prompts to command your custom AI. Describe the image and content you need, then let the Crucible work its magic.</p>
+            <div class="interactive-zone">
+                <div class="input-group">
+                    <input type="text" id="img-prompt" placeholder="Image Prompt: e.g., 'Granola bar on a rustic wooden table'">
+                    <input type="text" id="text-prompt" placeholder="Content Prompt: e.g., 'Write a social post about healthy ingredients'">
+                    <button id="generate-btn" onclick="generateContent()">Generate</button>
+                </div>
+            </div>
+            <div class="pipe" id="pipe-3"></div>
+        </section>
+
+        <section id="station-4" class="station">
+            <div class="step-label">Step 4: The Finishing Station</div>
+            <h2>Refine and Select</h2>
+            <p>Review the generated options. Make direct edits to text and images, then select the perfect pairing for your campaign.</p>
+            <div id="refine-zone" class="interactive-zone" style="display: none; gap: 1rem;">
+                <div class="content-pair" onclick="selectPair(this)">
+                    <img src="https://via.placeholder.com/150/0a9396/ffffff?text=Image+A" alt="Generated Image A">
+                    <p>"Discover the wholesome goodness in every bite! Our granola is packed with natural ingredients."</p>
+                </div>
+                <div class="content-pair" onclick="selectPair(this)">
+                    <img src="https://via.placeholder.com/150/94d2bd/001219?text=Image+B" alt="Generated Image B">
+                    <p>"Fuel your day the right way. We're proud of the healthy, delicious ingredients in our top-selling granola."</p>
+                </div>
+                 <div class="content-pair" onclick="selectPair(this)">
+                    <img src="https://via.placeholder.com/150/e9d8a6/001219?text=Image+C" alt="Generated Image C">
+                    <p>"Pure ingredients, pure taste. That's the promise behind our all-natural granola bars."</p>
+                </div>
+            </div>
+            <div class="pipe" id="pipe-4"></div>
+        </section>
+
+        <section id="station-5" class="station">
+            <div class="step-label">Step 5: The Distribution Hub</div>
+            <h2>Deploy & Integrate</h2>
+            <p>With a single click, deploy your custom models and receive a dedicated API endpoint for seamless integration into all your marketing applications.</p>
+            <div class="interactive-zone" style="flex-direction: column;">
+                 <div id="api-box" class="api-box">
+                    <span>// Your Custom API Endpoint is Ready</span>
+                    <br>
+                    <span><strong>Endpoint:</strong> https://api.catalyst.com/v1/your-company</span>
+                    <br>
+                    <span><strong>Status:</strong> <span style="color: #ff5555;">Inactive</span></span>
+                </div>
+                 <button id="deploy-btn" class="clickable" onclick="deploy()">Deploy Campaign</button>
+                 <div class="icon-group" style="margin-top: 1.5rem;">
+                     <img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter"/>
+                     <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook"/>
+                     <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram"/>
+                     <img src="https://img.icons8.com/ios-filled/50/000000/secured-letter.png" alt="Email"/>
+                 </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="nav-controls"></div>
+
+
+    <script>
+        const mainContainer = document.getElementById('main-container');
+        const stations = document.querySelectorAll('.station');
+        const navControls = document.getElementById('nav-controls');
+        let currentStep = 0;
+
+        // State tracking
+        const state = {
+            llmSelected: false,
+            imgSelected: false,
+            tuned: false,
+            generated: false,
+            selected: false,
+            deployed: false
+        };
+
+        function updateNavDots() {
+            navControls.innerHTML = '';
+            stations.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('nav-dot');
+                if (index === currentStep) {
+                    dot.classList.add('active');
+                }
+                dot.onclick = () => goToStep(index);
+                navControls.appendChild(dot);
+            });
+        }
+
+        function goToStep(stepIndex) {
+            // Allow navigation only if the previous step is complete
+            if (stepIndex > 0 && !isStepComplete(stepIndex - 1)) {
+                alert("Please complete the current step first!");
+                return;
+            }
+            currentStep = stepIndex;
+            mainContainer.style.transform = `translateX(-${currentStep * 100}vw)`;
+            updateNavDots();
+        }
+
+        function isStepComplete(stepIndex) {
+            switch(stepIndex) {
+                case 0: return state.llmSelected && state.imgSelected;
+                case 1: return state.tuned;
+                case 2: return state.generated;
+                case 3: return state.selected;
+                case 4: return state.deployed;
+                default: return true;
+            }
+        }
+        
+        function checkStepCompletionAndAdvance(step) {
+            if(isStepComplete(step)) {
+                document.getElementById(`pipe-${step + 1}`).classList.add('active');
+                setTimeout(() => goToStep(step + 1), 1000);
+            }
+        }
+
+        // --- Step 1 Logic ---
+        function selectModel(type) {
+            const el = document.getElementById(`model-${type}`);
+            el.classList.toggle('selected');
+            state[`${type}Selected`] = el.classList.contains('selected');
+            checkStepCompletionAndAdvance(0);
+        }
+
+        // --- Step 2 Logic ---
+        function tuneModel() {
+            const btn = document.getElementById('tune-btn');
+            const status = document.getElementById('tune-status');
+            btn.style.pointerEvents = 'none';
+            status.textContent = "Tuning in progress... Analyzing brand context...";
+            
+            setTimeout(() => {
+                btn.classList.add('selected');
+                status.textContent = "✅ Model Tuned & Secured!";
+                state.tuned = true;
+                checkStepCompletionAndAdvance(1);
+            }, 2000);
+        }
+
+        // --- Step 3 Logic ---
+        function generateContent() {
+            const imgPrompt = document.getElementById('img-prompt').value;
+            const textPrompt = document.getElementById('text-prompt').value;
+            if (!imgPrompt || !textPrompt) {
+                alert("Please fill out both prompts.");
+                return;
+            }
+            state.generated = true;
+            document.getElementById('refine-zone').style.display = 'flex';
+            checkStepCompletionAndAdvance(2);
+        }
+
+        // --- Step 4 Logic ---
+        function selectPair(element) {
+            document.querySelectorAll('.content-pair').forEach(el => el.style.border = '2px solid var(--line-color)');
+            element.style.border = '3px solid var(--brand-primary)';
+            state.selected = true;
+            checkStepCompletionAndAdvance(3);
+        }
+
+        // --- Step 5 Logic ---
+        function deploy() {
+            const apiBox = document.getElementById('api-box');
+            const deployBtn = document.getElementById('deploy-btn');
+            apiBox.innerHTML = `
+                <span>// Your Custom API Endpoint is Ready</span>
+                <br>
+                <span><strong>Endpoint:</strong> https://api.catalyst.com/v1/your-company</span>
+                <br>
+                <span><strong>Status:</strong> <span style="color: #2ecc71;">Active</span></span>
+            `;
+            deployBtn.textContent = "Campaign Deployed!";
+            deployBtn.classList.add('selected');
+            deployBtn.style.pointerEvents = 'none';
+            document.querySelector('#station-5 .interactive-zone').classList.add('deployed');
+            state.deployed = true;
+        }
+
+        // Initialize
+        updateNavDots();
+    </script>
+
+</body>
+</html>
