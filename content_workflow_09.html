@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI Art Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e7eb;
+        }
+        /* Loading spinner for image generation */
+        .image-loader {
+            border: 4px solid #374151; /* gray-700 */
+            border-top: 4px solid #002d9c; 
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        /* Loading spinner for text generation */
+        .text-loader {
+             border: 2px solid #4b5563; /* gray-600 */
+            border-top: 2px solid #a5b4fc; /* indigo-300 */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Ensure disabled buttons have the right style */
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Modal styles */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-black flex flex-col items-center justify-center min-h-screen p-4 py-8">
+
+    <div class="w-full max-w-5xl text-center">
+        <div id="header-section">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">AI Art Generator</h1>
+            <p class="text-gray-400 mb-8">Bring your ideas to life. Describe a vision, and let AI create it.</p>
+        </div>
+        
+        <!-- Image display area -->
+        <div id="image-container" class="bg-gray-900/50 rounded-xl overflow-hidden border border-gray-800 shadow-2xl shadow-blue-500/10 min-h-[400px] flex items-center justify-center relative">
+            <div id="image-loader" class="image-loader hidden absolute"></div>
+            <img id="ai-image" src="https://placehold.co/1024x1024/0a0a0a/374151?text=Your+Vision+Appears+Here" 
+                 alt="Placeholder for AI-generated art" 
+                 class="w-full h-auto object-contain transition-opacity duration-500">
+        </div>
+        
+        <!-- Controls Panel -->
+        <div class="mt-8 p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Left side: Prompt and Generate button -->
+                <div class="flex flex-col gap-4">
+                     <label for="prompt-input" class="text-lg font-bold text-white text-left">Create Your Vision</label>
+                    <input type="text" id="prompt-input" placeholder="e.g., The architecture of a dream, painted by ghosts" class="w-full bg-gray-800 border border-gray-700 rounded-md p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <button id="generate-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center gap-2">
+                        <span>✨ Generate New Vision</span>
+                    </button>
+                </div>
+                 <!-- Right side: Analysis buttons -->
+                <div class="flex flex-col gap-4">
+                    <label class="text-lg font-bold text-white text-left">Explore the Art</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button id="interpret-btn" disabled class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center gap-2">
+                           <span>✨ Interpret this Image</span>
+                        </button>
+                        <button id="poem-btn" disabled class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center gap-2">
+                            <span>✨ Write a Poem</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Text Output Modal -->
+    <div id="text-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 modal">
+        <div id="modal-content" class="bg-gray-900 border border-gray-700 rounded-2xl max-w-2xl w-full p-8 relative transform opacity-0 -translate-y-4 modal-content">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-3xl leading-none">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold text-white mb-4"></h3>
+            <div id="modal-body" class="space-y-3 text-gray-300 max-h-[60vh] overflow-y-auto">
+                <!-- Generated content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- API Configuration ---
+        const API_KEY = ""; // Keep this empty, Canvas will handle it.
+        const IMAGEN_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+        // --- DOM Elements ---
+        const generateBtn = document.getElementById('generate-btn');
+        const interpretBtn = document.getElementById('interpret-btn');
+        const poemBtn = document.getElementById('poem-btn');
+        const promptInput = document.getElementById('prompt-input');
+        const aiImage = document.getElementById('ai-image');
+        const imageLoader = document.getElementById('image-loader');
+        const headerSection = document.getElementById('header-section');
+        
+        // Modal elements
+        const textModal = document.getElementById('text-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        let lastGeneratedImage = null;
+
+        // --- Event Listeners ---
+        generateBtn.addEventListener('click', handleGenerateImage);
+        interpretBtn.addEventListener('click', () => handleTextGeneration('interpret'));
+        poemBtn.addEventListener('click', () => handleTextGeneration('poem'));
+        closeModalBtn.addEventListener('click', hideModal);
+        textModal.addEventListener('click', (e) => {
+            if (e.target === textModal) hideModal();
+        });
+
+
+        // --- UI Functions ---
+        function showModal() {
+            textModal.classList.remove('hidden', 'opacity-0');
+            setTimeout(() => {
+                modalContent.classList.add('opacity-100', 'translate-y-0');
+                modalContent.classList.remove('opacity-0', '-translate-y-4');
+            }, 10);
+        }
+
+        function hideModal() {
+            modalContent.classList.remove('opacity-100', 'translate-y-0');
+            modalContent.classList.add('opacity-0', '-translate-y-4');
+            setTimeout(() => {
+                textModal.classList.add('opacity-0');
+                 setTimeout(() => textModal.classList.add('hidden'), 300);
+            }, 300);
+        }
+
+        function setButtonLoading(button, isLoading) {
+            if(isLoading) {
+                button.disabled = true;
+                button.dataset.originalText = button.innerHTML;
+                button.innerHTML = '<div class="text-loader mx-auto"></div>';
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalText;
+            }
+        }
+
+        // --- API Call Functions ---
+
+        /**
+         * Handles the "Generate New Vision" button click.
+         */
+        async function handleGenerateImage() {
+            const prompt = promptInput.value;
+            if (!prompt) {
+                alert('Please enter a prompt to generate an image.');
+                return;
+            }
+
+            // UI updates for loading state
+            setButtonLoading(generateBtn, true);
+            aiImage.classList.add('opacity-0');
+            imageLoader.classList.remove('hidden');
+            headerSection.classList.add('hidden'); // Hide original title
+            interpretBtn.disabled = true;
+            poemBtn.disabled = true;
+            lastGeneratedImage = null;
+            
+            try {
+                const payload = { instances: [{ prompt: prompt }], parameters: { "sampleCount": 1 } };
+                const response = await fetch(IMAGEN_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const result = await response.json();
+                
+                if (result.predictions && result.predictions[0]?.bytesBase64Encoded) {
+                    lastGeneratedImage = result.predictions[0].bytesBase64Encoded;
+                    const imageUrl = `data:image/png;base64,${lastGeneratedImage}`;
+                    aiImage.src = imageUrl;
+                    aiImage.alt = prompt;
+                    // Enable analysis buttons only after successful generation
+                    interpretBtn.disabled = false;
+                    poemBtn.disabled = false;
+                } else {
+                    throw new Error("Invalid response structure from API.");
+                }
+
+            } catch (error) {
+                console.error("Image generation failed:", error);
+                alert(`Image generation failed. Please check the console for details.`);
+                headerSection.classList.remove('hidden'); // Show title again on error
+                 aiImage.src = 'https://placehold.co/1024x1024/0a0a0a/374151?text=Generation+Failed';
+            } finally {
+                // UI cleanup
+                setButtonLoading(generateBtn, false);
+                imageLoader.classList.add('hidden');
+                aiImage.classList.remove('opacity-0');
+            }
+        }
+
+        /**
+         * Handles text generation for both interpretation and poems.
+         * @param {'interpret' | 'poem'} mode - The type of text to generate.
+         */
+        async function handleTextGeneration(mode) {
+            const currentButton = mode === 'interpret' ? interpretBtn : poemBtn;
+            setButtonLoading(currentButton, true);
+            
+            if (!lastGeneratedImage) {
+                alert("Cannot analyze image. Please generate a new one first.");
+                setButtonLoading(currentButton, false);
+                return;
+            }
+
+            let promptText;
+            if (mode === 'interpret') {
+                promptText = "Provide a deep, artistic interpretation of this image. Describe the mood, potential themes, and what it might represent.";
+                modalTitle.textContent = "✨ Artistic Interpretation";
+            } else { // poem
+                promptText = "Write a short, evocative, and abstract poem inspired by this image.";
+                modalTitle.textContent = "✨ A Poem for the Vision";
+            }
+            
+            modalBody.innerHTML = '<div class="text-loader mx-auto"></div>';
+            showModal();
+
+            try {
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: "image/png", data: lastGeneratedImage } }
+                        ]
+                    }],
+                };
+
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                if (result.candidates && result.candidates[0].content.parts[0].text) {
+                    // Simple formatting for newlines
+                    modalBody.innerHTML = result.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
+                } else {
+                    throw new Error("Invalid text response structure from API.");
+                }
+
+            } catch (error) {
+                console.error("Text generation failed:", error);
+                modalBody.innerHTML = `<p class="text-red-400">Text generation failed. Please try again.</p>`;
+            } finally {
+                setButtonLoading(currentButton, false);
+            }
+        }
+    </script>
+</body>
+</html>
