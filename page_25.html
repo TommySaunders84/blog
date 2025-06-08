@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visionary Views | A Digital Strategy & Design Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base font and theme setup */
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e7eb; /* gray-200 */
+        }
+
+        /* Applying DM Sans for headings and the logo */
+        h1, h2, h3, h4, .font-sans-header {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Custom color definitions */
+        .bg-primary-dark { background-color: #002d9c; }
+        .hover\:bg-primary-darker:hover { background-color: #00227a; }
+        .text-primary-light { color: #3b82f6; } /* Tailwind's blue-500 for good contrast */
+        .hover\:text-primary-lighter:hover { color: #60a5fa; } /* Tailwind's blue-400 */
+        .border-primary-light { border-color: #3b82f6; }
+        .hover\:border-primary-light-hover:hover { border-color: #2563eb; } /* Tailwind's blue-600 */
+
+        /* Subtle fade-in animation for elements on scroll */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #002d9c;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Image Loader */
+        .image-loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(10, 10, 10, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .image-loader-spinner {
+            border: 4px solid #374151;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="bg-black">
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 bg-black/70 backdrop-blur-lg border-b border-gray-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-tighter font-sans-header">Visionary<span class="text-primary-light">.</span>Views</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Articles</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Themes</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">About</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Contact</a>
+            </div>
+            <a href="#" class="hidden md:inline-block bg-primary-dark hover:bg-primary-darker text-white font-semibold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105 font-sans-header">
+                Subscribe
+            </a>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+             <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Articles</a>
+             <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Themes</a>
+             <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">About</a>
+             <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-300 font-sans-header">Contact</a>
+             <a href="#" class="block mt-2 bg-primary-dark hover:bg-primary-darker text-white font-semibold text-center py-2 px-5 rounded-lg transition-all duration-300 font-sans-header">
+                Subscribe
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <!-- Featured Article Section -->
+        <section class="mb-16 md:mb-24 fade-in-element">
+            <div class="block group">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                    <div class="md:col-span-3 rounded-xl overflow-hidden">
+                        <img src="https://placehold.co/1600x900/1a1a1a/ffffff?text=Future+of+UI" 
+                             alt="Abstract image representing the future of user interfaces" 
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                    </div>
+                    <div class="md:col-span-2">
+                        <span class="text-primary-light font-semibold text-sm uppercase font-sans-header">Design Philosophy</span>
+                        <h1 class="text-4xl lg:text-5xl font-bold text-white mt-2 mb-4 leading-tight group-hover:text-primary-lighter transition-colors duration-300">The End of Interfaces: Towards a Predictive & Ambient User Experience</h1>
+                        <p class="text-gray-400 mb-6 text-lg">Explore how AI and machine learning are dismantling traditional UI paradigms, paving the way for systems that anticipate user needs before they even arise.</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/40?u=author1" alt="Author avatar" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <p class="text-white font-semibold font-sans-header">Elena Vasileva</p>
+                                <p class="text-gray-500 text-sm">June 08, 2025 · 8 min read</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gemini-Powered Idea Generation Section -->
+        <section class="mb-16 fade-in-element text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">Stuck for an idea?</h2>
+            <p class="text-gray-400 mb-6 max-w-2xl mx-auto">Let our AI partner brainstorm the next big topic in digital strategy and design.</p>
+            <button id="generate-ideas-btn" class="bg-primary-dark hover:bg-primary-darker text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center space-x-2 font-sans-header">
+                <span>✨ Generate Article Ideas</span>
+            </button>
+        </section>
+
+        <!-- Grid of Recent Articles -->
+        <section>
+            <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-primary-light pl-4 fade-in-element">Latest Insights</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+                <!-- Article Card Template -->
+                <article class="group bg-gray-900/50 rounded-xl overflow-hidden border border-gray-800 hover:border-primary-light-hover transition-all duration-300 fade-in-element flex flex-col">
+                    <div class="relative overflow-hidden">
+                       <img src="https://placehold.co/800x600/1a1a1a/ffffff?text=AI+Creativity" alt="Abstract AI art" class="article-image w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-500">
+                       <div class="image-loader-overlay hidden opacity-0"><div class="image-loader-spinner"></div></div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <span class="article-category text-sm font-semibold text-primary-light uppercase font-sans-header">Artificial Intelligence</span>
+                        <h3 class="article-title text-xl font-bold mt-2 mb-3 text-white group-hover:text-primary-lighter transition-colors duration-300">The Generative Age: Is AI a Threat or a Tool for Human Creativity?</h3>
+                        <p class="article-excerpt text-gray-400 text-sm flex-grow">A deep dive into the dual nature of generative AI, examining its potential to both augment and challenge traditional creative roles in the design industry.</p>
+                    </div>
+                    <div class="p-6 pt-0 mt-auto">
+                        <button class="generate-art-btn w-full text-center text-sm font-semibold text-primary-light hover:text-white bg-gray-800 hover:bg-gray-700 rounded-md py-2 px-4 transition-colors duration-300 flex items-center justify-center space-x-2 font-sans-header">
+                           <span>✨ Generate Cover Art</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Additional articles will be populated by JS -->
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16">
+        <div class="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                 <h3 class="text-xl font-bold text-white tracking-tighter font-sans-header">Visionary<span class="text-primary-light">.</span>Views</h3>
+                 <p class="mt-4 text-gray-400 max-w-md">Exploring the future of digital strategy, design, and technology. We provide the insights you need to stay ahead in a rapidly changing world.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white uppercase tracking-wider font-sans-header">Navigate</h4>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">Articles</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">Contact</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white uppercase tracking-wider font-sans-header">Follow Us</h4>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">X / Twitter</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">LinkedIn</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-primary-lighter transition-colors">Behance</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-black py-4 mt-8">
+            <p class="text-center text-gray-500 text-sm">&copy; 2025 Visionary Views. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Gemini Idea Generation Modal -->
+    <div id="ideas-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div id="ideas-modal-content" class="bg-gray-900 border border-gray-700 rounded-2xl max-w-2xl w-full p-8 relative transform transition-all opacity-0 -translate-y-4">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">&times;</button>
+            <h3 class="text-2xl font-bold text-white mb-4 font-sans-header">✨ Fresh Ideas from Gemini</h3>
+            <div id="ideas-list" class="space-y-3 text-gray-300">
+                <!-- Generated content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Gemini API Configuration ---
+        const API_KEY = ""; // Keep this empty, Canvas will handle it.
+        const TEXT_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+        const IMAGE_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
+        
+        // --- DOM Element Selectors ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const fadeInElements = document.querySelectorAll('.fade-in-element');
+        const generateIdeasBtn = document.getElementById('generate-ideas-btn');
+        const ideasModal = document.getElementById('ideas-modal');
+        const ideasModalContent = document.getElementById('ideas-modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const ideasList = document.getElementById('ideas-list');
+        const articleGrid = document.querySelector('.grid.gap-10');
+
+        // --- Article Data ---
+        const articles = [
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Web3+Strategy',
+                category: 'Web3 & Brands',
+                title: 'Beyond the Hype: Building Authentic Brand Communities in a Decentralized World',
+                excerpt: 'Discover actionable strategies for leveraging Web3 technologies to foster genuine engagement and create lasting value for your brand\'s community.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Sustainable+Tech',
+                category: 'Sustainability',
+                title: 'The Green Byte: A Framework for Designing Carbon-Negative Digital Products',
+                excerpt: 'Learn about a comprehensive framework for product designers and developers aiming to create digital experiences that are not just neutral, but actively beneficial for the environment.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Data+Storytelling',
+                category: 'Data Science',
+                title: 'Data as a Narrative: The Art of Storytelling in Business Intelligence',
+                excerpt: 'Move beyond spreadsheets and dashboards. Learn how to weave compelling narratives from your data to drive decision-making and inspire action.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Ethical+AI',
+                category: 'Ethics & Tech',
+                title: 'The Algorithmic Compass: Navigating Ethical Dilemmas in AI Development',
+                excerpt: 'As AI becomes more powerful, so do the ethical questions. We explore frameworks for building responsible AI that prioritizes fairness, transparency, and human well-being.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=VR+Workplace',
+                category: 'Future of Work',
+                title: 'The Metaverse Office: Redefining Collaboration in Virtual Spaces',
+                excerpt: 'Is the future of teamwork happening in VR? A look at the platforms, challenges, and opportunities of building a productive and engaging virtual workplace.',
+            },
+             {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Neuro+Design',
+                category: 'UX/UI Design',
+                title: 'Neuro-Design: Crafting Interfaces That Speak to the Brain',
+                excerpt: 'Applying principles of cognitive psychology and neuroscience to create more intuitive, engaging, and effective user experiences. It\'s time to design smarter, not harder.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=API+Economy',
+                category: 'Business Strategy',
+                title: 'The API Economy: How Interconnectivity is the New Competitive Advantage',
+                excerpt: 'Your business is only as strong as its connections. We break down how a robust API strategy can unlock new revenue streams, foster partnerships, and accelerate innovation.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Cyber+Resilience',
+                category: 'Cybersecurity',
+                title: 'Beyond Defense: Building a Cyber-Resilient Organization for the Modern Age',
+                excerpt: 'It\'s not a matter of if, but when. Learn to build a security posture that not only defends against attacks but allows your business to adapt, respond, and recover quickly.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Low-Code',
+                category: 'Development',
+                title: 'The Low-Code Revolution: Democratizing Software Development',
+                excerpt: 'Are low-code and no-code platforms the future of application development? We analyze the pros, cons, and a strategic approach to implementation.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Quantum',
+                category: 'Emerging Tech',
+                title: 'Quantum Computing: Preparing Your Business for the Next Technological Leap',
+                excerpt: 'It may seem like science fiction, but the quantum era is approaching. Understand the fundamentals and how to prepare your business for a post-quantum world.',
+            },
+             {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Personalization',
+                category: 'Customer Experience',
+                title: 'Hyper-Personalization at Scale: The AI-Driven Customer Journey',
+                excerpt: 'Go beyond using a customer\'s first name. Explore how AI can be used to create deeply personalized and predictive experiences for every user, at every touchpoint.',
+            },
+            {
+                img: 'https://placehold.co/800x600/1a1a1a/ffffff?text=Circular+Economy',
+                category: 'Sustainability',
+                title: 'The Circular Economy: Redesigning Business Models for a Finite Planet',
+                excerpt: 'A guide to moving from a "take-make-dispose" model to one that is regenerative by design. Explore the principles and opportunities of the circular economy.',
+            },
+        ];
+
+        // --- UI Initialization ---
+        
+        function createArticleCard(articleData) {
+            const articleTemplate = articleGrid.querySelector('article').cloneNode(true);
+            articleTemplate.querySelector('.article-image').src = articleData.img;
+            articleTemplate.querySelector('.article-image').alt = articleData.title;
+            articleTemplate.querySelector('.article-category').textContent = articleData.category;
+            articleTemplate.querySelector('.article-title').textContent = articleData.title;
+            articleTemplate.querySelector('.article-excerpt').textContent = articleData.excerpt;
+            articleTemplate.querySelector('.generate-art-btn').addEventListener('click', handleGenerateCoverArt);
+            return articleTemplate;
+        }
+
+        // Clear the template card and populate with data
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstCard = articleGrid.querySelector('article');
+            firstCard.querySelector('.generate-art-btn').addEventListener('click', handleGenerateCoverArt);
+            
+            articles.forEach(data => {
+                const newCard = createArticleCard(data);
+                articleGrid.appendChild(newCard);
+            });
+             // Re-query for fade-in elements after dynamic creation
+            const newFadeInElements = document.querySelectorAll('.fade-in-element');
+            newFadeInElements.forEach(element => observer.observe(element));
+        });
+
+        // Mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeInElements.forEach(element => observer.observe(element));
+
+        // Modal open/close logic
+        generateIdeasBtn.addEventListener('click', handleGenerateIdeas);
+        closeModalBtn.addEventListener('click', hideModal);
+        ideasModal.addEventListener('click', (e) => {
+            if (e.target === ideasModal) hideModal();
+        });
+
+        function showModal() {
+            ideasModal.classList.remove('hidden');
+            setTimeout(() => {
+                ideasModalContent.classList.add('opacity-100', 'translate-y-0');
+                ideasModalContent.classList.remove('opacity-0', '-translate-y-4');
+            }, 10);
+        }
+
+        function hideModal() {
+            ideasModalContent.classList.remove('opacity-100', 'translate-y-0');
+            ideasModalContent.classList.add('opacity-0', '-translate-y-4');
+            setTimeout(() => {
+                ideasModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Gemini API Functionality ---
+
+        /**
+         * Handles the "Generate Ideas" button click event.
+         */
+        async function handleGenerateIdeas() {
+            const button = generateIdeasBtn;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<div class="loader mx-auto"></div>';
+            button.disabled = true;
+
+            const prompt = "Generate 5 compelling, click-worthy blog post titles for a thought leadership blog. The topics should be at the intersection of future technology, digital strategy, brand building, and innovative UI/UX design. Format the output as a simple list with each title on a new line.";
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            
+            try {
+                const response = await fetch(TEXT_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+                const result = await response.json();
+                if (result.candidates && result.candidates[0]?.content.parts[0]?.text) {
+                    const ideas = result.candidates[0].content.parts[0].text.split('\n').filter(idea => idea.trim() !== '').map(idea => `<li>${idea.replace(/^\s*-\s*/, '')}</li>`).join('');
+                    ideasList.innerHTML = `<ul class="list-disc list-inside space-y-2">${ideas}</ul>`;
+                } else {
+                    ideasList.innerHTML = '<p class="text-red-400">Could not parse the response from the AI.</p>';
+                }
+            } catch (error) {
+                 console.error("Gemini API call failed:", error);
+                 ideasList.innerHTML = '<p class="text-red-400">Sorry, we couldn\'t generate ideas at this moment. Please try again later.</p>';
+            }
+            
+            showModal();
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+
+        /**
+         * Handles the "Generate Cover Art" button click event.
+         */
+        async function handleGenerateCoverArt(e) {
+            const button = e.currentTarget;
+            const article = button.closest('article');
+            const title = article.querySelector('.article-title').textContent;
+            const image = article.querySelector('.article-image');
+            const loaderOverlay = article.querySelector('.image-loader-overlay');
+            
+            // Show loader
+            button.disabled = true;
+            loaderOverlay.classList.remove('hidden');
+            setTimeout(() => loaderOverlay.classList.remove('opacity-0'), 10);
+
+            const prompt = `An abstract, sophisticated piece of digital art representing the concept of '${title}'. The style must be minimalist and conceptual. The color palette must be strictly limited to deep blues (like #002d9c), electric blues (like #3b82f6), black, and white highlights. The composition should be clean, professional, and evocative of high technology.`;
+            
+            const payload = { instances: [{ prompt: prompt }], parameters: { "sampleCount": 1 } };
+
+            try {
+                const response = await fetch(IMAGE_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                if (result.predictions && result.predictions[0]?.bytesBase64Encoded) {
+                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                    image.src = imageUrl;
+                } else {
+                    throw new Error("Invalid response structure from image API.");
+                }
+            } catch (error) {
+                console.error("Image generation failed:", error);
+                // Optionally show an error on the image itself
+                image.src = `https://placehold.co/800x600/1f2937/9ca3af?text=Error+Generating`;
+            } finally {
+                // Hide loader
+                button.disabled = false;
+                loaderOverlay.classList.add('opacity-0');
+                setTimeout(() => loaderOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+    </script>
+</body>
+</html>
