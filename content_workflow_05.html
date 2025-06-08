@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI-Powered Marketing & Sales Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: The application is structured as a multi-view SPA to deconstruct the dense report. The default view is the 'Interactive Workflow', a visual representation of the 4 phases and 14 steps, allowing users to click and explore details on demand. This is more engaging than a linear document. A top navigation switches to two other views: 'Foundational Pillars' which isolates the core concepts (Identity, Tech, Governance, Architecture) for focused learning, and 'Operational Levers', an interactive dashboard. This dashboard allows users to select a specific operational category (e.g., 'Inputs', 'KPIs', 'Activation Levers') and see that information collated from all 14 steps. This matrix-like view is designed for strategists and practitioners who need to compare and synthesize information across the entire workflow, a task difficult with the original report format. This structure prioritizes user-driven exploration and synthesis over passive reading. -->
+    <!-- Visualization & Content Choices: Report Info: 14-step workflow -> Goal: Organize/Inform -> Viz: Interactive HTML/CSS diagram -> Interaction: Click to reveal details -> Justification: Breaks down complexity, improves navigation. | Report Info: Detailed step breakdowns (Inputs, Outputs, etc.) -> Goal: Inform -> Viz: Tabbed content cards -> Interaction: Click tabs -> Justification: Prevents information overload. | Report Info: Foundational pillars -> Goal: Inform -> Viz: 4-column layout with expandable sections -> Interaction: Click to expand -> Justification: Organizes conceptual knowledge cleanly. | Report Info: Operational Levers (KPIs, Assets) -> Goal: Compare/Synthesize -> Viz: Dropdown-controlled content display -> Interaction: Select from dropdown -> Justification: Enables powerful cross-cutting analysis. | Report Info: Predictive Scoring -> Goal: Inform/Illustrate -> Viz: Bar Chart (Chart.js/Canvas) -> Interaction: Hover for tooltips -> Justification: Makes the abstract concept of feature importance tangible and visual. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .phase-accent-1 { border-color: #4f46e5; }
+        .phase-accent-2 { border-color: #db2777; }
+        .phase-accent-3 { border-color: #16a34a; }
+        .phase-accent-4 { border-color: #d97706; }
+        .tab-active { background-color: #111827; color: #f9fafb; }
+        .tab-inactive { background-color: #e5e7eb; color: #374151; }
+        .view-active { display: block; }
+        .view-inactive { display: none; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .nav-btn-active { background-color: #374151; color: white; }
+        .nav-btn-inactive { background-color: #f3f4f6; color: #374151; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Operationalizing the Identity-Centric AI Workflow</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive guide to the 14-step framework for marketing and sales.</p>
+        </header>
+
+        <nav class="flex justify-center space-x-2 md:space-x-4 mb-10 p-2 bg-white rounded-xl shadow-sm">
+            <button id="nav-workflow" class="nav-btn-active px-4 py-2 text-sm md:text-base font-semibold rounded-lg transition-colors duration-200">Interactive Workflow</button>
+            <button id="nav-pillars" class="nav-btn-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-lg transition-colors duration-200">Foundational Pillars</button>
+            <button id="nav-levers" class="nav-btn-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-lg transition-colors duration-200">Operational Levers</button>
+        </nav>
+
+        <main>
+            <div id="view-workflow" class="view-active">
+                <section class="text-center mb-12">
+                     <h2 class="text-2xl font-bold text-gray-900 mb-2">The AI-Powered Workflow</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">This workflow progresses from data foundation to automated execution. Click on any step below to explore its detailed operational blueprint, including inputs, outputs, KPIs, and more. The process is divided into four distinct phases, each building upon the last.</p>
+                </section>
+                <div id="workflow-container" class="space-y-12"></div>
+                <div id="step-detail-container" class="mt-12"></div>
+            </div>
+
+            <div id="view-pillars" class="view-inactive">
+                 <section class="text-center mb-12">
+                     <h2 class="text-2xl font-bold text-gray-900 mb-2">Foundational Pillars</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">A robust identity-centric AI operation rests on four critical pillars. These foundational elements are not sequential steps but are prerequisites that underpin the entire workflow, ensuring its efficacy, scalability, and ethical integrity. Explore each pillar to understand its strategic role.</p>
+                </section>
+                <div id="pillars-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </div>
+
+            <div id="view-levers" class="view-inactive">
+                <section class="text-center mb-12">
+                     <h2 class="text-2xl font-bold text-gray-900 mb-2">Operational Levers</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">Analyze the workflow through the lens of specific operational concerns. Select a category from the dropdown below to see how it applies across all 14 steps. This view is designed for strategic comparison, helping to align team responsibilities, plan asset creation, and define key metrics across the entire process.</p>
+                </section>
+                <div class="flex justify-center mb-8">
+                    <select id="levers-select" class="block w-full max-w-xs p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="inputs">Inputs</option>
+                        <option value="outputs">Outputs</option>
+                        <option value="kpis">Reporting & KPIs</option>
+                        <option value="insights">Analysis & Strategic Insights</option>
+                        <option value="innovation">Innovative Approaches</option>
+                        <option value="activation">Activation & Ideation</option>
+                        <option value="assets">Asset Creation</option>
+                        <option value="execution">Execution & Orchestration</option>
+                    </select>
+                </div>
+                <div id="levers-container" class="space-y-6"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const workflowData = [
+            {
+                phase: 'Phase 1: Data Foundation & Feature Engineering',
+                accent: 'phase-accent-1',
+                description: 'To acquire, process, and organize diverse datasets into a robust, queryable infrastructure specifically designed to train and power AI models.',
+                steps: [
+                    { id: 1, title: 'AI-Centric Data Acquisition', goal: 'Identify and establish data streams from first-party (CRM, web/product analytics) and third-party sources (enrichment APIs, public data).'},
+                    { id: 2, title: 'Targeted Signal Scraping', goal: 'Implement ethical and targeted scraping operations to extract specific, publicly available predictive signals—not just contact information.'},
+                    { id: 3, title: 'Feature Engineering & Extraction', goal: 'Convert raw data (logs, text, scraped content) into standardized, numerical, or categorical features suitable for AI algorithms.' },
+                    { id: 4, title: 'AI-Ready Data Architecture', goal: 'Design and implement a modern data storage framework (Data Lake, Data Warehouse, Feature Store).' },
+                ]
+            },
+            {
+                phase: 'Phase 2: Predictive Intelligence & Audience Definition',
+                accent: 'phase-accent-2',
+                description: 'To apply machine learning to the prepared data to uncover patterns, predict outcomes, and define high-potential audience segments.',
+                steps: [
+                    { id: 5, title: 'Predictive Lead & Account Scoring', goal: 'Develop and deploy AI models (e.g., Gradient Boosting, Neural Networks) to replace static, rule-based scoring.' },
+                    { id: 6, title: 'AI-Powered Audience Segmentation', goal: 'Apply unsupervised learning algorithms (e.g., K-Means clustering) to the dataset to automatically identify distinct, data-driven customer segments.' },
+                    { id: 7, title: 'Insight Generation & Analysis', goal: 'Conduct in-depth analysis of AI model outputs and segmented data to discover actionable insights.' },
+                ]
+            },
+            {
+                phase: 'Phase 3: AI-Driven Strategy & Content Generation',
+                accent: 'phase-accent-3',
+                description: 'To translate predictive intelligence into concrete strategies for targeting and content, leveraging generative AI to create assets at scale.',
+                steps: [
+                    { id: 8, title: 'Dynamic Targeting Strategy', goal: 'Develop a data-driven targeting plan based on AI-generated scores and segments.' },
+                    { id: 9, title: 'NLP-Informed Content Strategy', goal: 'Utilize NLP to analyze customer feedback, competitor content, and public forums to identify high-impact content topics.' },
+                    { id: 10, title: 'Generative AI Content Creation', goal: 'Leverage Generative AI (LLMs) to accelerate content production under mandatory human review.' },
+                ]
+            },
+            {
+                phase: 'Phase 4: Automated Execution & Continuous Improvement',
+                accent: 'phase-accent-4',
+                description: 'To activate strategies using AI-powered platforms, personalize the customer journey at scale, and continuously optimize for performance and growth.',
+                steps: [
+                    { id: 11, title: 'Automated Campaign Execution', goal: 'Deploy campaigns utilizing the native AI capabilities of execution platforms (e.g., AI bidding, DCO, chatbots).' },
+                    { id: 12, title: 'Adaptive Lead Nurturing', goal: 'Move beyond static drips to hyper-personalized nurture sequences based on real-time behavior.' },
+                    { id: 13, title: 'AI-Assisted Selling & Onboarding', goal: 'Equip sales and success teams with AI tools (e.g., call analysis, real-time talking points, churn prediction).' },
+                    { id: 14, title: 'AI-Powered Campaign Optimization & Scaling', goal: 'Implement continuous, AI-driven optimization using multivariate testing and anomaly detection.' },
+                ]
+            }
+        ];
+
+        const stepDetails = {
+            1: {
+                inputs: "Inventory of 1st & 3rd party data sources, Consent Management Platform (CMP) data, Privacy policies.",
+                outputs: "Secure data streams into data lake, Raw data records tagged with source/timestamp, Metadata for each source.",
+                kpis: "Data volume & velocity per source, % of records with identity markers, Data quality scores, Consent capture rate.",
+                insights: "Identify richest data sources for identity resolution, Assess current identity fragmentation, Evaluate 3rd party data match potential.",
+                innovation: "Uncover 'pre-identification' behavioral patterns, Pinpoint 'data deserts' for identity markers in key segments.",
+                activation: "Prioritize integration of identifier-rich sources, Design data capture forms to maximize ethical collection, Explore 2nd party data partnerships.",
+                assets: "Comprehensive data dictionaries, Standardized consent forms & privacy notices, Data flow diagrams.",
+                execution: "Establish scalable data ingestion pipelines (APIs, batch), Implement validation & tagging at ingestion, Integrate CMP APIs, Preserve all potential identifiers in storage.",
+            },
+            2: {
+                inputs: "List of target public sources (job boards, news sites), Defined predictive signals (hiring intent, funding news), List of known company identities from CRM/CDP, Ethical/legal scraping guidelines.",
+                outputs: "Structured data records from scraped signals, Confirmed linkages of signals to company IDs, Raw scraped text for NLP.",
+                kpis: "Volume of signals per source, Match rate of scraped companies to CRM, Coverage of target accounts with signals, Freshness/timeliness of signals.",
+                insights: "Identify most fruitful public sources for signals, Understand public footprint of key accounts, Correlate signals with company attributes to find trends.",
+                innovation: "Develop 'early warning' systems for account opportunities/risks, Build dynamic 'organizational DNA' profiles from long-term scraping.",
+                activation: "Trigger automated sales alerts on buying signals, Inform content strategy from public forum topics, Ideate competitive counter-messaging.",
+                assets: "Structured schemas for scraped data, Trained NER/classification models for text, Dashboards visualizing signals mapped to company profiles.",
+                execution: "Deploy ethical web scraping tools, Implement robust matching of scraped company names to CRM IDs, Set up NLP pipelines for text processing, Ensure compliance with ToS and privacy laws.",
+            },
+            3: {
+                inputs: "Identity-resolved raw data, Unified customer profiles from CDP, Defined feature requirements for AI models, NLP libraries.",
+                outputs: "Set of engineered features linked to unified IDs (e.g., engagement scores, RFM metrics, sentiment scores), Features prepared for Feature Store.",
+                kpis: "Distribution of feature values, Correlation analysis between features, Feature importance scores from models, Feature drift detection.",
+                insights: "Understand characteristics of highly engaged customers, Identify themes/pain points from customer text, Discover non-obvious behavioral relationships.",
+                innovation: "Create 'identity trajectory' features capturing change over time, Develop 'network features' for B2B accounts, Engineer 'privacy sensitivity' scores.",
+                activation: "Trigger personalized offers based on feature combinations, Ideate new content based on NLP-derived themes, Develop dynamic journey paths based on evolving features.",
+                assets: "Detailed documentation for each feature, Version-controlled feature engineering scripts, Interactive dashboards to explore feature distributions.",
+                execution: "Implement feature engineering pipelines (Python/Spark/SQL), Apply NLP suite to text data linking output to IDs, Schedule regular feature recalculations, Implement strict feature versioning in Feature Store.",
+            },
+            4: {
+                inputs: "Identity-resolved data streams, Engineered features linked to identities, Requirements for storage, access, latency, Security and governance policies.",
+                outputs: "Operational Data Lake (raw data), Data Warehouse (structured, identity-resolved data), Feature Store (versioned, identity-keyed features).",
+                kpis: "Storage costs & utilization, Query performance metrics, Feature Store serving latency & throughput, Data lineage and traceability reports.",
+                insights: "Assess efficiency and bottlenecks in data flow, Evaluate scalability of the architecture, Analyze query patterns to optimize data models, Ensure architecture supports model reproducibility.",
+                innovation: "Design for 'temporal identity analysis' to study profile evolution, Build capabilities for 'cross-domain identity linkage' (e.g., B2C to B2B).",
+                activation: "Use data warehouse for historical journey analysis, Leverage Feature Store for consistent batch/real-time features, Prototype new AI models with accessible data.",
+                assets: "Detailed architecture diagrams, Data models and schemas for warehouse/feature store, Access control policies and encryption strategies, Disaster recovery plans.",
+                execution: "Provision and configure cloud storage services, Implement ETL/ELT pipelines with identity resolution as a core step, Set up partitioning and indexing in warehouse, Configure Feature Store for online/offline access.",
+            },
+            5: {
+                inputs: "Identity-keyed engineered features from Feature Store, Historical lead/account data with known outcomes (conversions), Business definitions of a 'good lead', ML platforms/libraries.",
+                outputs: "Dynamic probability score (0-100) assigned to each lead/account ID, List of top features influencing each score, Trained and versioned scoring models.",
+                kpis: "Distribution of scores, Model performance metrics (Accuracy, Precision, Recall, AUC), Correlation of scores to actual conversion rates, Lift analysis vs. baseline.",
+                insights: "Identify most predictive combinations of identity features, Understand *why* specific leads get high/low scores, Compare AI scoring performance to old methods.",
+                innovation: "Develop 'dynamic treatment thresholds' using score + identity confidence, Implement 'account-level propensity scoring' by aggregating contact scores, Forecast 'propensity to become high-LTV'.",
+                activation: "Prioritize sales follow-up on highest-scoring leads, Trigger personalized nurture based on score *and* contributing features, Allocate marketing budget to channels generating high-scoring leads.",
+                assets: "Sales enablement materials on using AI scores, Personalized outreach templates leveraging key features, Dashboards for leadership to view score distributions and impact.",
+                execution: "Train ML models on identity-keyed features, Deploy models for real-time or batch scoring, Integrate scoring outputs back into CDP/CRM, Automate routing of high-scoring leads, Establish regular model retraining cadence.",
+            },
+            6: {
+                inputs: "Identity-keyed engineered features from Feature Store, Unsupervised learning algorithms (K-Means, DBSCAN), Business objectives to guide exploration.",
+                outputs: "Set of defined customer segments with lists of IDs, Detailed profiles for each segment, Visualizations of segment distributions and sizes.",
+                kpis: "Number of segments and size of each, Intra-cluster similarity & inter-cluster dissimilarity metrics, Segment stability over time, Performance of segments on business KPIs (LTV, churn).",
+                insights: "Understand defining characteristics of each AI-identified segment, Discover 'non-obvious' customer groupings, Identify high-potential underserved niche segments.",
+                innovation: "Implement 'dynamic segmentation' where identities move between segments in near real-time, Develop 'predictive segmentation' to classify new leads, Explore 'cross-segment influence' via network analysis.",
+                activation: "Develop personalized campaigns for each segment, Prioritize product development for high-value segments, Use segment membership as a feature in other models.",
+                assets: "Data-rich persona descriptions for each segment, Portfolio of tailored content assets (email, ads) per segment, Segment-specific customer journey maps.",
+                execution: "Run unsupervised learning algorithms on identity-keyed feature set, Store segment membership back into CDP linked to profiles, Integrate segment data with marketing/ad platforms for targeting, Regularly refresh segments.",
+            },
+            7: {
+                inputs: "Predictive scores linked to IDs, AI-generated segments with lists of IDs, Full engineered feature set for each identity, Business questions and hypotheses.",
+                outputs: "Actionable insights reports, Ranking of most predictive features for outcomes, Deep understanding of high-value segment characteristics, Prioritized list of data-driven hypotheses for testing.",
+                kpis: "Interactive dashboards overlaying scores/segments with identity attributes, Feature importance reports, Customer journey analysis for key segments, Comparative KPI analysis across segments.",
+                insights: "Understand *why* specific identities/segments behave as they do, Uncover the 'story' behind high-performing or at-risk segments, Validate or refute business assumptions with data.",
+                innovation: "Perform 'identity-centric root cause analysis' for metric changes, Facilitate 'serendipity discovery' of unexpected correlations, Map the 'evolution of identity' over the customer lifecycle.",
+                activation: "Formulate targeted A/B tests for specific identity segments, Revise and enrich personas with AI-driven insights, Ideate new products/services for unmet needs of identity groups.",
+                assets: "Visually compelling insight summaries for stakeholders, Updated and granular customer persona documents, Backlog of data-driven hypotheses for testing, 'Insight-to-action' workshop templates.",
+                execution: "Use BI tools and statistical software for analysis, Conduct cross-functional workshops to discuss insights, Establish a formal feedback loop to refine models/features, Document all significant insights and their business impact.",
+            },
+            8: {
+                inputs: "Predictive scores and segments for each ID, Insights on key predictive features, Historical channel performance data (CPA, ROI per identity), Market and competitive data.",
+                outputs: "Dynamic targeting plan (who, what, where), Audience definitions for high-fidelity lookalike audiences, Optimized budget allocation plan, Prioritized list of expansion markets.",
+                kpis: "Reach and addressability of target identity segments, Campaign performance (CTR, conversion, ROI) per identity group, Accuracy and performance of lookalike audiences, Channel effectiveness for acquiring high-value identities.",
+                insights: "Identify which score/segment combos yield highest ROI on which channels, Quantify lift from AI-targeting vs. broad targeting, Assess scalability of segments for lookalike modeling.",
+                innovation: "Implement 'adaptive audience sequencing' across channels, Use 'cross-channel identity-based frequency capping', Build 'negative lookalike audiences' to exclude poor performers.",
+                activation: "Upload lists of IDs to ad platforms for direct targeting/seeding, Dynamically adjust bids based on predicted identity value, Prioritize content development for high-value segments.",
+                assets: "Formalized audience definitions for ad platforms, Detailed budget allocation models, Market expansion strategy documents, Campaign brief templates specifying target identity.",
+                execution: "Launch campaigns on ad platforms using AI-derived audiences, Implement and monitor budget allocation rules, Continuously monitor campaign performance against identity groups, Work with data clean rooms for matching.",
+            },
+            9: {
+                inputs: "Customer feedback (reviews, tickets) linked to IDs/segments, Competitor content, Public forum discussions, NLP tools, Existing personas and segment profiles.",
+                outputs: "Prioritized list of content topics and keywords, Semantic gap analysis for current content, Understanding of language that resonates with segments, Competitive content landscape analysis.",
+                kpis: "Frequency of topics mentioned by identity segment, Sentiment scores for products/brand by identity group, Comparative language analysis (brand vs. customer), Content gap reports.",
+                insights: "Identify most pressing pain points for distinct identity groups, Understand specific questions target segments are asking online, Discover precise terminology/vernacular used by segments.",
+                innovation: "Generate 'identity-specific lexicons' for content tuning, Use 'predictive content needs identification' based on recent interactions, Analyze how different segments react to the same competitor content.",
+                activation: "Prioritize new content addressing pain points of high-value segments, Tailor content tone/style for different identity groups, Refine SEO/SEM keyword strategy based on user language.",
+                assets: "Actionable content briefs for writers/GenAI, Style guides for writing for different segments, Topic cluster models and pillar page strategies informed by NLP.",
+                execution: "Implement NLP pipelines to process text data, Link NLP insights back to customer IDs in CDP, Use findings to populate and prioritize content calendars, Train creators on using NLP insights.",
+            },
+            10: {
+                inputs: "Detailed, identity-targeted content briefs, Predictive scores and key features for specific leads, Persona descriptions for AI segments, Brand voice and style guides, Access to LLMs.",
+                outputs: "First drafts of long-form content tailored to segments, Multiple variations of ad copy for A/B testing, Personalized email snippets for identified leads, *All outputs require human review*.",
+                kpis: "Volume of content drafted by AI, Time saved in content creation process, Human review effort per piece, A/B test performance of AI-assisted vs. human-only content.",
+                insights: "Identify which content types are best accelerated by GenAI for specific segments, Understand optimal level of identity detail for prompts, Refine prompting strategies based on reviewer feedback.",
+                innovation: "Create 'hyper-personalized narratives' weaving in identity history, Enable 'proactive content generation' based on identity state changes, Generate 'empathetic' first-drafts for customer service.",
+                activation: "Rapidly create A/B test variations for different identity segments, Scale production of personalized email campaigns, Ideate new interactive content formats suited for GenAI personalization.",
+                assets: "Comprehensive prompt libraries categorized by type/segment/outcome, Clear workflows for human review and approval, Ethical use guidelines for generative AI, Training on identity-centric prompt engineering.",
+                execution: "Integrate GenAI tools into content workflows, Train teams on effective prompt engineering with identity context, Enforce rigorous review and approval processes, Use APIs to programmatically feed identity data into prompts.",
+            },
+            11: {
+                inputs: "Dynamic targeting plan (identity segments/scores), Library of AI-generated content variations, Unified customer profiles from CDP, Access to ad platforms with AI bidding/DCO.",
+                outputs: "Active campaigns across digital channels, Real-time ad bid adjustments, Dynamically assembled, personalized ad creatives, Personalized chatbot interactions.",
+                kpis: "Campaign ROI broken down by identity segment, Performance of DCO creative elements per identity profile, Effectiveness of AI bidding in acquiring high-value identities, Chatbot engagement and qualification rates.",
+                insights: "Identify most effective execution tactics for each identity segment, Understand impact of DCO personalization on engagement, Assess efficiency of AI bidding in reaching target identities.",
+                innovation: "Implement 'identity-aware DCO' using holistic CDP profile, Use chatbots for 'conversational identity building', Optimize bidding for predicted LTV, not just conversion.",
+                activation: "Leverage AI bidding strategies (tCPA, tROAS), Utilize DCO for real-time creative assembly, Deploy AI chatbots for 24/7 lead qualification, Ensure all automation respects user consent.",
+                assets: "DCO ad templates with dynamic fields, Sophisticated chatbot conversation flows, Detailed campaign setup configurations, Integration maps showing identity data flow to platforms.",
+                execution: "Integrate CDP with ad platforms and DCO engines, Set up AI bidding strategies aligned with acquiring high-value identities, Deploy chatbots with logic to use identity data, Ensure compliance with consent choices.",
+            },
+            12: {
+                inputs: "Resolved lead identities with scores/segments from CDP, Comprehensive content library tagged by topic/stage, Real-time behavioral data streams, Marketing automation platform with AI.",
+                outputs: "Dynamically executed, hyper-personalized lead nurture sequences, AI-driven recommendations for next-best-content/action, Continuously updated lead scores, Automated sales alerts.",
+                kpis: "Nurture content engagement rates by identity segment, Lead progression velocity through funnel, Conversion rates from nurture to SQL, A/B test results on nurture tactics per segment.",
+                insights: "Identify most effective content/sequences for specific identity profiles, Understand optimal timing and frequency of communication, Discover behavioral patterns predictive of conversion.",
+                innovation: "Develop 'predictive nurturing paths' forecasting optimal sequence for an individual, Implement 'cross-channel behavioral retargeting' within nurture streams, Use sentiment analysis on lead replies to adapt journey.",
+                activation: "Dynamically assemble email/landing page content with personalized recommendations, Trigger different workflows based on score/behavior changes, Prioritize human follow-up for highly engaged leads.",
+                assets: "Library of modular content components for dynamic assembly, Adaptable nurture workflow branches for different segments, Refined lead scoring rules incorporating nurture engagement, Sales alert templates.",
+                execution: "Configure marketing automation for AI-driven dynamic journeys, Ensure tight, bi-directional integration with CDP, Set up robust real-time behavioral tracking, Continuously monitor and A/B test nurture performance.",
+            },
+            13: {
+                inputs: "Resolved prospect/customer IDs from CDP/CRM, Real-time data from sales calls/emails, Product usage data for new customers, Conversational intelligence platforms.",
+                outputs: "Actionable insights from call analysis for coaching, Real-time talking points and battle cards in CRM, AI-driven churn risk scores for new customers, Personalized, proactive onboarding tasks.",
+                kpis: "Improvements in sales team performance metrics (win rate, deal size), Adoption and usage of AI-generated talking points, Accuracy of churn prediction models, Reduction in early-stage customer churn.",
+                insights: "Identify winning communication patterns from top sales reps, Understand common prospect objections or questions, Pinpoint early behaviors indicative of churn risk, Discover key 'aha' moments in successful onboarding.",
+                innovation: "'Just-in-time' sales coaching triggered by in-call events, 'Proactive relationship management' alerts based on sentiment analysis of communications, 'Predictive onboarding paths' tailored to user goals.",
+                activation: "Surface AI-generated insights and talk tracks directly in the CRM, Trigger automated alerts to CS teams for at-risk customers, Automatically assign personalized onboarding checklists.",
+                assets: "Library of best-practice call snippets for training, Dynamic talking point templates, Churn risk prediction models, Portfolio of personalized onboarding email sequences and guides.",
+                execution: "Integrate conversational intelligence with CRM/CDP, Deploy churn prediction models using identity and usage data, Build automated workflows to trigger onboarding tasks, Train sales/CS teams on using new AI tools.",
+            },
+            14: {
+                inputs: "Real-time campaign performance data linked to identities, AI model performance metrics, Anomaly detection algorithms, Multivariate testing platforms.",
+                outputs: "Continuous, automated adjustments to live campaigns, Prioritized list of scaling opportunities, High-quality lookalike audiences for expansion, Forecasts of future campaign performance.",
+                kpis: "Rate of campaign performance improvement, ROI of scaled campaigns in new markets, Performance lift from multivariate testing, Accuracy of AI-driven performance forecasts.",
+                insights: "Identify which campaign variables have the most impact on different identity segments, Discover performance anomalies not visible in aggregate data, Understand the 'saturation point' of campaigns for specific segments.",
+                innovation: "Implement 'AI-driven budget reallocation' across campaigns in real-time, Use 'automated hypothesis testing' where AI proposes and tests its own optimizations, Develop 'market expansion readiness' scores.",
+                activation: "Use multivariate testing to refine creatives/bids for identity segments, Leverage AI forecasts to set realistic goals and budgets, Automatically build and deploy lookalike audiences in new markets based on successful campaigns.",
+                assets: "Multivariate testing plans and result logs, Anomaly detection alert dashboards, Campaign scaling playbooks based on historical data, Performance forecasting models.",
+                execution: "Deploy anomaly detection systems on performance data, Integrate multivariate testing tools with ad platforms, Use AI models to prioritize expansion opportunities, Create a feedback loop where optimization results refine future strategies.",
+            }
+        };
+
+        const pillarsData = [
+            { 
+                title: 'A. Customer Identity',
+                icon: '👤',
+                summary: 'The core of modern MarTech. Moving beyond fragmented data to a unified, 360-degree view of the customer by resolving identity across online and offline touchpoints using deterministic and probabilistic matching.',
+                details: `
+                    <p class="mb-2"><strong class="text-gray-800">Key Concept:</strong> Identity resolution bridges online and offline worlds to build a single, unified view of the customer (SCV).</p>
+                    <p class="mb-2"><strong class="text-gray-800">Strategic Value:</strong> Enables hyper-personalization, precise segmentation, and informed decision-making, improving loyalty and customer experience.</p>
+                    <p class="mb-2"><strong class="text-gray-800">Data Types:</strong> Leverages 1st, 2nd, and 3rd party data, including behavioral, transactional, and firmographic signals.</p>
+                    <p class="mb-4"><strong class="text-gray-800">Techniques:</strong> Deterministic matching (high-confidence, PII-based) and Probabilistic matching (algorithmic inference).</p>
+                    <p class="text-sm text-indigo-700 bg-indigo-100 p-3 rounded-lg">Identity is not static; it's a dynamic, evolving profile. The confidence level of a resolved identity can be used to trigger different levels of personalization or validation.</p>
+                `
+            },
+            { 
+                title: 'B. Technology Enablers',
+                icon: '⚙️',
+                summary: 'A robust tech stack is essential, featuring Identity Resolution Platforms, Customer Data Platforms (CDPs) as the central nervous system, and Feature Stores for consistent AI model inputs.',
+                details: `
+                    <p class="mb-2"><strong class="text-gray-800">Identity Resolution Platforms:</strong> Specialized tools to ingest data, apply matching algorithms, and build an identity graph.</p>
+                    <p class="mb-2"><strong class="text-gray-800">Customer Data Platforms (CDPs):</strong> The central hub that integrates data to create unified, persistent customer profiles accessible to other systems for activation.</p>
+                    <p class="mb-2"><strong class="text-gray-800">Feature Stores:</strong> A centralized repository to manage, version, and serve curated, identity-keyed features consistently for both ML model training and real-time inference.</p>
+                    <p class="text-sm text-pink-700 bg-pink-100 p-3 rounded-lg">The synergy of these tools creates an 'identity-to-intelligence' pipeline, ensuring all AI models operate on a consistent, contextually intelligent understanding of each customer.</p>
+                `
+            },
+            { 
+                title: 'C. Data Governance',
+                icon: '🛡️',
+                summary: 'Ensuring privacy, security, and compliance. This involves embedding Privacy-by-Design principles, managing consent transparently, and adhering to regulations like GDPR and CCPA.',
+                details: `
+                    <p class="mb-2"><strong class="text-gray-800">Privacy-by-Design (PbD):</strong> Embedding data protection into system architecture from the outset (e.g., data minimization, purpose limitation).</p>
+                    <p class="mb-2"><strong class="text-gray-800">Consent Management:</strong> A cornerstone of ethical data handling, requiring clear, granular, and easily manageable user consent (opt-in vs. opt-out).</p>
+                    <p class="mb-2"><strong class="text-gray-800">Regulatory Landscape:</strong> Navigating complex laws (GDPR, CCPA/CPRA) that grant individuals rights over their data.</p>
+                    <p class="mb-4"><strong class="text-gray-800">Security:</strong> Implementing robust measures like encryption, access controls, and pseudonymization to protect sensitive identity data.</p>
+                    <p class="text-sm text-green-700 bg-green-100 p-3 rounded-lg">Good governance builds trust, which encourages customers to share high-quality first-party data, creating a virtuous cycle of better data leading to better AI and better experiences.</p>
+                `
+            },
+            { 
+                title: 'D. Data Architecture',
+                icon: '🏛️',
+                summary: 'Building an AI-ready, identity-infused data ecosystem. Identity serves as the central organizing principle across the data lake (raw data), data warehouse (structured data), and Feature Store.',
+                details: `
+                    <p class="mb-2"><strong class="text-gray-800">Data Lake (e.g., S3):</strong> Repository for raw data, preserving all original identifiers for future resolution.</p>
+                    <p class="mb-2"><strong class="text-gray-800">Data Warehouse (e.g., BigQuery):</strong> Home for cleaned, structured, identity-resolved information, with the unified customer ID as the primary key.</p>
+                    <p class="mb-2"><strong class="text-gray-800">Data Flow:</strong> A clear path from raw ingestion -> identity resolution -> enrichment (CDP) -> structured storage (Warehouse) -> feature engineering (Feature Store) -> AI consumption.</p>
+                    <p class="mb-4"><strong class="text-gray-800">Scalability:</strong> The architecture must support massive data volumes and real-time operations for dynamic segmentation and personalization.</p>
+                    <p class="text-sm text-amber-700 bg-amber-100 p-3 rounded-lg">An identity-aware architecture is distinct from traditional silos; every data point and event revolves around the persistent, resolved customer identifier, enabling powerful temporal analysis.</p>
+                `
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const workflowContainer = document.getElementById('workflow-container');
+            const stepDetailContainer = document.getElementById('step-detail-container');
+            const pillarsContainer = document.getElementById('pillars-container');
+            const leversSelect = document.getElementById('levers-select');
+            const leversContainer = document.getElementById('levers-container');
+            
+            let selectedStep = null;
+            let chartInstance = null;
+            
+            const navButtons = {
+                workflow: document.getElementById('nav-workflow'),
+                pillars: document.getElementById('nav-pillars'),
+                levers: document.getElementById('nav-levers')
+            };
+
+            const views = {
+                workflow: document.getElementById('view-workflow'),
+                pillars: document.getElementById('view-pillars'),
+                levers: document.getElementById('view-levers')
+            };
+
+            function switchView(viewName) {
+                Object.keys(views).forEach(key => {
+                    views[key].classList.toggle('view-active', key === viewName);
+                    views[key].classList.toggle('view-inactive', key !== viewName);
+                    navButtons[key].classList.toggle('nav-btn-active', key === viewName);
+                    navButtons[key].classList.toggle('nav-btn-inactive', key !== viewName);
+                });
+            }
+
+            Object.keys(navButtons).forEach(key => {
+                navButtons[key].addEventListener('click', () => switchView(key));
+            });
+
+            function renderWorkflow() {
+                workflowContainer.innerHTML = workflowData.map(phase => `
+                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 ${phase.accent}">
+                        <h3 class="text-xl font-bold text-gray-900">${phase.phase}</h3>
+                        <p class="text-gray-600 mt-1 mb-6">${phase.description}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            ${phase.steps.map(step => `
+                                <div id="step-btn-${step.id}" class="step-button p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 hover:shadow-inner transition-all duration-200">
+                                    <p class="font-semibold text-gray-800">${step.id}. ${step.title}</p>
+                                    <p class="text-sm text-gray-500 mt-1">${step.goal}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.step-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const stepId = parseInt(e.currentTarget.id.replace('step-btn-', ''));
+                        renderStepDetail(stepId);
+
+                        document.querySelectorAll('.step-button').forEach(btn => btn.classList.remove('bg-indigo-100', 'border-indigo-400', 'shadow-lg'));
+                        e.currentTarget.classList.add('bg-indigo-100', 'border-indigo-400', 'shadow-lg');
+                    });
+                });
+            }
+
+            function renderStepDetail(stepId) {
+                const detail = stepDetails[stepId];
+                const stepInfo = workflowData.flatMap(p => p.steps).find(s => s.id === stepId);
+
+                if (selectedStep === stepId) {
+                    stepDetailContainer.innerHTML = '';
+                    selectedStep = null;
+                    document.getElementById(`step-btn-${stepId}`).classList.remove('bg-indigo-100', 'border-indigo-400', 'shadow-lg');
+                    return;
+                }
+                selectedStep = stepId;
+
+                stepDetailContainer.innerHTML = `
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 animate-fade-in">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Step ${stepId}: ${stepInfo.title}</h3>
+                        <div class="flex flex-wrap border-b border-gray-200 mb-4" id="tab-buttons-${stepId}">
+                            <button class="tab-btn p-3 font-semibold rounded-t-lg -mb-px tab-active" data-tab="inputs">Core Blueprint</button>
+                            <button class="tab-btn p-3 font-semibold rounded-t-lg -mb-px tab-inactive" data-tab="activation">Strategy & Activation</button>
+                            ${stepId === 5 ? '<button class="tab-btn p-3 font-semibold rounded-t-lg -mb-px tab-inactive" data-tab="viz">Visualization</button>' : ''}
+                        </div>
+                        <div id="tab-content-${stepId}">
+                            <!-- Content will be injected by tab click -->
+                        </div>
+                    </div>
+                `;
+                
+                renderTabContent(stepId, 'inputs');
+                
+                document.querySelectorAll(`#tab-buttons-${stepId} .tab-btn`).forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const tabName = e.target.dataset.tab;
+                        document.querySelectorAll(`#tab-buttons-${stepId} .tab-btn`).forEach(btn => {
+                            btn.classList.remove('tab-active');
+                            btn.classList.add('tab-inactive');
+                        });
+                        e.target.classList.add('tab-active');
+                        e.target.classList.remove('tab-inactive');
+                        renderTabContent(stepId, tabName);
+                    });
+                });
+
+                stepDetailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function renderTabContent(stepId, tabName) {
+                const detail = stepDetails[stepId];
+                const contentContainer = document.getElementById(`tab-content-${stepId}`);
+                let content = '';
+
+                if (tabName === 'inputs') {
+                    content = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            <div><strong class="block text-gray-700">Inputs:</strong><p class="text-gray-600">${detail.inputs}</p></div>
+                            <div><strong class="block text-gray-700">Outputs:</strong><p class="text-gray-600">${detail.outputs}</p></div>
+                            <div><strong class="block text-gray-700">Reporting & KPIs:</strong><p class="text-gray-600">${detail.kpis}</p></div>
+                             <div><strong class="block text-gray-700">Execution & Orchestration:</strong><p class="text-gray-600">${detail.execution}</p></div>
+                        </div>
+                    `;
+                } else if (tabName === 'activation') {
+                     content = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                           <div><strong class="block text-gray-700">Analysis & Strategic Insights:</strong><p class="text-gray-600">${detail.insights}</p></div>
+                           <div><strong class="block text-gray-700">Innovative Approaches:</strong><p class="text-gray-600">${detail.innovation}</p></div>
+                           <div><strong class="block text-gray-700">Activation & Ideation Levers:</strong><p class="text-gray-600">${detail.activation}</p></div>
+                           <div><strong class="block text-gray-700">Asset Creation Considerations:</strong><p class="text-gray-600">${detail.assets}</p></div>
+                        </div>
+                    `;
+                } else if (tabName === 'viz' && stepId === 5) {
+                    content = `
+                        <div>
+                            <p class="mb-4 text-gray-600">To illustrate how AI scoring models operate, this chart shows hypothetical 'Feature Importance' scores. It reveals which identity-linked attributes are most predictive of conversion, allowing teams to understand the 'why' behind a lead's score. Hover over the bars for more detail.</p>
+                            <div class="chart-container">
+                                <canvas id="featureImportanceChart"></canvas>
+                            </div>
+                        </div>`;
+                }
+                contentContainer.innerHTML = content;
+
+                if (tabName === 'viz' && stepId === 5) {
+                    renderFeatureImportanceChart();
+                }
+            }
+
+            function renderFeatureImportanceChart() {
+                const ctx = document.getElementById('featureImportanceChart').getContext('2d');
+                 if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                const data = {
+                    labels: [
+                        'Engagement Score', 'Visited Pricing Page', 'Company Size (Firmographic)',
+                        'Downloaded Whitepaper X', 'Job Title Seniority', 'Industry = Tech', 'Recency of Last Visit'
+                    ],
+                    datasets: [{
+                        label: 'Feature Importance Score',
+                        data: [0.85, 0.78, 0.72, 0.65, 0.58, 0.51, 0.45],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.6)', 'rgba(219, 39, 119, 0.6)', 'rgba(22, 163, 74, 0.6)',
+                            'rgba(217, 119, 6, 0.6)', 'rgba(79, 70, 229, 0.4)', 'rgba(219, 39, 119, 0.4)', 'rgba(22, 163, 74, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)', 'rgba(219, 39, 119, 1)', 'rgba(22, 163, 74, 1)',
+                            'rgba(217, 119, 6, 1)', 'rgba(79, 70, 229, 1)', 'rgba(219, 39, 119, 1)', 'rgba(22, 163, 74, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Hypothetical Feature Importance for Conversion Model', font: {size: 16} },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` Importance: ${context.raw.toFixed(2)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Importance Score' }
+                            },
+                            y: {
+                                ticks: {
+                                  autoSkip: false,
+                                  callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 25) {
+                                      return label.substring(0, 25) + '...';
+                                    }
+                                    return label;
+                                  }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function renderPillars() {
+                pillarsContainer.innerHTML = pillarsData.map(pillar => `
+                    <div class="bg-white p-6 rounded-xl shadow-md cursor-pointer hover:shadow-lg transition-shadow pillar-card">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-4">${pillar.icon}</span>
+                            <h3 class="text-xl font-bold text-gray-900">${pillar.title}</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">${pillar.summary}</p>
+                        <div class="pillar-details hidden text-gray-700 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            ${pillar.details}
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.pillar-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const details = e.currentTarget.querySelector('.pillar-details');
+                        details.classList.toggle('hidden');
+                    });
+                });
+            }
+
+            function renderLevers() {
+                const selectedLever = leversSelect.value;
+                const leverLabels = {
+                    inputs: "Inputs", outputs: "Outputs", kpis: "Reporting & KPIs", 
+                    insights: "Analysis & Strategic Insights", innovation: "Innovative Approaches",
+                    activation: "Activation & Ideation", assets: "Asset Creation", 
+                    execution: "Execution & Orchestration"
+                };
+
+                leversContainer.innerHTML = workflowData.map(phase => `
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 sticky top-0 bg-gray-50 py-2">${phase.phase}</h3>
+                        <div class="space-y-4">
+                            ${phase.steps.map(step => `
+                                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 ${phase.accent}">
+                                    <p class="font-semibold text-gray-900">${step.id}. ${step.title}</p>
+                                    <p class="mt-2"><strong class="text-gray-700">${leverLabels[selectedLever]}:</strong> <span class="text-gray-600">${stepDetails[step.id][selectedLever]}</span></p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            leversSelect.addEventListener('change', renderLevers);
+
+            renderWorkflow();
+            renderPillars();
+            renderLevers(); 
+        });
+    </script>
+</body>
+</html>
