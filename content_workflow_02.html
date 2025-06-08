@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Trends & Market Research: Renewable Energy 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic is structured as a top-down narrative, guiding the user from a high-level market overview to specific details. It starts with a compelling headline stat (Market Size), then breaks it down into its components (Segmentation by Source), analyzes the competitive landscape (Regional Players), shows historical movement (Adoption Trends), and provides a strategic overview (SWOT). This logical flow mirrors how a user would naturally explore a research report, making the data highly digestible and user-friendly. -->
+    <!-- Visualization & Content Choices: Market Size -> Goal: Change -> Viz: Line Chart -> Justification: Ideal for showing value over time -> Method: Chart.js Canvas. Market Share by Source -> Goal: Compare (Composition) -> Viz: Donut Chart -> Justification: Best for showing parts of a whole clearly -> Method: Chart.js Canvas. Regional Market Share -> Goal: Compare -> Viz: Bar Chart -> Justification: Easiest way to compare discrete categories -> Method: Chart.js Canvas. Technology Adoption -> Goal: Change/Compare -> Viz: Multi-series Line Chart -> Justification: Tracks multiple trends over time for direct comparison -> Method: Chart.js Canvas. SWOT Analysis -> Goal: Organize -> Viz: HTML/CSS Grid -> Justification: Provides a clear, structured quadrant view for qualitative data -> Method: Tailwind CSS. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+        .swot-card::before {
+            content: var(--icon);
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: var(--icon-color);
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#004AAD]">Renewable Energy Market Insights</h1>
+            <p class="text-lg text-slate-600 mt-2">Deep Dive into 2025 Industry Trends & Projections</p>
+        </header>
+
+        <main class="space-y-8">
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 text-center">
+                <h2 class="text-2xl font-bold text-[#0583F2] mb-2">Projected Market Value by 2030</h2>
+                <p class="text-6xl md:text-7xl font-extrabold text-[#004AAD]">$2.15 Trillion</p>
+                <p class="text-slate-500 mt-2">A massive leap driven by global green initiatives and technological advancements.</p>
+            </section>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl font-bold text-[#004AAD] mb-2">Market Growth Trajectory (USD Trillions)</h3>
+                    <p class="text-slate-600 mb-4">The market shows consistent and strong year-over-year growth, with projections indicating an acceleration post-2025 as green policies are fully implemented.</p>
+                    <div class="chart-container">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl font-bold text-[#004AAD] mb-2">2025 Market Share by Source</h3>
+                    <p class="text-slate-600 mb-4">Solar and Wind power dominate the market, representing the primary focus of investment and development worldwide. Hydro remains a significant, stable contributor.</p>
+                    <div class="chart-container">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                </section>
+                
+                <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl font-bold text-[#004AAD] mb-2">Regional Market Share Analysis</h3>
+                    <p class="text-slate-600 mb-4">The Asia-Pacific region leads in renewable energy capacity and investment, driven by governmental support and large-scale infrastructure projects.</p>
+                    <div class="chart-container">
+                        <canvas id="regionalShareChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl font-bold text-[#004AAD] mb-2">Technology Adoption Rate (2015-2025)</h3>
+                    <p class="text-slate-600 mb-4">Solar technology adoption has seen explosive growth due to falling production costs and increased efficiency, outpacing the steady growth of wind technology.</p>
+                     <div class="chart-container">
+                        <canvas id="techAdoptionChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 lg:col-span-2">
+                    <h3 class="text-xl font-bold text-center text-[#004AAD] mb-6">Strategic SWOT Analysis</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="swot-card bg-green-50 p-4 rounded-lg flex items-center" style="--icon: '✔'; --icon-color: #22c55e;">
+                            <div>
+                                <h4 class="font-bold text-green-800">Strengths</h4>
+                                <ul class="list-disc list-inside text-green-700 mt-1">
+                                    <li>Decreasing costs of solar & wind</li>
+                                    <li>Strong government incentives</li>
+                                    <li>Growing public environmental awareness</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swot-card bg-red-50 p-4 rounded-lg flex items-center" style="--icon: '✖'; --icon-color: #ef4444;">
+                            <div>
+                                <h4 class="font-bold text-red-800">Weaknesses</h4>
+                                <ul class="list-disc list-inside text-red-700 mt-1">
+                                    <li>Intermittency of power sources</li>
+                                    <li>High initial capital investment</li>
+                                    <li>Grid infrastructure limitations</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swot-card bg-sky-50 p-4 rounded-lg flex items-center" style="--icon: '💡'; --icon-color: #0ea5e9;">
+                            <div>
+                                <h4 class="font-bold text-sky-800">Opportunities</h4>
+                                <ul class="list-disc list-inside text-sky-700 mt-1">
+                                    <li>Advancements in energy storage</li>
+                                    <li>Expansion into emerging markets</li>
+                                    <li>Corporate green energy mandates</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swot-card bg-amber-50 p-4 rounded-lg flex items-center" style="--icon: '⚡'; --icon-color: #f59e0b;">
+                             <div>
+                                <h4 class="font-bold text-amber-800">Threats</h4>
+                                <ul class="list-disc list-inside text-amber-700 mt-1">
+                                    <li>Geopolitical instability</li>
+                                    <li>Supply chain disruptions for materials</li>
+                                    <li>Competition from fossil fuels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const wrapLabel = (label) => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                let currentLine = '';
+                const lines = [];
+                for (const word of words) {
+                    if ((currentLine + word).length > 16) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+            
+            const sharedChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12, family: 'Inter' },
+                            color: '#475569'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        },
+                        backgroundColor: '#004AAD',
+                        titleFont: { size: 14, family: 'Inter', weight: 'bold' },
+                        bodyFont: { size: 12, family: 'Inter' },
+                        padding: 10
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: { font: { family: 'Inter' }, color: '#64748b' },
+                        grid: { color: '#e2e8f0' }
+                    },
+                    x: {
+                        ticks: { font: { family: 'Inter' }, color: '#64748b' },
+                        grid: { display: false }
+                    }
+                }
+            };
+
+            const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                    datasets: [{
+                        label: 'Market Value (Trillions)',
+                        data: [1.02, 1.15, 1.28, 1.39, 1.51, 1.65, 1.78, 1.89, 2.01, 2.09, 2.15],
+                        borderColor: '#0583F2',
+                        backgroundColor: 'rgba(5, 131, 242, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { ...sharedChartOptions }
+            });
+
+            const marketShareCtx = document.getElementById('marketShareChart').getContext('2d');
+            new Chart(marketShareCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Solar', 'Wind', 'Hydroelectric', 'Bioenergy', 'Geothermal'],
+                    datasets: [{
+                        label: 'Market Share',
+                        data: [45, 35, 15, 3, 2],
+                        backgroundColor: ['#004AAD', '#0583F2', '#05DBF2', '#F2E205', '#64748b'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: { ...sharedChartOptions.plugins.legend },
+                        tooltip: { ...sharedChartOptions.plugins.tooltip }
+                    }
+                }
+            });
+
+            const regionalShareCtx = document.getElementById('regionalShareChart').getContext('2d');
+            new Chart(regionalShareCtx, {
+                type: 'bar',
+                data: {
+                    labels: [wrapLabel('Asia-Pacific Region'), 'Europe', wrapLabel('North America'), wrapLabel('Rest of the World')],
+                    datasets: [{
+                        label: 'Market Share %',
+                        data: [42, 28, 22, 8],
+                        backgroundColor: ['#004AAD', '#0583F2', '#05DBF2', '#F2E205'],
+                        borderRadius: 4
+                    }]
+                },
+                options: { 
+                    ...sharedChartOptions,
+                    plugins: {
+                         legend: { display: false },
+                         tooltip: { ...sharedChartOptions.plugins.tooltip }
+                    }
+                }
+            });
+            
+            const techAdoptionCtx = document.getElementById('techAdoptionChart').getContext('2d');
+            new Chart(techAdoptionCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2015', '2017', '2019', '2021', '2023', '2025'],
+                    datasets: [
+                        {
+                            label: 'Solar Adoption Index',
+                            data: [30, 45, 65, 80, 90, 98],
+                            borderColor: '#004AAD',
+                            backgroundColor: 'rgba(0, 74, 173, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                        },
+                        {
+                            label: 'Wind Adoption Index',
+                            data: [40, 50, 60, 68, 75, 82],
+                            borderColor: '#05DBF2',
+                            backgroundColor: 'rgba(5, 219, 242, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                        }
+                    ]
+                },
+                options: { ...sharedChartOptions }
+            });
+
+        });
+    </script>
+</body>
+</html>
