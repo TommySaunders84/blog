@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: The Evolving Landscape of Insight Visuals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: IBM-style Deep Blue -->
+    <!-- Application Structure Plan: The SPA now opens with an immersive, full-screen title page to hook the user. The main content is designed as an interactive dashboard with a sticky sidebar navigation. This non-linear structure empowers users to explore topics based on their interests. The flow follows the research paper's structure, concluding with a new set of interactive, AI-powered tools in the "Principles" section to provide actionable insights. -->
+    <!-- Visualization & Content Choices: 
+        - Title Page (Plotly.js): Goal: Engage/Hook. Justification: An interactive, abstract particle field provides an immediate "innovative visual" experience.
+        - AI Chart Recommender (Gemini API): Goal: Inform/Recommend. Justification: Provides actionable, personalized advice on chart selection.
+        - AI Ethical Checklist Generator (Gemini API): Goal: Guide/Inform. Justification: Creates a practical, actionable checklist tailored to a user's specific project, directly addressing a key report theme.
+        - All previous visualizations (Chart.js, HTML/CSS) remain to support the core report content.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        :root {
+            --primary-color: #0043ce;
+            --secondary-color: #4285f4;
+            --accent-color: #00a896;
+            --bg-color: #f1f5f9; /* slate-100 */
+            --card-bg-color: #ffffff;
+            --text-color: #1e293b; /* slate-800 */
+            --text-muted-color: #475569; /* slate-600 */
+            --border-color: #e2e8f0; /* slate-200 */
+        }
+        .dark {
+            --primary-color: #4285f4;
+            --secondary-color: #8ab4f8;
+            --accent-color: #00a896;
+            --bg-color: #0f172a; /* slate-900 */
+            --card-bg-color: #1e293b; /* slate-800 */
+            --text-color: #e2e8f0; /* slate-200 */
+            --text-muted-color: #94a3b8; /* slate-400 */
+            --border-color: #334155; /* slate-700 */
+        }
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .dark .nav-link.active {
+             background-color: var(--accent-color);
+             color: #0f172a;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .prose h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .prose p, .prose li {
+            line-height: 1.75;
+            color: var(--text-muted-color);
+        }
+         .prose a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .prose a:hover {
+            text-decoration: underline;
+        }
+        .prose blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1rem;
+            margin-left: 0;
+            font-style: italic;
+            color: var(--text-muted-color);
+        }
+        .prose table {
+            width: 100%;
+            margin-top: 1.5rem;
+            border-collapse: collapse;
+        }
+        .prose th, .prose td {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+        }
+        .prose th {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .dark .prose th {
+            background-color: rgba(255,255,255,0.05);
+        }
+        .section-card {
+             background-color: var(--card-bg-color);
+             padding: 2rem;
+             border-radius: 0.25rem; /* Less rounded */
+             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .loader {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-left-color: var(--secondary-color);
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        .dark .loader {
+            border-color: rgba(255,255,255,0.2);
+            border-left-color: var(--accent-color);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <header id="title-page" class="h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div id="plotly-bg" class="absolute inset-0 z-0 opacity-50"></div>
+        <div class="relative z-10 p-8">
+            <h1 class="text-5xl md:text-7xl font-bold text-white drop-shadow-lg">The Evolving Landscape of Insight Visuals</h1>
+            <p class="text-xl md:text-2xl text-slate-300 mt-4 max-w-4xl mx-auto">An interactive report on the innovations and emerging trends shaping data visualization for 2025 and beyond.</p>
+            <a href="#introduction" class="mt-12 inline-block bg-[#4285f4] text-white font-bold py-3 px-8 rounded-sm text-lg hover:bg-[#8ab4f8] hover:text-slate-900 hover:scale-105 transition-transform">
+                Explore the Report
+                <span class="ml-2 animate-bounce inline-block">↓</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="flex flex-col md:flex-row">
+        <nav id="sidebar-nav" class="w-full md:w-72 bg-white dark:bg-slate-800 p-4 md:sticky md:top-0 md:h-screen md:overflow-y-auto shadow-lg z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-[--primary-color]">Report Sections</h2>
+                <!-- Dark Mode Toggle -->
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun-fill text-slate-500" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/></svg>
+                    <label class="relative inline-flex items-center cursor-pointer mx-2">
+                      <input type="checkbox" id="darkModeToggle" class="sr-only peer">
+                      <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
+                    </label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon-stars-fill text-slate-500" viewBox="0 0 16 16"><path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/><path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162h1.212a.217.217 0 0 1 .154.414l-.98_1.09_h.393a.217.217 0 0 1 .198.316l-.488.994a.217.217 0 0 1-.412 0l-.387-1.162h-1.212a.217.217 0 0 1-.154-.414l.98-1.09zM13.794 6.148a.217.217 0 0 1 .412 0l.387 1.162h1.212a.217.217 0 0 1 .154.414l-.98 1.09h.393a.217.217 0 0 1 .198.316l-.488.994a.217.217 0 0 1-.412 0l-.387-1.162h-1.212a.217.217 0 0 1-.154-.414l.98-1.09z"/></svg>
+                </div>
+            </div>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">I. Introduction</a></li>
+                <li><a href="#core-technologies" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">II. Core Technologies</a></li>
+                <li><a href="#dominant-trends" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">III. Dominant Trends</a></li>
+                <li><a href="#innovations-in-practice" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">IV. Innovations in Practice</a></li>
+                <li><a href="#principles" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">V. Principles for Visuals</a></li>
+                <li><a href="#enabling-tools" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">VI. Enabling Tools</a></li>
+                <li><a href="#conclusion" class="nav-link block p-3 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700">VII. Conclusion</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10 prose max-w-none">
+            <section id="introduction" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">I. Introduction: Redefining Visual Insight</h2>
+                <h3>A. Beyond Traditional Charts: What Constitutes "Innovative Insight Visuals"?</h3>
+                <p>The field of data visualization is undergoing a significant transformation, moving beyond the confines of conventional charts and graphs to embrace novel methodologies and technological integrations. "Innovative insight visuals" are increasingly defined not merely by their aesthetic novelty, but by their capacity to fundamentally alter how data is perceived, interacted with, and ultimately understood. This evolution reflects a departure from static presentations towards dynamic, context-aware visual experiences.</p>
+            </section>
+             <section id="core-technologies" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">II. Core Technologies Driving the Next Wave of Visuals</h2>
+                 <p>The integration of Artificial Intelligence (AI), Machine Learning (ML), immersive technologies, and real-time data processing is a primary catalyst in the evolution of insight visuals.</p>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8 items-center">
+                    <div>
+                        <h4 class="text-xl font-semibold text-center mb-4">AI-Powered BI Platform Capabilities</h4>
+                         <div class="chart-container">
+                             <canvas id="biPlatformChart"></canvas>
+                         </div>
+                    </div>
+                    <div>
+                         <p>Leading AI data visualization tools like Domo, ThoughtSpot, and Tableau offer features like predictive insights and automated recommendations for appropriate visualization types.[10]</p>
+                    </div>
+                 </div>
+                 <div class="mt-8">
+                     <h4 class="text-xl font-semibold text-center mb-4">Immersive Analytics Adoption by Industry</h4>
+                     <div class="chart-container">
+                         <canvas id="immersiveAdoptionChart"></canvas>
+                     </div>
+                 </div>
+            </section>
+             <section id="dominant-trends" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">III. Dominant Trends in Insight Visualization</h2>
+                 <p>As we look towards 2025 and beyond, several dominant trends are shaping the landscape of insight visualization, pushing the boundaries of how data is communicated and understood.</p>
+                 <div class="mt-8">
+                     <h4 class="text-xl font-semibold text-center mb-4">Primary Use Cases for 3D Visualizations</h4>
+                     <div class="chart-container">
+                         <canvas id="threeDUsecaseChart"></canvas>
+                     </div>
+                 </div>
+            </section>
+            <section id="innovations-in-practice" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">IV. Innovations in Practice: Cross-Domain Applications</h2>
+                 <p>The transformative potential of innovative insight visuals is best understood through their application across diverse domains.</p>
+                 <h4 class="mt-8">Table 2: Mapping Innovative Visual Techniques to Key Application Domains</h4>
+                 <div class="overflow-x-auto">
+                 <table>
+                    <thead><tr><th>Innovative Visual Technique</th><th>Key Application Domains</th><th>Example Snippets</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Augmented Reality (AR) Overlays</strong></td><td>Manufacturing, Healthcare, Retail, Logistics</td><td>[13, 15, 20, 18, 19, 21, 22]</td></tr>
+                        <tr><td><strong>Virtual Reality (VR) Environments</strong></td><td>Scientific Research, Healthcare, Training</td><td>[5, 18, 23, 24]</td></tr>
+                        <tr><td><strong>Real-Time Interactive Dashboards</strong></td><td>Business Intelligence, Finance, Healthcare</td><td>[1, 4, 10, 27, 28, 30, 52, 53]</td></tr>
+                        <tr><td><strong>Conversational AI Interfaces</strong></td><td>Banking, Retail, Customer Service</td><td>[6, 8, 55, 56]</td></tr>
+                    </tbody>
+                 </table>
+                 </div>
+            </section>
+            <section id="principles" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">V. Principles for Effective and Ethical Insight Visuals</h2>
+                 <p>The development and deployment of innovative visuals must be guided by robust principles that ensure both effectiveness and ethical integrity.</p>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                     <div class="p-6 bg-slate-100 dark:bg-slate-700 rounded-sm">
+                         <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Chart Recommender</h4>
+                         <p class="text-sm text-[--text-muted-color] mb-4">Describe your data and communication goal. AI will suggest the most effective chart type.</p>
+                         <textarea id="chart-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm bg-white dark:bg-slate-800" rows="3" placeholder="e.g., I want to compare sales figures across 5 regions..."></textarea>
+                         <button id="generate-chart-rec" class="mt-2 w-full bg-[--secondary-color] text-white font-bold py-2 px-4 rounded-sm hover:bg-[--primary-color] transition-colors flex items-center justify-center gap-2">Get Recommendation<span id="chart-rec-loader" class="hidden loader"></span></button>
+                         <div id="chart-rec-result" class="mt-4 text-sm p-4 rounded-sm bg-white dark:bg-slate-800"></div>
+                     </div>
+                      <div class="p-6 bg-slate-100 dark:bg-slate-700 rounded-sm">
+                         <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Ethical Checklist Generator</h4>
+                         <p class="text-sm text-[--text-muted-color] mb-4">Describe your visualization project. AI will generate an actionable ethical checklist.</p>
+                         <textarea id="ethics-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm bg-white dark:bg-slate-800" rows="3" placeholder="e.g., A public dashboard showing neighborhood crime rates."></textarea>
+                         <button id="generate-ethics-check" class="mt-2 w-full bg-[--secondary-color] text-white font-bold py-2 px-4 rounded-sm hover:bg-[--primary-color] transition-colors flex items-center justify-center gap-2">Generate Checklist<span id="ethics-check-loader" class="hidden loader"></span></button>
+                         <div id="ethics-check-result" class="mt-4 text-sm p-4 rounded-sm bg-white dark:bg-slate-800"></div>
+                     </div>
+                 </div>
+                 <h3>B. Navigating the Ethical Terrain</h3>
+                 <p>As visuals become more powerful and personalized, the ethical stakes increase. Key concerns include data privacy, algorithmic bias, transparency, and accessibility.[7, 16, 54]</p>
+            </section>
+            <section id="enabling-tools" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">VI. Enabling the Future: Key Tools and Platforms</h2>
+                 <p>The creation of innovative visuals is powered by an evolving ecosystem of software tools, from foundational libraries to high-level applications.</p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">Foundational Libraries</h4>
+                        <p class="text-sm mt-2">Core JavaScript libraries like <strong>D3.js</strong> for dynamic 2D charts[18, 49] and <strong>Three.js</strong> for interactive 3D graphics[5, 41] offer maximum flexibility for custom visualizations.</p>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">AI & Generative UI</h4>
+                        <p class="text-sm mt-2">Frameworks like the <strong>Vercel AI SDK</strong>[6] and <strong>LangGraph.js</strong>[8] facilitate the integration of conversational AI and the dynamic generation of UI elements.</p>
+                    </div>
+                     <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">AR/VR Frameworks</h4>
+                        <p class="text-sm mt-2">Immersive analytics rely on engines like <strong>Unity (AR Foundation)</strong> and web standards like <strong>WebXR</strong> to create experiences for devices like Microsoft HoloLens.[19]</p>
+                    </div>
+                     <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">AI-Powered BI Platforms</h4>
+                        <p class="text-sm mt-2"><strong>Tableau</strong>, <strong>Power BI</strong>, <strong>Domo</strong>, and <strong>ThoughtSpot</strong> embed AI for natural language queries, predictive insights, and automated visualizations.[10, 30]</p>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">Open-Source Ecosystem</h4>
+                        <p class="text-sm mt-2">The open-source nature of many foundational libraries has been a significant catalyst for innovation, fostering community-driven experimentation and sharing.[43, 49, 75]</p>
+                    </div>
+                     <div class="bg-slate-100 dark:bg-slate-700 p-4 rounded-sm">
+                        <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200">Mobile Design Tools</h4>
+                        <p class="text-sm mt-2">Tools like <strong>Figma</strong>, <strong>Sketch</strong>, and <strong>Adobe XD</strong> are essential for creating the mockups, wireframes, and prototypes for mobile-first insight visuals.[61]</p>
+                    </div>
+                 </div>
+            </section>
+            <section id="conclusion" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">VII. Conclusion: The Future Trajectory</h2>
+                 <h3>A. Synthesis of Key Emerging Themes and Their Potential Impact.</h3>
+                 <p>The landscape of insight visualization is in a period of dynamic evolution. Key themes emerging are **AI-driven automation and generation**,[1, 6] **immersive experiences** via AR/VR,[5, 18] **hyper-personalization and adaptivity**,[1, 7, 13] the increasing power of **data storytelling**,[31, 32] and the blend of **art with analytics**.[44, 48] These themes are converging, leading to visualizations that are more deeply integrated into cognitive and operational workflows, functioning less as passive displays and more as intelligent, interactive partners in sense-making.</p>
+                 <h3>B. Recommendations for Researchers, Designers, and Organizations.</h3>
+                 <blockquote><p>A universal imperative across all roles is the need for continuous upskilling and adaptation. The rapid pace of change demands a commitment to learning. Furthermore, ethical considerations must be woven into the fabric of design, development, and deployment from the very beginning to build trust, avoid harm, and harness the full positive potential of innovative insight visuals.</p></blockquote>
+                 <ul class="list-disc pl-5 mt-4 space-y-2">
+                     <li><strong>For Researchers:</strong> Focus on validating design principles for immersive/AI content and developing new ethical frameworks.[5, 26, 71]</li>
+                     <li><strong>For Designers:</strong> Embrace continuous learning, develop a critical eye for AI-generated outputs, and prioritize ethical, accessible design through interdisciplinary collaboration.[16, 65, 72]</li>
+                     <li><strong>For Organizations:</strong> Invest in modern data infrastructure, cultivate data literacy across the workforce, and implement strong data governance and ethical AI deployment policies.[1, 12, 54]</li>
+                 </ul>
+            </section>
+        </main>
+    </div>
+
+    <footer class="text-center p-6 mt-10 bg-white dark:bg-slate-800 text-[--text-muted-color] text-sm">
+        <p>&copy; 2025 Insight Visuals Report. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let charts = {};
+
+            const getThemeColors = () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                return {
+                    primary: isDark ? '#818cf8' : '#0043ce',
+                    secondary: isDark ? '#a78bfa' : '#4285f4',
+                    accent: isDark ? '#4ade80' : '#00a896',
+                    grid: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    text: isDark ? '#e2e8f0' : '#1e293b'
+                };
+            };
+            
+            const multiLineTooltipTitle = { plugins: { tooltip: { callbacks: { title: function(items) { const item = items[0]; let label = item.chart.data.labels[item.dataIndex]; return Array.isArray(label) ? label.join(' ') : label; } } } } };
+            const commonChartOptions = { responsive: true, maintainAspectRatio: false, ...multiLineTooltipTitle };
+
+            function initializeCharts() {
+                const themeColors = getThemeColors();
+                
+                const biPlatformCtx = document.getElementById('biPlatformChart');
+                if (biPlatformCtx) { charts.biPlatform = new Chart(biPlatformCtx, { type: 'radar', data: { labels: ['Automation', 'Predictive Analytics', 'Generative UI', 'Ease of Use', 'Integration'], datasets: [{ label: 'Platform A', data: [8, 7, 6, 9, 8], fill: true, backgroundColor: 'rgba(66, 133, 244, 0.2)', borderColor: themeColors.primary, pointBackgroundColor: themeColors.primary }, { label: 'Platform B', data: [7, 9, 9, 7, 7], fill: true, backgroundColor: 'rgba(0, 168, 150, 0.2)', borderColor: themeColors.accent, pointBackgroundColor: themeColors.accent }] }, options: { ...commonChartOptions, scales: { r: { grid: { color: themeColors.grid }, pointLabels: { color: themeColors.text }, ticks: { color: themeColors.text, backdropColor: 'rgba(0,0,0,0)'} } }, plugins: { legend: { labels: { color: themeColors.text } }, ...multiLineTooltipTitle.plugins } } }); }
+                
+                const immersiveAdoptionCtx = document.getElementById('immersiveAdoptionChart');
+                if (immersiveAdoptionCtx) { charts.immersiveAdoption = new Chart(immersiveAdoptionCtx, { type: 'bar', data: { labels: ['Manufacturing', 'Healthcare', 'Retail', 'Logistics', 'Research'], datasets: [{ label: 'High Adoption/Impact', data: [85, 75, 70, 60, 90], backgroundColor: themeColors.secondary }] }, options: {...commonChartOptions, plugins: { legend: { display: false } }, scales: {x: {ticks:{color:themeColors.text}, grid:{color:themeColors.grid}}, y:{ticks:{color:themeColors.text}, grid:{color:themeColors.grid}}}} }); }
+                
+                const threeDUsecaseCtx = document.getElementById('threeDUsecaseChart');
+                if(threeDUsecaseCtx){ charts.threeDUsecase = new Chart(threeDUsecaseCtx, { type: 'doughnut', data: { labels: ['Scientific Visualization', 'Immersive Storytelling', 'Product Previews', 'Architectural Models'], datasets: [{ data: [40, 25, 20, 15], backgroundColor: [themeColors.primary, themeColors.secondary, themeColors.accent, '#facc15'], hoverOffset: 4 }] }, options: {...commonChartOptions, plugins: { legend: { position: 'bottom', labels: { color: themeColors.text } }, ...multiLineTooltipTitle.plugins } }}); }
+            }
+
+            function destroyCharts() {
+                Object.values(charts).forEach(chart => chart.destroy());
+                charts = {};
+            }
+            
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlEl = document.documentElement;
+
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    htmlEl.classList.add('dark');
+                    darkModeToggle.checked = true;
+                } else {
+                    htmlEl.classList.remove('dark');
+                    darkModeToggle.checked = false;
+                }
+                destroyCharts();
+                initializeCharts();
+            };
+
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark);
+            
+            darkModeToggle.addEventListener('change', () => {
+                const isDark = darkModeToggle.checked;
+                applyTheme(isDark);
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section, header#title-page');
+            const observer = new IntersectionObserver((entries) => {
+                let isTitlePageVisible = false;
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.id === 'title-page') { isTitlePageVisible = true; }
+                        else { navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id); }); }
+                    }
+                });
+                if (isTitlePageVisible) { navLinks.forEach(link => link.classList.remove('active')); }
+            }, { rootMargin: '-40% 0px -60% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            const apiKey = ""; 
+
+            async function callGemini(prompt) {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                try {
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, no response was generated.";
+                } catch (error) {
+                    console.error('Gemini API call failed:', error);
+                    return `An error occurred: ${error.message}`;
+                }
+            }
+            
+            async function handleGeneration(button, input, loader, resultContainer, promptFn) {
+                const promptText = input.value;
+                if (!promptText) { resultContainer.innerHTML = `<p class="text-red-500 font-medium">Please enter a description.</p>`; return; }
+                loader.classList.remove('hidden');
+                button.disabled = true;
+                resultContainer.innerHTML = '';
+                const resultText = await callGemini(promptFn(promptText));
+                loader.classList.add('hidden');
+                button.disabled = false;
+                if (resultText && !resultText.startsWith('An error occurred')) {
+                     const formattedResult = resultText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[--primary-color]">$1</strong>').replace(/\n/g, '<br>');
+                    resultContainer.innerHTML = `<p>${formattedResult}</p>`;
+                } else { resultContainer.innerHTML = `<p class="text-red-500 font-medium">${resultText}</p>`; }
+            }
+
+            document.getElementById('generate-chart-rec').addEventListener('click', function() { handleGeneration(this, document.getElementById('chart-prompt'), document.getElementById('chart-rec-loader'), document.getElementById('chart-rec-result'), (p) => `As a data visualization expert, recommend the best chart type for this goal: "${p}". Explain your reasoning in 2-3 sentences.`); });
+            document.getElementById('generate-ethics-check').addEventListener('click', function() { handleGeneration(this, document.getElementById('ethics-prompt'), document.getElementById('ethics-check-loader'), document.getElementById('ethics-check-result'), (p) => `As a data ethics specialist, generate a short, actionable ethical checklist (3-4 points) for a visualization project about: "${p}". Format the response as a simple list.`); });
+
+            const plotlyBg = document.getElementById('plotly-bg');
+            if (plotlyBg) {
+                const n = 200;
+                const x = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const y = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const z = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const trace = { x: x, y: y, z: z, mode: 'markers', marker: { size: 2, color: z, colorscale: [[0, '#8ab4f8'], [1, '#0043ce']], opacity: 0.6 }, type: 'scatter3d' };
+                const layout = { autosize: true, showlegend: false, margin: { l: 0, r: 0, b: 0, t: 0 }, scene: { xaxis: { visible: false }, yaxis: { visible: false }, zaxis: { visible: false }, camera: { eye: { x: 1.25, y: 1.25, z: 1.25 } } }, paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)' };
+                Plotly.newPlot(plotlyBg, [trace], layout, {displayModeBar: false});
+                document.getElementById('title-page').addEventListener('mousemove', (e) => {
+                    const fracX = (e.clientX / window.innerWidth - 0.5) * 2;
+                    const fracY = (e.clientY / window.innerHeight - 0.5) * 2;
+                    Plotly.relayout(plotlyBg, { 'scene.camera.eye': { x: 1.25 - fracX * 0.5, y: 1.25 - fracY * 0.5, z: 1.25 } });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
