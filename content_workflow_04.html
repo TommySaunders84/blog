@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Bait to Catch: A Data-Driven Marketing Voyage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to complement Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #E0E0E0; /* Light gray text for better readability on dark backgrounds */
+        }
+
+        /* --- Parallax Scrolling Setup --- */
+        .parallax-container {
+            perspective: 100px;
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Individual layer depth */
+        #layer-bg { transform: translateZ(-300px) scale(4); }
+        #layer-mid { transform: translateZ(-150px) scale(2.5); }
+        #layer-content { transform: translateZ(0); }
+
+        /* --- Background Gradients and Elements --- */
+        .bg-ocean-gradient {
+            background: linear-gradient(180deg, 
+                #a2d2ff 0%, /* Sky Blue - Surface */
+                #5eaaa8 15%, /* Teal - Shallow */
+                #2e8b57 35%, /* Sea Green - Mid */
+                #1e5b7b 60%, /* Deep Blue */
+                #0b3954 85%, /* Midnight Blue */
+                #021c2d 100% /* Abyss */
+            );
+        }
+
+        .stage-section {
+            min-height: 100vh;
+            padding: 8rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* --- Interactive Node Styling --- */
+        .node {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(173, 216, 230, 0.5); /* Light blue glow */
+        }
+        
+        .node-icon {
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+        }
+
+        /* --- Modal Styling --- */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+        }
+        
+        .modal-content.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .modal-body h4 {
+            color: #a2d2ff; /* Highlight color for subtitles */
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid #a2d2ff;
+            padding-left: 0.75rem;
+        }
+
+        /* --- Custom Animations --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 overflow-hidden">
+
+    <!-- Container for Parallax Effect -->
+    <div id="parallax-container" class="parallax-container">
+        
+        <!-- Background Layer (Moves fastest) -->
+        <div id="layer-bg" class="parallax-layer bg-ocean-gradient"></div>
+
+        <!-- Mid-ground Layer (Bubbles, etc. - Moves moderately) -->
+        <div id="layer-mid" class="parallax-layer">
+            <!-- Decorative SVGs can be added here for more depth -->
+        </div>
+
+        <!-- Foreground/Content Layer (Moves normally) -->
+        <div id="layer-content" class="parallax-layer w-full">
+            <main class="w-full">
+                <!-- Header / Intro Section -->
+                <header class="stage-section flex flex-col items-center justify-center text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">From Bait to Catch</h1>
+                    <p class="text-xl md:text-2xl text-blue-200 max-w-3xl">An interactive voyage into data-driven marketing, where targeted content is the ultimate fishing strategy.</p>
+                    <div class="mt-12 text-white animate-bounce">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </div>
+                </header>
+
+                <!-- Dynamic content will be injected here by JavaScript -->
+                <div id="stages-container"></div>
+
+                <!-- Footer Section -->
+                <footer class="stage-section flex flex-col items-center justify-center text-center">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">The Power of Precision Fishing</h2>
+                    <p class="text-lg md:text-xl text-blue-200 max-w-3xl">
+                        By moving from random casting to a data-driven strategy, we transform marketing from a gamble into a precise, profitable, and repeatable operation. You catch more qualified leads, build loyalty, and maximize returns.
+                    </p>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div id="modal-content" class="modal-content bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-700">
+            <div class="p-6 relative">
+                <button id="modal-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <h3 id="modal-title" class="text-2xl font-bold text-white mb-4"></h3>
+                <div id="modal-body" class="text-gray-300 space-y-4">
+                    <!-- Modal content goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            // Storing all content in a structured object for easy access.
+            const stagesData = [
+                {
+                    id: 'stage-0',
+                    title: 'Stage 0: Unaware',
+                    subtitle: 'Mapping the Depths of the Unknown Ocean',
+                    nodes: [
+                        { 
+                            title: 'The Unaware Customer', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-88a16,16,0,0,1,16-16,12,12,0,0,1,0,24,4,4,0,0,0,0,8,12,12,0,0,1,0,24,16,16,0,0,1-16-40Zm40,40a16,16,0,0,1-16,16,12,12,0,0,1,0-24,4,4,0,0,0,0-8,12,12,0,0,1,0-24,16,16,0,0,1,16,40Z"></path></svg>`,
+                            content: {
+                                Analogy: "Our target fish (potential customers) are swimming in a vast, unexplored ocean. They don't know we exist, or that there's a better way to fish.",
+                                Reality: "This is the 'unaware' stage. Potential customers have problems, but they don't know we have solutions.",
+                                Challenge: "We need to find these hidden schools of fish before we can do anything else."
+                            }
+                        },
+                        { 
+                            title: 'Data Scraping & Analysis', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,72a8,8,0,0,1-8,8H176a8,8,0,0,1,0-16h40A8,8,0,0,1,224,72Zm-8,40H176a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm-8,48H176a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16ZM98.74,37.3l48,32A8,8,0,0,1,144,76.74V179.26a8,8,0,0,1-13.26,6.44l-48-32A8,8,0,0,1,80,147.26V108.74A8,8,0,0,1,98.74,37.3ZM96,108.74v38.52l40,26.67V82.07Z"></path></svg>`,
+                            content: {
+                                Analogy: "We use advanced sonar (scraping tools) to map the ocean floor (LinkedIn & online data). This reveals where different schools of fish (user groups) congregate.",
+                                Reality: "We see where 'sales fish,' 'marketing fish,' or 'tech fish' are swimming. We note the 'seaweed' (skills), 'coral reefs' (companies), and 'currents' (content trends).",
+                                "Data Sources": "Industry charts, company logs, competitor fishing logs, angler profiles, bait inventories, keyword currents."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'stage-1',
+                    title: 'Stage 1: Awareness & Attention',
+                    subtitle: 'Casting the First Line',
+                    nodes: [
+                        { 
+                            title: 'Content Strategy', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,88h40l-40-40ZM200,216H56V40h88V96a8,8,0,0,0,8,8h56V216Zm-40-64a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16h48A8,8,0,0,1,160,152Zm0,32a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16h48A8,8,0,0,1,160,184Z"></path></svg>`,
+                            content: {
+                                Analogy: "We create 'fishing reports' and 'lure catalogs' (targeted content) that attract the attention of potential anglers.",
+                                Reality: "We're introducing our brand and solutions by creating content (blog posts, LinkedIn articles) that addresses common fishing challenges and details where the best fishing spots are.",
+                                Data: "We analyze ocean currents (industry trends), water temperature (customer behavior), and what bait other fishermen are using (competitor analysis)."
+                            }
+                        },
+                        { 
+                            title: 'Strategic Engagement', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24Zm-8,144H64V88H192v80Zm-32-40a16,16,0,1,1-16-16A16,16,0,0,1,160,128Z"></path></svg>`,
+                            content: {
+                                Analogy: "We share our reports and catalogs in areas where anglers gather. We are only fishing where the target fish are.",
+                                Benefit: "Your messages are way more effective because the bait is created specifically to attract the target fish."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'stage-2',
+                    title: 'Stage 2: Research & Consideration',
+                    subtitle: 'Choosing the Right Lures',
+                    nodes: [
+                        { 
+                            title: 'Specialized Content', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M229.66,82.34l-56-56A8,8,0,0,0,168,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,229.66,82.34ZM176,88h40L176,48ZM200,216H56V40h104V96a8,8,0,0,0,8,8h48v112Zm-36-44a12,12,0,1,1-12-12A12,12,0,0,1,164,172Zm-44-28L102.34,161.66a8,8,0,0,1-11.32,0L76,146.34a8,8,0,0,1,11.32-11.32L102,150l14.34-14.34a8,8,0,0,1,11.32,11.32Z"></path></svg>`,
+                            content: {
+                                Analogy: "We know different fish respond to different lures. We create a catalog of specialized lures (case studies, webinars) that mimic the prey of our target fish.",
+                                Reality: "We provide information to help anglers make informed decisions, such as detailed guides (white papers), virtual fishing trips (webinars, demos), and personalized 'fishing tips' (email campaigns).",
+                                Data: "We track which lures anglers are most interested in (website analytics), what questions they ask (form submissions), and how long they spend looking (customer interaction data)."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'stage-3',
+                    title: 'Stage 3: Desire & Decision',
+                    subtitle: 'Setting the Hook with the Perfect Presentation',
+                    nodes: [
+                        { 
+                            title: 'Convincing Offers', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,140.69l42.34-42.35a8,8,0,0,1,11.32,11.32Z"></path></svg>`,
+                            content: {
+                                Analogy: "We don't just throw the lure in the water; we present it perfectly to mimic the fish's natural prey.",
+                                Reality: "We're convincing anglers we're the best choice by offering 'free test drives' (free trials, demos), sharing testimonials from satisfied anglers, and providing personalized proposals and product comparisons.",
+                                Data: "We gather feedback from trials (customer feedback surveys), analyze pre-booking questions (sales team feedback), and look at feature usage during demos."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'stage-4',
+                    title: 'Stage 4: Action & Conversion',
+                    subtitle: 'Reeling in the Catch',
+                    nodes: [
+                        { 
+                            title: 'Seamless Conversion', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,56H183.33V40a16,16,0,0,0-16-16H88.67a16,16,0,0,0-16,16V56H32a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H224a8,8,0,0,0,8-8V64A8,8,0,0,0,224,56ZM88.67,40a.15.15,0,0,1,0-.14L88.54,40h78.92l-.13.14V56H88.67ZM40,72H216v24H40Zm176,40v72H40V112Z"></path></svg>`,
+                            content: {
+                                Analogy: "Once the fish is hooked, we guide the angler through the process of reeling it in.",
+                                Reality: "We're closing the deal with a seamless purchase experience. We provide personalized assistance, clear and concise agreements (contracts), and detailed instructions (onboarding materials).",
+                                Data: "We track purchase history and gather feedback on the booking/onboarding process to identify friction points.",
+                                Benefit: "You spend your money smarter by only targeting the correct anglers and using content that is proven to convert."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'stage-5',
+                    title: 'Stage 5: Loyalty & Retention',
+                    subtitle: 'Keeping the Angler Coming Back',
+                    nodes: [
+                        { 
+                            title: 'Building a Community', 
+                            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M168,100a40,40,0,1,1-40-40A40,40,0,0,1,168,100Zm-40-64a24,24,0,1,0,24,24A24,24,0,0,0,128,36ZM224,232a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,232ZM183.15,180.21a8,8,0,0,0-11.3,0A48.24,48.24,0,0,1,128,200a48.24,48.24,0,0,1-43.85-19.79,8,8,0,0,0-11.3,11.3A64.1,64.1,0,0,0,128,216a64.1,64.1,0,0,0,55.15-24.49A8,8,0,0,0,183.15,180.21Z"></path></svg>`,
+                            content: {
+                                Analogy: "We build a long-term relationship with the angler, ensuring they come back for more fishing trips.",
+                                Reality: "We cultivate customer loyalty by providing excellent customer service, offering exclusive fishing trips, and sharing fishing tips (loyalty programs, newsletters).",
+                                Data: "We track customer satisfaction scores, analyze support tickets, and monitor feedback to identify areas for improvement and opportunities for new content."
+                            }
+                        }
+                    ]
+                }
+            ];
+
+            // --- DOM Elements ---
+            const stagesContainer = document.getElementById('stages-container');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Dynamically creates and injects the stage sections into the DOM.
+             */
+            function renderStages() {
+                stagesData.forEach((stage, index) => {
+                    const section = document.createElement('section');
+                    section.id = stage.id;
+                    section.className = 'stage-section flex flex-col items-center justify-center';
+
+                    // Use a delay for animation to make the nodes appear sequentially
+                    let animationDelay = 0;
+
+                    section.innerHTML = `
+                        <div class="text-center mb-16">
+                            <h2 class="text-3xl md:text-5xl font-bold text-white">${stage.title}</h2>
+                            <p class="text-xl md:text-2xl text-blue-300 mt-2">${stage.subtitle}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                            ${stage.nodes.map(node => {
+                                animationDelay += 200; // Increment delay for each node
+                                return `
+                                <div class="node rounded-lg p-6 flex flex-col items-center text-center floating" 
+                                     data-stage-id="${stage.id}" data-node-title="${node.title}"
+                                     style="animation-delay: ${animationDelay}ms;">
+                                    <div class="node-icon mb-4 text-blue-300">${node.icon}</div>
+                                    <h3 class="text-xl font-semibold text-white">${node.title}</h3>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                    stagesContainer.appendChild(section);
+                });
+            }
+
+            /**
+             * Opens and populates the modal with content from the selected node.
+             * @param {string} stageId - The ID of the stage.
+             * @param {string} nodeTitle - The title of the node.
+             */
+            function openModal(stageId, nodeTitle) {
+                const stage = stagesData.find(s => s.id === stageId);
+                const node = stage?.nodes.find(n => n.title === nodeTitle);
+
+                if (!node) return;
+
+                modalTitle.textContent = node.title;
+                modalBody.innerHTML = ''; // Clear previous content
+
+                for (const [key, value] of Object.entries(node.content)) {
+                    const sectionTitle = document.createElement('h4');
+                    sectionTitle.textContent = key;
+                    
+                    const sectionContent = document.createElement('p');
+                    sectionContent.textContent = value;
+                    sectionContent.className = 'text-gray-400';
+
+                    modalBody.appendChild(sectionTitle);
+                    modalBody.appendChild(sectionContent);
+                }
+
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                // Use a short timeout to allow the 'hidden' class to be removed before starting the transition
+                setTimeout(() => {
+                    modalContent.classList.add('show');
+                }, 10);
+            }
+
+            /**
+             * Closes the modal.
+             */
+            function closeModal() {
+                modalContent.classList.remove('show');
+                // Wait for the transition to finish before hiding the modal completely
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+
+            // --- EVENT LISTENERS ---
+            
+            // Event delegation for clicking on interactive nodes.
+            stagesContainer.addEventListener('click', (e) => {
+                const nodeElement = e.target.closest('.node');
+                if (nodeElement) {
+                    const stageId = nodeElement.dataset.stageId;
+                    const nodeTitle = nodeElement.dataset.nodeTitle;
+                    openModal(stageId, nodeTitle);
+                }
+            });
+
+            // Listen for clicks to close the modal.
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                // Close the modal if the backdrop is clicked, but not the content.
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Listen for 'Escape' key press to close the modal.
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            // --- INITIALIZATION ---
+            renderStages();
+        });
+    </script>
+</body>
+</html>
