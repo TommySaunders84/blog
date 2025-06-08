@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporting & Benchmark Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #111827; /* Dark Navy */
+            --module-bg: #1F2937; /* Lighter Navy */
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-red: #EF4444;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Main Analysis Module */
+        .analysis-module {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .controls label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        .controls select {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .action-btn {
+            background-color: var(--accent-blue);
+            color: var(--text-primary);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #60A5FA;
+        }
+        .action-btn:disabled {
+            background-color: #374151;
+            cursor: not-allowed;
+        }
+
+        .chart-container {
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+
+        /* Data Table */
+        .data-table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        td {
+            font-weight: 500;
+        }
+        .variance-positive { color: var(--accent-green); }
+        .variance-negative { color: var(--accent-red); }
+
+        /* AI Analysis Section */
+        .ai-analysis {
+            background-color: var(--bg-color);
+            border: 1px dashed var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .ai-analysis h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .ai-analysis p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Reporting & Benchmark Analysis</h1>
+            <p>Compare your performance against industry standards to uncover your true standing.</p>
+        </header>
+
+        <main class="analysis-module">
+            <div class="controls">
+                <div>
+                    <label for="metric-select">Select Metric:</label>
+                    <select id="metric-select" onchange="updateDashboard()">
+                        <option value="engagement">Engagement Rate by Channel</option>
+                        <option value="sentiment">Sentiment Score Over Time</option>
+                        <option value="conversion">Conversion Funnel Stages</option>
+                    </select>
+                </div>
+                <button id="ai-analysis-btn" class="action-btn" onclick="triggerAIAnalysis()">✨ Generate AI Analysis</button>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="main-chart"></canvas>
+            </div>
+            
+            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+            <div class="data-table-container">
+                <h3 id="table-title">Metric Details</h3>
+                <table id="data-table">
+                    <thead>
+                        <!-- Headers will be generated by JS -->
+                    </thead>
+                    <tbody>
+                        <!-- Data will be generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ai-analysis">
+                <h3>✨ AI Analyst</h3>
+                <p id="ai-output">Select a metric and click "Generate AI Analysis" for an automated summary of your performance against the benchmark.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Gemini API Call ---
+        async function callGemini(prompt) {
+            const aiOutput = document.getElementById('ai-output');
+            const aiButton = document.getElementById('ai-analysis-btn');
+            aiOutput.textContent = "Analyzing data...";
+            aiButton.disabled = true;
+
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will provide this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const result = await response.json();
+                const text = result.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+                aiOutput.textContent = text;
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                aiOutput.textContent = `Error: Could not connect to the AI. ${error.message}`;
+            } finally {
+                aiButton.disabled = false;
+            }
+        }
+        
+        // --- Dashboard Data and Logic ---
+        const chartData = {
+            engagement: {
+                type: 'bar',
+                labels: ['Twitter', 'Instagram', 'LinkedIn', 'Facebook', 'Blog'],
+                datasets: [{
+                    label: 'Your Engagement Rate (%)',
+                    data: [2.1, 3.5, 1.8, 1.2, 4.5],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Industry Benchmark (%)',
+                    data: [1.9, 4.1, 1.5, 1.4, 3.9],
+                    backgroundColor: 'rgba(75, 85, 99, 0.5)',
+                    borderColor: 'rgba(75, 85, 99, 1)',
+                    borderWidth: 1
+                }]
+            },
+            sentiment: {
+                type: 'line',
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Your Sentiment Score',
+                    data: [6.5, 6.8, 7.1, 6.9, 7.3, 7.5],
+                    borderColor: 'rgba(139, 92, 246, 1)',
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }, {
+                    label: 'Industry Benchmark',
+                    data: [6.8, 6.9, 7.0, 7.1, 7.2, 7.2],
+                    borderColor: 'rgba(75, 85, 99, 1)',
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            conversion: {
+                type: 'bar',
+                labels: ['Visit', 'Sign-up', 'Trial', 'Purchase'],
+                datasets: [{
+                    label: 'Your Funnel (%)',
+                    data: [100, 15, 8, 4],
+                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                }, {
+                    label: 'Industry Benchmark (%)',
+                    data: [100, 18, 10, 5],
+                    backgroundColor: 'rgba(75, 85, 99, 0.5)',
+                }]
+            }
+        };
+
+        let mainChart;
+        const chartElement = document.getElementById('main-chart');
+        const tableHead = document.querySelector('#data-table thead');
+        const tableBody = document.querySelector('#data-table tbody');
+        const tableTitle = document.getElementById('table-title');
+
+        function updateDashboard() {
+            const selectedMetric = document.getElementById('metric-select').value;
+            const data = chartData[selectedMetric];
+
+            // Update Chart
+            if (mainChart) {
+                mainChart.destroy();
+            }
+            mainChart = new Chart(chartElement, {
+                type: data.type,
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,0.7)' } },
+                        x: { ticks: { color: 'rgba(255,255,255,0.7)' } }
+                    },
+                    plugins: { legend: { labels: { color: 'rgba(255,255,255,0.8)' } } }
+                }
+            });
+            
+            // Update Table
+            tableTitle.textContent = `${data.datasets[0].label} vs. Benchmark`;
+            tableHead.innerHTML = `<tr><th>Category</th><th>Your Performance</th><th>Benchmark</th><th>Variance</th></tr>`;
+            tableBody.innerHTML = '';
+
+            data.labels.forEach((label, index) => {
+                const yourValue = data.datasets[0].data[index];
+                const benchmarkValue = data.datasets[1].data[index];
+                const variance = (yourValue - benchmarkValue).toFixed(2);
+                const varianceClass = variance >= 0 ? 'variance-positive' : 'variance-negative';
+                const sign = variance >= 0 ? '+' : '';
+                
+                const row = `
+                    <tr>
+                        <td>${label}</td>
+                        <td>${yourValue}%</td>
+                        <td>${benchmarkValue}%</td>
+                        <td class="${varianceClass}">${sign}${variance}%</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            // Clear AI output
+            document.getElementById('ai-output').textContent = 'Select a metric and click "Generate AI Analysis" for an automated summary of your performance against the benchmark.';
+        }
+
+        function triggerAIAnalysis() {
+            const selectedMetric = document.getElementById('metric-select').value;
+            const data = chartData[selectedMetric];
+            const tableData = data.labels.map((label, index) => ({
+                category: label,
+                yourValue: data.datasets[0].data[index],
+                benchmarkValue: data.datasets[1].data[index]
+            }));
+
+            const prompt = `You are a Data Analyst. I will provide you with marketing data comparing my performance to an industry benchmark. 
+            
+            Metric: ${document.querySelector(`option[value="${selectedMetric}"]`).textContent}
+            Data: ${JSON.stringify(tableData)}
+
+            Please provide a concise analysis in two paragraphs:
+            1.  Summarize my overall performance against the benchmark. Highlight the biggest strengths and weaknesses.
+            2.  Suggest one potential reason for the largest performance gap (positive or negative) and recommend a single next step to investigate further.`;
+            
+            callGemini(prompt);
+        }
+
+        // Initial load
+        window.onload = updateDashboard;
+    </script>
+</body>
+</html>
