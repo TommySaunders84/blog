@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Intelligence in the Age of AI Workshop | Agentiic Marketing</title>
+    <style>
+        :root {
+            --primary-color: #0A192F;
+            --secondary-color: #172A45;
+            --accent-color: #64FFDA;
+            --text-light: #CCD6F6;
+            --text-dark: #8892B0;
+            --font-sans: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        header h3 {
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+            font-weight: 300;
+            font-size: 1rem;
+            margin: 0 0 10px 0;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .hero h2 {
+            font-size: 2.2rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            color: var(--text-dark);
+        }
+
+        .workshop-outline {
+            padding: 40px 0;
+        }
+
+        .module {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #2a3c5a;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        }
+
+        .module-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        
+        .module-header:hover h3 {
+            color: var(--accent-color);
+        }
+
+        .module-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+        
+        .module-header .module-number {
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .module-header .toggle-icon {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .module-content {
+            display: none;
+            padding: 0 25px 25px 25px;
+            border-top: 1px solid #2a3c5a;
+        }
+        
+        .module-content p, .module-content li {
+            color: var(--text-dark);
+        }
+        
+        .module-content strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .module-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .module-content ul li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .module-content ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* Tabs for Data Points */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2a3c5a;
+        }
+
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab-button.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        .data-point-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .data-point-item {
+            background-color: var(--primary-color);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            border: 1px solid #2a3c5a;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: var(--secondary-color);
+            margin-top: 50px;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 35px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .cta-button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-family: var(--font-mono);
+            border-top: 1px solid var(--secondary-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h3>An Agentiic Marketing Firm Workshop</h3>
+            <h1>Brand Intelligence in the Age of AI</h1>
+            <p>A strategic workshop for harnessing data, decoding the digital landscape, and transforming brand impact with AI-driven decision-making.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <h2>From Invisible Infrastructure to Actionable Insight</h2>
+            <p class="subtitle">Making the unseen seen, the complex understandable, and the latent actionable.</p>
+            <p>For decades, a vast and potent force has hummed beneath the surface of our digital lives. This invisible infrastructure—a web of data flows, server dialogues, and metadata whispers—held immense power, yet remained opaque. The rise of Artificial Intelligence, specifically Generative AI, is the catalyst that pierces this veil. It's a digital X-ray, systematically decoding the internet's hidden dimensions.</p>
+            <p>This workshop establishes the core challenges modern brands face and provides a structured framework to leverage this newfound clarity, transforming raw digital signals into durable strategic advantage.</p>
+        </section>
+
+        <section class="workshop-outline">
+            
+            <div class="module">
+                <div class="module-header">
+                    <h3><span class="module-number">01.</span>The Foundation: Our AI Operations Workflow</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="module-content">
+                    <p>Our proprietary AI Operations Workflow transforms disparate datasets into a unified, actionable framework. This isn't just about better analytics; it's about fundamentally changing your relationship with your own digital creation. We provide a complete, documented pathway from initial data insight to measurable business impact (ROI), bridging the common analysis-execution gap.</p>
+                    <ul>
+                        <li><strong>Holistic Contextual Intelligence:</strong> We systematically integrate quantitative data with rich qualitative insights to uncover the critical 'why' behind performance.</li>
+                        <li><strong>Structured Insight-to-Impact:</strong> Our methodology guarantees data insights translate directly into strategic actions with prioritized tasks, clear accountability, and cross-functional alignment.</li>
+                        <li><strong>End-to-End Governance:</strong> From ethical data acquisition to final ROI measurement, every step is structured to build durable knowledge assets that fuel long-term strategic advantage.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-header">
+                    <h3><span class="module-number">02.</span>Data Integration: Acquiring Predictive Signals</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="module-content">
+                    <p>The journey begins with identifying and collecting the right data. We focus on acquiring diverse, high-quality datasets chosen for their ability to train AI models that predict customer acquisition outcomes and enable hyper-personalization. This module covers the 'what' and 'how' of building a rich, legally-compliant repository of information.</p>
+                    <ul>
+                        <li><strong>Data Acquisition:</strong> Systematic gathering of relevant professional data from diverse sources to establish a foundational asset.</li>
+                        <li><strong>Data Scraping for AI:</strong> Targeted extraction of public signals (hiring intent, funding news, competitive sentiment) to generate timely features for AI models.</li>
+                        <li><strong>Data Extraction & Feature Engineering:</strong> Converting raw data (logs, text, reviews) into standardized features (sentiment scores, behavioral patterns, engagement metrics) suitable for AI consumption.</li>
+                        <li><strong>Data Storage & Organization:</strong> Implementing robust Data Lakes, Warehouses, and Feature Stores optimized for the AI lifecycle, ensuring data integrity, versioning, and reproducibility.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-header">
+                    <h3><span class="module-number">03.</span>The Data Universe: Exploring Key Data Points</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="module-content">
+                    <p>In this highly interactive session, we deconstruct the universe of available data. Understanding these signals is the first step toward transforming them into strategic brand actions. We educate your team on what's possible and learn about the business drivers critical to your strategic objectives.</p>
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="openTab(event, 'Company')">Company Data</button>
+                        <button class="tab-button" onclick="openTab(event, 'Brand')">Brand Data</button>
+                        <button class="tab-button" onclick="openTab(event, 'Customer')">Customer Data</button>
+                        <button class="tab-button" onclick="openTab(event, 'Paid')">Paid Media</button>
+                        <button class="tab-button" onclick="openTab(event, 'Organic')">Organic Marketing</button>
+                    </div>
+
+                    <div id="Company" class="tab-content active">
+                        <h4>Company & Competitor Signals</h4>
+                        <p>Understanding your own digital footprint and the competitive landscape.</p>
+                        <div class="data-point-grid">
+                            <div class="data-point-item">Company Revenue & Funding</div>
+                            <div class="data-point-item">Employee Count & Growth %</div>
+                            <div class="data-point-item">Job Openings & Hiring Trends</div>
+                            <div class="data-point-item">Website Tech Stack Analysis</div>
+                            <div class="data-point-item">10K Analysis of Initiatives</div>
+                            <div class="data-point-item">Competitor Market Share</div>
+                            <div class="data-point-item">Competitor Pricing Models</div>
+                            <div class="data-point-item">Competitor Social Sentiment</div>
+                        </div>
+                    </div>
+
+                    <div id="Brand" class="tab-content">
+                        <h4>Brand Health & Perception Signals</h4>
+                        <p>Measuring the intangible equity and perception of your brand.</p>
+                        <div class="data-point-grid">
+                            <div class="data-point-item">Brand Health Score</div>
+                            <div class="data-point-item">Purpose Alignment Index</div>
+                            <div class="data-point-item">Share of Voice (SOV)</div>
+                            <div class="data-point-item">Branded Search Volume</div>
+                            <div class="data-point-item">Social Media Sentiment Score</div>
+                            <div class="data-point-item">Net Promoter Score (NPS)</div>
+                            <div class="data-point-item">ESG Rating Performance</div>
+                            <div class="data-point-item">Customer Values Alignment</div>
+                        </div>
+                    </div>
+
+                    <div id="Customer" class="tab-content">
+                        <h4>Customer Behavior & Intent Signals</h4>
+                        <p>Tracking the full lifecycle from anonymous visitor to loyal advocate.</p>
+                        <div class="data-point-grid">
+                            <div class="data-point-item">Account Engagement Score</div>
+                            <div class="data-point-item">Third-Party Intent Signals</div>
+                            <div class="data-point-item">CRM Activity History</div>
+                            <div class="data-point-item">On-Site Behavioral Events</div>
+                            <div class="data-point-item">Conversion Funnel Timestamps</div>
+                            <div class="data-point-item">Churn Probability Score</div>
+                            <div class="data-point-item">Predicted LTV (Lifetime Value)</div>
+                            <div class="data-point-item">Cross-Channel Engagement Path</div>
+                        </div>
+                    </div>
+                    
+                    <div id="Paid" class="tab-content">
+                        <h4>Paid Media & Channel Signals</h4>
+                        <p>Gauging the efficiency and impact of your advertising investments.</p>
+                        <div class="data-point-grid">
+                            <div class="data-point-item">Return on Ad Spend (ROAS)</div>
+                            <div class="data-point-item">Cost Per Acquisition (CPA)</div>
+                            <div class="data-point-item">Auction Insights & Overlap Rate</div>
+                            <div class="data-point-item">View-Through Conversions</div>
+                            <div class="data-point-item">Performance by Audience Segment</div>
+                            <div class="data-point-item">Video Completion Rate (VCR)</div>
+                            <div class="data-point-item">Lead Form Submission Rate</div>
+                            <div class="data-point-item">Creative Fatigue Indicators</div>
+                        </div>
+                    </div>
+
+                    <div id="Organic" class="tab-content">
+                        <h4>Organic Marketing & Content Signals</h4>
+                        <p>Assessing the performance of your owned media and inbound strategies.</p>
+                        <div class="data-point-grid">
+                            <div class="data-point-item">Organic Traffic & Keyword Rankings</div>
+                            <div class="data-point-item">Content Read Completion Rate</div>
+                            <div class="data-point-item">Featured Snippet Captures</div>
+                            <div class="data-point-item">Backlink Authority & Velocity</div>
+                            <div class="data-point-item">Social Media Engagement Rate</div>
+                            <div class="data-point-item">Content-Attributed Revenue</div>
+                            <div class="data-point-item">Core Web Vitals Score</div>
+                            <div class="data-point-item">User-Generated Content Volume</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-header">
+                    <h3><span class="module-number">04.</span>AI-Driven Analysis: Generating Actionable Insights</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="module-content">
+                    <p>Once data is integrated, AI models are used to uncover hidden opportunities, predict outcomes, and guide strategic focus. This module demonstrates how AI transforms analysis from a reactive report to a proactive engine for growth.</p>
+                    <ul>
+                        <li><strong>Targeting Scoring & Qualification:</strong> Using predictive AI to score leads/accounts on their likelihood to convert, enabling efficient resource allocation.</li>
+                        <li><strong>AI-Powered Data Segmentation:</strong> Applying unsupervised AI (like clustering) to automatically identify high-potential niches and data-driven personas.</li>
+                        <li><strong>Content Strategy & Creation:</strong> Employing NLP to analyze market conversations to find content gaps, and using Generative AI to accelerate content creation and A/B testing at scale.</li>
+                        <li><strong>Predictive Analytics:</strong> Building models to forecast churn risk, lifetime value, and the optimal next action for nurturing and sales engagement.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-header">
+                    <h3><span class="module-number">05.</span>Activation: From Strategy to Impact</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="module-content">
+                    <p>The final stage is about execution and optimization. We translate AI-generated insights into tangible marketing and sales activities, continuously measuring and refining for maximum impact. This is where strategy becomes action and investment becomes ROI.</p>
+                    <ul>
+                        <li><strong>Campaign Execution & Optimization:</strong> Integrating AI into ad platforms (e.g., Google Performance Max, Predictive Audiences) to automate complex bidding and targeting in real-time.</li>
+                        <li><strong>Hyper-Personalized Lead Nurturing:</strong> Moving beyond static drips to AI-driven journeys that adapt content, timing, and channel based on individual behavior and predicted intent.</li>
+                        <li><strong>AI-Assisted Selling:</strong> Equipping sales teams with AI tools for conversation analysis, real-time talking points, and data-driven coaching to improve effectiveness.</li>
+                        <li><strong>Campaign Scaling & ROI Measurement:</strong> Using AI to build high-fidelity lookalike audiences and predict performance in expansion markets to scale successes confidently and efficiently.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="cta-section">
+        <div class="container">
+            <h2>Ready to Illuminate Your Brand's Future?</h2>
+            <p style="color: var(--text-dark); max-width: 600px; margin: 0 auto 30px auto;">Secure your spot in our Brand Intelligence workshop to transform your data into a decisive competitive advantage.</p>
+            <a href="mailto:contact@agentiic-marketing.com?subject=Inquiry: Brand Intelligence in the Age of AI Workshop" class="cta-button">Request Information</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            &copy; 2025 Agentiic Marketing Firm | Harnessing Data for Strategic Decision-Making
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modules = document.querySelectorAll('.module');
+
+            modules.forEach(module => {
+                const header = module.querySelector('.module-header');
+                const content = module.querySelector('.module-content');
+                const icon = module.querySelector('.toggle-icon');
+
+                header.addEventListener('click', () => {
+                    const isVisible = content.style.display === 'block';
+                    
+                    // Optional: close all others when one opens
+                    // modules.forEach(m => {
+                    //     m.querySelector('.module-content').style.display = 'none';
+                    //     m.querySelector('.toggle-icon').textContent = '+';
+                    //     m.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
+                    // });
+
+                    if (isVisible) {
+                        content.style.display = 'none';
+                        icon.textContent = '+';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.display = 'block';
+                        icon.textContent = '-';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+
+            // Get the parent container of the clicked button
+            let parentContainer = evt.currentTarget.closest('.module-content');
+            
+            // Hide all tab content within that specific module
+            tabcontent = parentContainer.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Deactivate all tab buttons within that specific module
+            tabbuttons = parentContainer.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            parentContainer.querySelector("#" + tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+</body>
+</html>
