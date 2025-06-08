@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project | Knowledge Graph</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap');
+
+        :root {
+            --bg-color: #0a0c10;
+            --module-bg: #10141c;
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .graph-container {
+            position: relative;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1400px;
+            max-height: 900px;
+        }
+
+        .node {
+            position: absolute;
+            background-color: var(--module-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .node.center-node {
+            border-color: var(--accent-green);
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+        
+        .node.active {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px var(--accent-blue);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .edge {
+            position: absolute;
+            background-color: var(--border-color);
+            height: 2px;
+            transform-origin: 0 0;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+        
+        .edge.active {
+            background-color: var(--accent-blue);
+            height: 3px;
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+        
+        .graph-container.dimmed .node:not(.active) {
+            opacity: 0.3;
+        }
+        
+        .graph-container.dimmed .edge:not(.active) {
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="graph-container" id="graph">
+        <!-- Nodes and Edges will be generated here -->
+    </div>
+
+    <script>
+        const graphContainer = document.getElementById('graph');
+
+        const nodes = [
+            // Core & Hubs
+            { id: 'platform', label: 'TPEP Platform', x: 50, y: 50, isCenter: true },
+            { id: 'home', label: 'Home Dashboard', x: 50, y: 25 },
+            // Strategy & Data Input
+            { id: 'gtm', label: 'Go-to-Market Strategy', x: 10, y: 15 },
+            { id: 'reporting', label: 'Reporting & Benchmarks', x: 25, y: 75 },
+            { id: 'insights', label: 'Actionable Insights', x: 50, y: 75 },
+            // Campaigns & Execution
+            { id: 'campaign_brief', label: 'Campaign Command Center', x: 10, y: 40 },
+            { id: 'asset_hub', label: 'Campaign Asset Hub', x: 75, y: 40 },
+            // Content & Asset Examples
+            { id: 'content_unit', label: 'Content Unit', x: 90, y: 25 },
+            { id: 'mcp_decon', label: 'MCP Deconstruction', x: 90, y: 5 },
+            { id: 'linkedin_ads', label: 'LinkedIn Ad Variations', x: 90, y: 55 },
+            { id: 'refinery', label: 'Content Refinery (Process)', x: 75, y: 75 }
+        ];
+
+        const edges = [
+            // Core Connections
+            { from: 'platform', to: 'home' },
+            // Strategy Flow
+            { from: 'gtm', to: 'campaign_brief' },
+            { from: 'campaign_brief', to: 'home' },
+            // Data to Insight Flow
+            { from: 'reporting', to: 'insights' },
+            { from: 'home', to: 'reporting' },
+            // Insight to Action Flow
+            { from: 'home', to: 'insights' },
+            { from: 'insights', to: 'asset_hub' },
+            // Content Hierarchy
+            { from: 'asset_hub', to: 'content_unit' },
+            { from: 'asset_hub', to: 'linkedin_ads' },
+            { from: 'mcp_decon', to: 'content_unit' },
+            // Process View
+            { from: 'refinery', to: 'asset_hub' }
+        ];
+
+        function drawGraph() {
+            const nodeElements = {};
+
+            // Draw nodes
+            nodes.forEach(node => {
+                const nodeEl = document.createElement('div');
+                nodeEl.className = 'node';
+                nodeEl.id = `node-${node.id}`;
+                nodeEl.textContent = node.label;
+                nodeEl.style.left = `${node.x}%`;
+                nodeEl.style.top = `${node.y}%`;
+                nodeEl.style.transform = 'translate(-50%, -50%)';
+                if(node.isCenter) nodeEl.classList.add('center-node');
+                
+                graphContainer.appendChild(nodeEl);
+                nodeElements[node.id] = nodeEl;
+            });
+
+            // Draw edges
+            edges.forEach((edge, i) => {
+                const fromNode = nodes.find(n => n.id === edge.from);
+                const toNode = nodes.find(n => n.id === edge.to);
+
+                const x1 = fromNode.x;
+                const y1 = fromNode.y;
+                const x2 = toNode.x;
+                const y2 = toNode.y;
+                
+                const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+                const edgeEl = document.createElement('div');
+                edgeEl.className = 'edge';
+                edgeEl.id = `edge-${i}`;
+                edgeEl.dataset.from = edge.from;
+                edgeEl.dataset.to = edge.to;
+                
+                const containerWidth = graphContainer.clientWidth;
+                const containerHeight = graphContainer.clientHeight;
+                const pixelLength = Math.sqrt(
+                    ((x2 - x1) / 100 * containerWidth) ** 2 + 
+                    ((y2 - y1) / 100 * containerHeight) ** 2
+                );
+
+                edgeEl.style.width = `${pixelLength}px`;
+                edgeEl.style.left = `${x1}%`;
+                edgeEl.style.top = `${y1}%`;
+                edgeEl.style.transform = `rotate(${angle}deg)`;
+                
+                graphContainer.appendChild(edgeEl);
+            });
+
+            // Add interactivity
+            Object.values(nodeElements).forEach(nodeEl => {
+                nodeEl.addEventListener('mouseover', () => highlightNode(nodeEl.id.replace('node-', '')));
+                nodeEl.addEventListener('mouseout', () => clearHighlights());
+            });
+        }
+        
+        function highlightNode(nodeId) {
+            graphContainer.classList.add('dimmed');
+            
+            // Highlight the hovered node
+            document.getElementById(`node-${nodeId}`).classList.add('active');
+
+            // Find connected edges and nodes
+            const connectedNodeIds = new Set([nodeId]);
+            document.querySelectorAll('.edge').forEach(edgeEl => {
+                if(edgeEl.dataset.from === nodeId || edgeEl.dataset.to === nodeId) {
+                    edgeEl.classList.add('active');
+                    connectedNodeIds.add(edgeEl.dataset.from);
+                    connectedNodeIds.add(edgeEl.dataset.to);
+                }
+            });
+
+            // Highlight connected nodes
+            connectedNodeIds.forEach(id => {
+                 document.getElementById(`node-${id}`).classList.add('active');
+            });
+        }
+        
+        function clearHighlights() {
+            graphContainer.classList.remove('dimmed');
+            document.querySelectorAll('.node.active, .edge.active').forEach(el => {
+                el.classList.remove('active');
+            });
+        }
+
+        window.onload = drawGraph;
+        window.onresize = () => {
+             graphContainer.innerHTML = '';
+             drawGraph();
+        };
+
+    </script>
+</body>
+</html>
