@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Activation Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900">Data Activation Engine</h1>
+            <p class="text-lg text-gray-600 mt-2">Turn Customer Insights into Actionable Steps</p>
+        </header>
+
+        <main class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+
+            <!-- Insight Selection -->
+            <div class="mb-8">
+                <label for="insight-select" class="block text-lg font-semibold mb-2 text-gray-700">1. Select a Data Insight</label>
+                <div class="relative">
+                    <select id="insight-select" class="w-full p-4 bg-gray-100 border-2 border-gray-200 rounded-lg appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-300">
+                        <option value="">-- Choose an insight --</option>
+                        <option value="churn_risk">High Churn Risk Detected</option>
+                        <option value="high_engagement">Recent Spike in Product Engagement</option>
+                        <option value="purchase_propensity">High Propensity to Buy 'Product X'</option>
+                        <option value="cart_abandonment">Shopping Cart Abandonment</option>
+                        <option value="new_high_value_lead">New High-Value Lead (from enriched data)</option>
+                        <option value="feature_neglect">Key Feature Neglected by Long-Term User</option>
+                        <option value="competitor_interest">User Visited Competitor Comparison Page</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Best Action Display -->
+            <div id="action-display" class="hidden">
+                <h2 class="text-lg font-semibold mb-2 text-gray-700">2. Recommended Next Best Action</h2>
+                <div id="action-card" class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-lg shadow-md fade-in">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </div>
+            
+            <!-- Initial state message -->
+            <div id="initial-message" class="text-center py-12">
+                <i class="fas fa-lightbulb fa-3x text-gray-300 mb-4"></i>
+                <p class="text-gray-500">Your recommended action will appear here.</p>
+            </div>
+
+            <!-- Action History -->
+            <div class="mt-12">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700 flex items-center"><i class="fas fa-history mr-2"></i> Action Log</h2>
+                <div id="history-log" class="space-y-3">
+                    <p id="history-placeholder" class="text-center text-gray-400 py-6">No actions logged yet.</p>
+                    <!-- Logged actions will be added here -->
+                </div>
+            </div>
+
+        </main>
+        
+        <footer class="text-center mt-8 text-sm text-gray-500">
+            <p>&copy; 2025 Data Activation Engine. Empowering data-driven decisions.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const insightSelect = document.getElementById('insight-select');
+            const actionDisplay = document.getElementById('action-display');
+            const actionCard = document.getElementById('action-card');
+            const initialMessage = document.getElementById('initial-message');
+            const historyLog = document.getElementById('history-log');
+            const historyPlaceholder = document.getElementById('history-placeholder');
+
+            // --- Data for Insights and Actions ---
+            const actionsData = {
+                churn_risk: {
+                    title: "Launch Proactive Retention Campaign",
+                    icon: "fas fa-shield-alt text-red-500",
+                    description: "This customer segment shows behavior patterns (e.g., decreased usage, support tickets) highly correlated with churn. Intervening now with a value-focused campaign can prevent revenue loss.",
+                    action: "Enroll segment in a 3-part 'Did You Know?' email sequence highlighting underused, valuable features. Offer a 15-minute 'health check' call with a customer success manager.",
+                    buttonText: "Log Retention Action"
+                },
+                high_engagement: {
+                    title: "Capitalize on High Interest with an Upsell Offer",
+                    icon: "fas fa-arrow-trend-up text-green-500",
+                    description: "The user's recent activity spike indicates they are highly engaged and finding value. This is a prime moment to introduce them to premium features or related products.",
+                    action: "Trigger an in-app message or email offering a free 14-day trial of the 'Pro Plan'. Personalize the message based on the features they've been using.",
+                    buttonText: "Log Upsell Action"
+                },
+                purchase_propensity: {
+                    title: "Targeted Ad & Email Campaign for 'Product X'",
+                    icon: "fas fa-bullseye text-blue-500",
+                    description: "Predictive models indicate this user has a high likelihood of purchasing 'Product X' based on their firmographic and behavioral data.",
+                    action: "Add this user to a targeted audience on Google/LinkedIn Ads for 'Product X'. Simultaneously, send a personalized email detailing the benefits of 'Product X' with a clear call-to-action.",
+                    buttonText: "Log Targeting Action"
+                },
+                cart_abandonment: {
+                    title: "Automated Cart Recovery Sequence",
+                    icon: "fas fa-shopping-cart text-yellow-500",
+                    description: "The user added items to their cart but did not complete the purchase. A timely reminder can recover a significant percentage of these otherwise lost sales.",
+                    action: "Send an email in 1 hour reminding them of their cart. If no action, send a follow-up in 24 hours, possibly with a small incentive like free shipping.",
+                    buttonText: "Log Recovery Action"
+                },
+                new_high_value_lead: {
+                    title: "Immediate Personal Outreach from Sales",
+                    icon: "fas fa-user-tie text-purple-500",
+                    description: "A new lead matching our Ideal Customer Profile (ICP) has been identified. Rapid, personalized engagement is critical to convert this high-potential opportunity.",
+                    action: "Create a task in the CRM for the assigned Account Executive to send a personalized introductory email within 2 hours, referencing the lead's company or industry.",
+                    buttonText: "Log Sales Action"
+                },
+                feature_neglect: {
+                    title: "Educational Nudge Campaign",
+                    icon: "fas fa-book-open text-indigo-500",
+                    description: "A long-term user is not using a key feature that correlates with high customer satisfaction and retention. Educating them could deepen their product dependency.",
+                    action: "Trigger a guided tour tooltip the next time they log in, pointing out the feature. Follow up with an email showcasing a use case for that feature.",
+                    buttonText: "Log Educational Action"
+                },
+                competitor_interest: {
+                    title: "Deploy Competitive Differentiation Battlecard",
+                    icon: "fas fa-balance-scale text-orange-500",
+                    description: "The user is actively comparing our solution to a competitor's. This is a critical decision point where we must reinforce our unique value proposition.",
+                    action: "Send an automated email with a link to a 'Why We're Different' one-pager or case study that subtly highlights our advantages over the specific competitor.",
+                    buttonText: "Log Competitive Action"
+                }
+            };
+
+            // --- Event Listener ---
+            insightSelect.addEventListener('change', (e) => {
+                const selectedInsight = e.target.value;
+
+                if (selectedInsight && actionsData[selectedInsight]) {
+                    const data = actionsData[selectedInsight];
+                    
+                    actionCard.innerHTML = `
+                        <div class="flex items-start space-x-4">
+                            <div>
+                                <i class="${data.icon} fa-2x"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold">${data.title}</h3>
+                                <p class="text-sm text-gray-600 mt-1 mb-3"><strong>Why:</strong> ${data.description}</p>
+                                <div class="bg-gray-100 p-3 rounded-md">
+                                    <p class="font-semibold">Action:</p>
+                                    <p class="text-gray-800">${data.action}</p>
+                                </div>
+                                <button data-insight="${selectedInsight}" class="log-action-btn mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+                                    <i class="fas fa-check mr-2"></i>${data.buttonText}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    initialMessage.classList.add('hidden');
+                    actionDisplay.classList.remove('hidden');
+                    
+                    // Add event listener to the new button
+                    document.querySelector('.log-action-btn').addEventListener('click', handleLogAction);
+
+                } else {
+                    actionDisplay.classList.add('hidden');
+                    initialMessage.classList.remove('hidden');
+                }
+            });
+
+            // --- Action Logging Function ---
+            function handleLogAction(e) {
+                const insightKey = e.target.dataset.insight;
+                const actionData = actionsData[insightKey];
+
+                if (historyPlaceholder) {
+                    historyPlaceholder.remove();
+                }
+
+                const logEntry = document.createElement('div');
+                logEntry.className = 'bg-white p-4 rounded-lg shadow-sm border border-gray-200 fade-in flex items-start space-x-4';
+                
+                const timestamp = new Date();
+                const formattedTime = timestamp.toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                });
+
+                logEntry.innerHTML = `
+                    <div>
+                        <i class="${actionData.icon} fa-2x mt-1"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold">${actionData.title}</p>
+                        <p class="text-sm text-gray-700"><strong>Insight:</strong> <span class="font-normal">${insightSelect.options[insightSelect.selectedIndex].text}</span></p>
+                        <p class="text-sm text-gray-500 mt-1">${formattedTime}</p>
+                    </div>
+                `;
+                
+                // Prepend to show most recent first
+                historyLog.prepend(logEntry);
+
+                // Reset the main view
+                actionDisplay.classList.add('hidden');
+                initialMessage.classList.remove('hidden');
+                insightSelect.value = "";
+            }
+        });
+    </script>
+
+</body>
+</html>
