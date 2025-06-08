@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actionable Insights Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #111827; /* Dark Navy */
+            --module-bg: #1F2937; /* Lighter Navy */
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-red: #EF4444;
+            --accent-yellow: #F59E0B;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* KPI Snapshot */
+        .kpi-snapshot {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .kpi-card {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .kpi-card h3 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin: 0 0 0.5rem 0;
+        }
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .kpi-change {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 99px;
+        }
+        .positive { color: var(--accent-green); background-color: rgba(16, 185, 129, 0.1); }
+        .negative { color: var(--accent-red); background-color: rgba(239, 68, 68, 0.1); }
+
+        /* Insights Feed */
+        #insights-feed {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .insight-card {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 1.5rem;
+            transition: opacity 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease;
+        }
+        .insight-card.archived {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .insight-content h2 {
+            font-size: 1.25rem;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .insight-content .tag {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            color: white;
+            white-space: nowrap;
+        }
+        .priority-tag.critical { background-color: var(--accent-red); }
+        .priority-tag.opportunity { background-color: var(--accent-yellow); }
+        .priority-tag.positive { background-color: var(--accent-green); }
+
+        .type-tag.corrective { background-color: var(--accent-red); }
+        .type-tag.opportunistic { background-color: var(--accent-yellow); }
+        .type-tag.optimization { background-color: var(--accent-purple); }
+
+        .insight-content p {
+            color: var(--text-secondary);
+            margin: 0 0 1rem 0;
+            max-width: 90%;
+        }
+
+        .risk-analysis {
+            background-color: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .risk-analysis h4 {
+            color: var(--accent-red);
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+        .risk-analysis p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .insight-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .action-btn {
+            background-color: #374151;
+            color: var(--text-primary);
+            border: 1px solid #4B5563;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #4B5563;
+        }
+        .action-btn.primary {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        .action-btn.primary:hover {
+            background-color: #60A5FA;
+        }
+        
+        .insight-viz {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* AI Action Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--module-bg); padding: 2rem; border-radius: 0.75rem;
+            border: 1px solid var(--border-color); width: 90%; max-width: 600px;
+            transform: scale(0.95); transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-content h2 { margin-top: 0; }
+        .modal-content textarea {
+            width: 100%; height: 120px; background-color: var(--bg-color);
+            color: var(--text-primary); border: 1px solid var(--border-color);
+            border-radius: 0.5rem; padding: 0.75rem; font-family: 'Inter', sans-serif;
+            margin-top: 1rem; resize: vertical;
+        }
+        .modal-actions {
+            margin-top: 1.5rem; display: flex;
+            justify-content: flex-end; gap: 1rem;
+        }
+        .modal-actions button { padding: 0.6rem 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Actionable Insights Dashboard</h1>
+            <p>Turn Real-time Marketing Reports into Decisive Actions</p>
+        </header>
+
+        <section class="kpi-snapshot">
+            <!-- KPI cards remain the same -->
+             <div class="kpi-card">
+                <h3>Overall Sentiment</h3>
+                <div class="kpi-value">6.8 <span class="kpi-change positive">+0.3</span></div>
+            </div>
+            <div class="kpi-card">
+                <h3>Engagement Rate</h3>
+                <div class="kpi-value">4.2% <span class="kpi-change negative">-0.5%</span></div>
+            </div>
+            <div class="kpi-card">
+                <h3>Conversion Rate</h3>
+                <div class="kpi-value">1.9% <span class="kpi-change positive">+0.1%</span></div>
+            </div>
+             <div class="kpi-card">
+                <h3>Insights to Action</h3>
+                <div class="kpi-value">3 <span class="kpi-change">New</span></div>
+            </div>
+        </section>
+
+        <main id="insights-feed">
+            <!-- Insight Card 1 -->
+            <div class="insight-card" id="insight-1">
+                <div class="insight-content">
+                    <h2>
+                        <span class="tag priority-tag critical">Critical</span>
+                        <span class="tag type-tag corrective">Corrective</span>
+                        Spike in Negative Sentiment
+                    </h2>
+                    <p>A 45% increase in negative comments on Twitter related to our recent pricing update, primarily from users in the 18-24 demographic.</p>
+                    
+                    <div class="risk-analysis">
+                        <h4>Risk Analysis</h4>
+                        <p id="risk-1">Projected Outcome: Continued brand erosion among Gen Z, leading to long-term customer churn and a potential 5% drop in quarterly revenue if not addressed within 7 days.</p>
+                    </div>
+
+                    <div class="insight-actions">
+                        <button class="action-btn primary" onclick="openAIModal(1, 'draft_response')">✨ Draft Response</button>
+                        <button class="action-btn" onclick="analyzeRisk(1)">✨ Analyze Risk with AI</button>
+                        <button class="action-btn" onclick="archiveInsight(1)">Archive</button>
+                    </div>
+                </div>
+                <div class="insight-viz">
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+
+            <!-- Insight Card 2 -->
+            <div class="insight-card" id="insight-2">
+                <div class="insight-content">
+                    <h2>
+                        <span class="tag priority-tag opportunity">Opportunity</span>
+                        <span class="tag type-tag optimization">Optimization</span>
+                        High Engagement on 'How-To' Video
+                    </h2>
+                    <p>Our latest video tutorial on 'Advanced Widget Configuration' has a 75% completion rate, far exceeding benchmarks. Viewers are asking for more in-depth content.</p>
+
+                    <div class="risk-analysis">
+                        <h4>Risk Analysis</h4>
+                        <p id="risk-2">Projected Outcome: Failure to capitalize on this momentum could lead to audience fatigue and a missed opportunity to establish ourselves as the leading authority, ceding ground to competitors.</p>
+                    </div>
+
+                    <div class="insight-actions">
+                        <button class="action-btn primary" onclick="openAIModal(2, 'draft_ideas')">✨ Brainstorm Follow-ups</button>
+                        <button class="action-btn" onclick="analyzeRisk(2)">✨ Analyze Risk with AI</button>
+                        <button class="action-btn" onclick="archiveInsight(2)">Archive</button>
+                    </div>
+                </div>
+                <div class="insight-viz">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+
+            <!-- Insight Card 3 -->
+            <div class="insight-card" id="insight-3">
+                <div class="insight-content">
+                    <h2>
+                        <span class="tag priority-tag positive">Positive</span>
+                        <span class="tag type-tag opportunistic">Opportunistic</span>
+                        Competitor Outage
+                    </h2>
+                    <p>Major competitor 'RivalCorp' is experiencing a widespread service outage. Social media is buzzing with frustrated customers looking for alternatives.</p>
+                    
+                    <div class="risk-analysis">
+                        <h4>Risk Analysis</h4>
+                        <p id="risk-3">Projected Outcome: Hesitation will result in a complete loss of this transient opportunity. Competitor will resolve their issue, and their customers will forget their frustration, resulting in zero customer acquisition for us.</p>
+                    </div>
+
+                    <div class="insight-actions">
+                        <button class="action-btn primary" onclick="openAIModal(3, 'draft_ad_copy')">✨ Draft "Switcher" Ads</button>
+                        <button class="action-btn" onclick="analyzeRisk(3)">✨ Analyze Risk with AI</button>
+                        <button class="action-btn" onclick="archiveInsight(3)">Archive</button>
+                    </div>
+                </div>
+                <div class="insight-viz">
+                    <canvas id="chart3"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- AI Action Modal -->
+    <div class="modal-overlay" id="ai-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">AI Action Center</h2>
+            <p id="modal-description">Use the prompt below to generate content with AI.</p>
+            <textarea id="ai-prompt" placeholder="Your prompt for the AI..."></textarea>
+            <textarea id="ai-result" placeholder="AI-generated content will appear here..." readonly></textarea>
+            <div class="modal-actions">
+                <button class="action-btn" onclick="closeAIModal()">Cancel</button>
+                <button class="action-btn primary" id="generate-ai-btn" onclick="generateWithAI()">Generate</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        /**
+         * A generic function to call the Gemini API and update a specific element.
+         * @param {string} prompt The prompt for the AI.
+         * @param {HTMLElement} targetElement The element to update with the response.
+         * @param {string} loadingText The text to show while generating.
+         */
+        async function callGeminiForElement(prompt, targetElement, loadingText = "Generating...") {
+            const originalText = targetElement.innerText;
+            targetElement.innerText = loadingText;
+
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas provides this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const result = await response.json();
+                const text = result.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+                targetElement.innerText = text;
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                targetElement.innerText = `Error: ${error.message}`;
+            }
+        }
+
+
+        // --- Insight Card Logic ---
+        function archiveInsight(id) {
+            document.getElementById(`insight-${id}`).classList.add('archived');
+        }
+
+        async function analyzeRisk(id) {
+            const insightCard = document.getElementById(`insight-${id}`);
+            const insightText = insightCard.querySelector('p').innerText;
+            const riskElement = document.getElementById(`risk-${id}`);
+            
+            const prompt = `You are a Risk Analyst. Given the following marketing insight, what is the negative projected outcome if no action is taken? Be specific and quantify the potential damage if possible. Insight: "${insightText}"`;
+            
+            await callGeminiForElement(prompt, riskElement, "Analyzing risk...");
+        }
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('ai-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-description');
+        const aiPrompt = document.getElementById('ai-prompt');
+
+        const promptTemplates = {
+            draft_response: {
+                title: "Draft Public Response",
+                desc: "Generate a compassionate and professional response to the customer feedback.",
+                prompt: "You are a social media manager. A spike in negative sentiment occurred due to a recent pricing update. Draft a public response for Twitter that acknowledges user frustration, explains the value behind the change, and offers a path for feedback. Keep it under 280 characters."
+            },
+            draft_ideas: {
+                title: "Brainstorm Video Ideas",
+                desc: "Generate creative follow-up ideas for our successful video.",
+                prompt: "You are a content strategist. A 'how-to' video on an advanced topic was highly successful. Brainstorm 3 distinct follow-up video ideas that cater to this engaged audience. Include a title and a one-sentence description for each."
+            },
+            draft_ad_copy: {
+                title: "Draft 'Switcher' Ad Copy",
+                desc: "Generate ad copy to attract a competitor's dissatisfied customers.",
+                prompt: "You are a digital marketer. A major competitor is having an outage. Draft 3 short, punchy ad headlines and descriptions for a Google Ads campaign targeting their frustrated users. Focus on reliability and a seamless transition."
+            }
+        };
+
+        function openAIModal(id, type) {
+            const template = promptTemplates[type];
+            modalTitle.textContent = template.title;
+            modalDesc.textContent = template.desc;
+            aiPrompt.value = template.prompt;
+            document.getElementById('ai-result').value = ""; // Clear previous results
+            modal.classList.add('visible');
+        }
+
+        function closeAIModal() {
+            modal.classList.remove('visible');
+        }
+
+        async function generateWithAI() {
+            const prompt = aiPrompt.value;
+            if (prompt) {
+                const resultTextarea = document.getElementById('ai-result');
+                const generateBtn = document.getElementById('generate-ai-btn');
+                generateBtn.disabled = true;
+                await callGeminiForElement(prompt, resultTextarea, "Generating...");
+                generateBtn.disabled = false;
+            }
+        }
+        
+        // --- Charts ---
+        new Chart(document.getElementById('chart1'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Negative Mentions',
+                    data: [12, 19, 15, 25, 45, 60, 75],
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,0.7)'} }, x: { ticks: { color: 'rgba(255,255,255,0.7)'} } } }
+        });
+
+        new Chart(document.getElementById('chart2'), {
+            type: 'bar',
+            data: {
+                labels: ['Video 1', 'Video 2', 'Latest Video', 'Video 4'],
+                datasets: [{
+                    label: 'Completion Rate (%)',
+                    data: [45, 55, 75, 50],
+                    backgroundColor: ['#374151', '#374151', 'rgba(16, 185, 129, 1)', '#374151'],
+                }]
+            },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,0.7)'} }, y: { ticks: { color: 'rgba(255,255,255,0.7)'} } } }
+        });
+
+        new Chart(document.getElementById('chart3'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Our Brand Mentions', 'RivalCorp Frustration'],
+                datasets: [{
+                    data: [30, 70],
+                    backgroundColor: ['rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)'],
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.7)' } } } }
+        });
+
+    </script>
+</body>
+</html>
