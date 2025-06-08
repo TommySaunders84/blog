@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Asset Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #111827; /* Dark Navy */
+            --module-bg: #1F2937; /* Lighter Navy */
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        /* Asset Library */
+        #asset-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .asset-card {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .asset-card.selected {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .asset-preview {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .asset-preview input[type="checkbox"] {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .asset-details {
+            padding: 1rem;
+        }
+        .asset-details h3 {
+            font-size: 1.1rem;
+            margin: 0 0 0.5rem 0;
+        }
+        .asset-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            color: white;
+            white-space: nowrap;
+        }
+        .status-live { background-color: var(--accent-green); }
+        .status-draft { background-color: var(--text-secondary); }
+        .type-email { background-color: var(--accent-purple); }
+        .type-social { background-color: var(--accent-blue); }
+
+        .asset-perf {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .asset-perf span {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Activation Hub */
+        .activation-hub {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            position: sticky;
+            top: 2rem;
+        }
+        .activation-hub h2 {
+            margin-top: 0;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 1rem;
+        }
+
+        .insight-box {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px dashed var(--border-color);
+            margin: 1.5rem 0;
+        }
+        .insight-box h4 {
+            color: var(--accent-blue);
+            margin: 0 0 0.5rem 0;
+        }
+        .insight-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .action-btn {
+            width: 100%;
+            background-color: var(--accent-blue);
+            color: var(--text-primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        .action-btn:hover { background-color: #60A5FA; }
+        .action-btn:disabled { background-color: #374151; cursor: not-allowed; }
+
+        /* AI Revision Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--module-bg); padding: 2rem; border-radius: 0.75rem;
+            border: 1px solid var(--border-color); width: 90%; max-width: 800px;
+            transform: scale(0.95); transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-content h2 { margin-top: 0; }
+        .revision-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .revision-box {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .revision-box h4 { margin: 0 0 1rem 0; color: var(--text-secondary); }
+        .revision-box p { margin: 0; line-height: 1.6; }
+        .modal-actions {
+            margin-top: 1.5rem; display: flex;
+            justify-content: flex-end; gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Campaign Asset Hub</h1>
+            <p>Review, analyze, and optimize your live content based on real-time insights.</p>
+        </header>
+
+        <main id="asset-library">
+            <!-- Asset cards will be generated here by JS -->
+        </main>
+
+        <aside class="activation-hub">
+            <h2>Activation Hub</h2>
+            <div class="insight-box">
+                <h4>Latest Actionable Insight:</h4>
+                <p id="latest-insight">Sentiment analysis shows customers perceive our pricing as too high compared to value. We need to emphasize long-term benefits and ROI.</p>
+            </div>
+            <button id="activate-btn" class="action-btn" onclick="triggerAIActivation()">✨ Activate Insight on Selected Asset</button>
+        </aside>
+    </div>
+
+    <!-- AI Revision Modal -->
+    <div class="modal-overlay" id="revision-modal">
+        <div class="modal-content">
+            <h2>AI-Powered Revision</h2>
+            <div class="revision-container">
+                <div class="revision-box">
+                    <h4>Original Version</h4>
+                    <p id="original-copy"></p>
+                </div>
+                <div class="revision-box">
+                    <h4>✨ AI-Generated Version</h4>
+                    <p id="revised-copy"></p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn" style="background-color: #374151;" onclick="closeModal()">Cancel</button>
+                <button class="action-btn" style="background-color: var(--accent-green);">Approve & Deploy</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Gemini API Call ---
+        async function callGemini(prompt) {
+            const revisedCopyElement = document.getElementById('revised-copy');
+            revisedCopyElement.textContent = "Generating...";
+
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will provide this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const result = await response.json();
+                const text = result.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+                revisedCopyElement.textContent = text;
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                revisedCopyElement.textContent = `Error: Could not connect to the AI. ${error.message}`;
+            }
+        }
+
+        // --- Mock Data and Rendering ---
+        const assetData = [
+            { id: 1, title: "Q3 Product Launch Email", type: "Email", status: "Live", performance: "18% Open Rate", copy: "Our new platform is here! Get the best features at a great price. Upgrade today for instant access.", image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDR8fGVjb21tZXJjZXxlbnwwfHx8fDE2MjI4ODU5OTk&ixlib=rb-1.2.1&q=80&w=400" },
+            { id: 2, title: "New Feature Twitter Post", type: "Social", status: "Live", performance: "2.1% Engagement", copy: "Automate your workflows like never before with our new AI-powered feature. It's fast, powerful, and affordable. Try it now!", image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fHNvY2lhbCUyMG1lZGlhfGVufDB8fHx8fDE2MjI4ODU5OTk&ixlib=rb-1.2.1&q=80&w=400" },
+            { id: 3, title: "Competitor Comparison Ad", type: "Social", status: "Draft", performance: "N/A", copy: "Why pay more for less? Our platform offers double the features of the competition for half the price. See the difference.", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEzfHx0ZWFtfGVufDB8fHx8fDE2MjI4ODU5OTk&ixlib=rb-1.2.1&q=80&w=400" }
+        ];
+
+        const assetLibrary = document.getElementById('asset-library');
+
+        function renderAssets() {
+            assetLibrary.innerHTML = '';
+            assetData.forEach(asset => {
+                const card = document.createElement('div');
+                card.className = 'asset-card';
+                card.id = `asset-${asset.id}`;
+                card.innerHTML = `
+                    <div class="asset-preview" style="background-image: url('${asset.image}')">
+                        <input type="checkbox" data-id="${asset.id}" onchange="handleSelection(this)">
+                    </div>
+                    <div class="asset-details">
+                        <h3>${asset.title}</h3>
+                        <div class="asset-tags">
+                            <span class="tag ${asset.type === 'Email' ? 'type-email' : 'type-social'}">${asset.type}</span>
+                            <span class="tag ${asset.status === 'Live' ? 'status-live' : 'status-draft'}">${asset.status}</span>
+                        </div>
+                        <p class="asset-perf">Performance: <span>${asset.performance}</span></p>
+                    </div>
+                `;
+                assetLibrary.appendChild(card);
+            });
+        }
+        
+        // --- Activation & Modal Logic ---
+        const modal = document.getElementById('revision-modal');
+        let selectedAssetId = null;
+
+        function handleSelection(checkbox) {
+            // Deselect all others to enforce single selection
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                    document.getElementById(`asset-${cb.dataset.id}`).classList.remove('selected');
+                }
+            });
+
+            const card = document.getElementById(`asset-${checkbox.dataset.id}`);
+            if (checkbox.checked) {
+                selectedAssetId = checkbox.dataset.id;
+                card.classList.add('selected');
+            } else {
+                selectedAssetId = null;
+                card.classList.remove('selected');
+            }
+        }
+
+        async function triggerAIActivation() {
+            if (!selectedAssetId) {
+                alert("Please select an asset to activate the insight on.");
+                return;
+            }
+
+            const asset = assetData.find(a => a.id == selectedAssetId);
+            const insightText = document.getElementById('latest-insight').textContent;
+
+            document.getElementById('original-copy').textContent = asset.copy;
+            modal.classList.add('visible');
+
+            const prompt = `You are a marketing copywriter. Your task is to revise a marketing asset based on a new strategic insight.
+            
+            **Strategic Insight:** "${insightText}"
+            
+            **Original Asset Copy:** "${asset.copy}"
+            
+            Please rewrite the copy to align with the insight. Focus on value and long-term benefits instead of just price. Provide ONLY the rewritten text.`;
+            
+            await callGemini(prompt);
+        }
+
+        function closeModal() {
+            modal.classList.remove('visible');
+        }
+
+        // Initial Load
+        window.onload = renderAssets;
+
+    </script>
+</body>
+</html>
