@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Permissions: An Interactive Guide</title>
+    <!-- Chosen Palette: Neutral Tech -->
+    <!-- Application Structure Plan: A thematic, single-page application. The core is an interactive "Permission Explorer" dashboard where users click on data categories (Contacts, Location, etc.) to view details in a modal. This modal shows a plain-language explanation, a table of specific data fields, and a simulated AI tool/function call to make abstract concepts tangible. This structure is chosen to move from high-level concepts to granular details on demand, which is more engaging than a linear report. It's supported by sections explaining the "Why" (monetization) and "What's Next" (AI implications), with a sticky navigation for easy access. User flow: Land -> Explore high-level concepts -> Dive deep into specific permissions via interactive cards -> Understand context (monetization, AI) -> Leave with key takeaways. -->
+    <!-- Visualization & Content Choices: Report data is primarily qualitative and descriptive. The main "visualization" is the interactive grid of permission cards, color-coded by risk. Clicking reveals structured tables and code blocks. Goal: Explore & Understand -> Method: Interactive Cards + Modals. A simple Donut Chart (Chart.js) is used in the "Monetization" section to visually break down revenue sources (Goal: Inform -> Method: Proportions Chart), using illustrative data to make the concept clear. AI tool definitions are presented in styled code blocks to make the abstract idea of "function calling" concrete and understandable. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .hero-bg-animation {
+            background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm41dW9udnp6aXl6aW5zY3c3aTJsaXZqcjJ5Nnd3ZDNzYmFsb2Q2bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3mZqy0sJe5t83p2E/giphy.gif');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            filter: grayscale(80%);
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #0d9488;
+            border-color: #0d9488;
+        }
+        .risk-high { background-color: #fee2e2; color: #991b1b; border-color: #fecaca; }
+        .risk-medium { background-color: #ffedd5; color: #9a3412; border-color: #fed7aa; }
+        .risk-low { background-color: #dcfce7; color: #166534; border-color: #bbf7d0; }
+        .permission-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .permission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .modal {
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.is-open {
+            display: flex;
+        }
+        .code-block {
+            background-color: #1f2937;
+            color: #d1d5db;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+         @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-40 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-teal-700">Privacy Exposed</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#explorer" class="nav-link text-gray-600 border-b-2 border-transparent">Permission Explorer</a>
+                <a href="#monetization" class="nav-link text-gray-600 border-b-2 border-transparent">The "Why"</a>
+                <a href="#future" class="nav-link text-gray-600 border-b-2 border-transparent">AI & The Future</a>
+                <a href="#takeaways" class="nav-link text-gray-600 border-b-2 border-transparent">Takeaways</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#explorer" class="block py-2 px-4 text-sm text-gray-700 hover:bg-teal-50">Permission Explorer</a>
+            <a href="#monetization" class="block py-2 px-4 text-sm text-gray-700 hover:bg-teal-50">The "Why"</a>
+            <a href="#future" class="block py-2 px-4 text-sm text-gray-700 hover:bg-teal-50">AI & The Future</a>
+            <a href="#takeaways" class="block py-2 px-4 text-sm text-gray-700 hover:bg-teal-50">Takeaways</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative text-center py-20 md:py-32 overflow-hidden bg-white">
+            <div class="hero-bg-animation"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-800 leading-tight">You Agreed to What?</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    Mobile apps offer incredible utility, but they come at a cost. The price is often your personal data, collected through a web of permissions you accept but may not fully understand. This guide makes the invisible visible.
+                </p>
+                <a href="#explorer" class="mt-8 inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-full hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Explore Permissions
+                </a>
+            </div>
+        </section>
+
+        <section id="explorer" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Permission Explorer</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Your phone's data is divided into categories. Applications request access to these categories to function—or to gather data. Click on a card to see what each permission truly reveals and how an AI might use that information.
+                    </p>
+                </div>
+
+                <div class="mt-12 flex justify-center items-center space-x-2 md:space-x-4">
+                    <span class="font-medium text-gray-700">Filter by Risk:</span>
+                    <button data-risk="all" class="filter-btn bg-teal-600 text-white px-4 py-2 rounded-full text-sm font-semibold">All</button>
+                    <button data-risk="high" class="filter-btn bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100">High</button>
+                    <button data-risk="medium" class="filter-btn bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100">Medium</button>
+                    <button data-risk="low" class="filter-btn bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100">Low</button>
+                </div>
+
+                <div id="permissions-grid" class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+        
+        <section id="monetization" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The "Why": Data is the New Currency</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Why do so many free apps request so much data? Because your personal information is incredibly valuable. It fuels a multi-billion dollar economy of targeted advertising and market research. The permissions you grant are the gateway to this marketplace.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Common Monetization Models</h3>
+                        <div class="space-y-4">
+                             <div class="p-4 bg-gray-50 rounded-lg">
+                                <h4 class="font-bold">📱 Mobile Advertising</h4>
+                                <p class="text-sm text-gray-600">The most common model. Your data helps advertisers show you personalized (and more effective) ads via banners, pop-ups, and notifications.</p>
+                             </div>
+                             <div class="p-4 bg-gray-50 rounded-lg">
+                                <h4 class="font-bold">📝 In-App Surveys</h4>
+                                <p class="text-sm text-gray-600">Apps get paid to present you with surveys. Your demographic and location data are key to targeting who receives which survey.</p>
+                             </div>
+                             <div class="p-4 bg-gray-50 rounded-lg">
+                                <h4 class="font-bold">💰 Data Brokering</h4>
+                                <p class="text-sm text-gray-600">Some apps collect and sell anonymized (or semi-anonymized) data to third-party data brokers, who aggregate it for market trend analysis.</p>
+                             </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                             <canvas id="monetizationChart"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-gray-500 mt-2">Illustrative breakdown of app revenue sources.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">AI, Your Data, and The Future</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        The next frontier is AI-powered personal assistants. These agents need access to your data to be truly helpful, but this creates a new level of privacy and ethical challenges. Understanding these dynamics is key to navigating our digital future.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6 bg-white rounded-lg shadow-sm">
+                        <div class="text-4xl mb-4">🤖</div>
+                        <h3 class="text-xl font-semibold mb-2">Proactive Assistance</h3>
+                        <p class="text-gray-600">An AI that anticipates your needs—like warning you about traffic before you leave for a calendar event—is only possible if it can read your calendar and location data. This blurs the line between helpfulness and intrusion.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-sm">
+                        <div class="text-4xl mb-4">🛡️</div>
+                        <h3 class="text-xl font-semibold mb-2">Autonomy & Bias</h3>
+                        <p class="text-gray-600">As we rely more on AI suggestions derived from our data, our own decision-making might be subtly influenced. Furthermore, if the data reflects societal biases, the AI may learn and amplify them, leading to unfair outcomes.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-sm">
+                        <div class="text-4xl mb-4">🌍</div>
+                        <h3 class="text-xl font-semibold mb-2">Digital Identity</h3>
+                        <p class="text-gray-600">The constant collection and interpretation of our digital lives by AI agents raise questions about human identity. Our sense of self could become intertwined with our AI's reflection of us, shaped by the data it gathers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="takeaways" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Your Digital Rights & Next Steps</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Knowledge is power. Being aware of what you're sharing is the first step toward reclaiming your digital privacy.
+                    </p>
+                </div>
+                <div class="mt-12 max-w-2xl mx-auto space-y-4">
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="font-bold text-teal-800">Review Permissions Regularly</h3>
+                        <p class="text-teal-700">On both Android and iOS, go to your privacy settings and review which apps have access to sensitive data. If an app doesn't need a permission for its core function, revoke it.</p>
+                    </div>
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="font-bold text-teal-800">Choose Privacy-Focused Alternatives</h3>
+                        <p class="text-teal-700">For services like search engines or browsers, consider alternatives that are built on a privacy-first model and require minimal permissions to operate.</p>
+                    </div>
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="font-bold text-teal-800">Question the "Free"</h3>
+                        <p class="text-teal-700">When installing a new app, especially a free one, be extra critical of the permissions it requests. Remember, you are likely paying with your data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>An interactive guide based on the "Mobile Permissions Data" report.</p>
+            <p class="text-sm text-gray-400 mt-2">Designed to promote digital literacy and privacy awareness.</p>
+        </div>
+    </footer>
+
+    <div id="permission-modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="modal-close-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="p-6 md:p-8">
+                <div class="flex items-center mb-4">
+                    <h3 id="modal-title" class="text-2xl md:text-3xl font-bold text-gray-800"></h3>
+                    <span id="modal-risk" class="ml-4 px-3 py-1 text-sm font-semibold rounded-full border"></span>
+                </div>
+                <p id="modal-description" class="text-gray-600 mb-6"></p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">What Data Can Be Accessed?</h4>
+                        <div class="max-h-96 overflow-y-auto pr-2">
+                             <table class="w-full text-left text-sm">
+                                <thead class="bg-gray-100 sticky top-0">
+                                    <tr>
+                                        <th class="p-2 font-semibold">Data Field</th>
+                                        <th class="p-2 font-semibold">Example</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modal-datatable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">AI Agent Use Case</h4>
+                        <p class="text-sm text-gray-600 mb-2">This is how an AI might request this data using a "function call".</p>
+                        <div id="modal-ai-usecase" class="code-block p-4 rounded-lg text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const permissionsData = [
+        {
+            id: 'contacts',
+            title: 'Contacts',
+            icon: '👥',
+            risk: 'high',
+            description: 'Grants access to your entire address book. This includes not just names and numbers, but also email addresses, physical addresses, photos, notes, and relationships you\'ve defined (like "Spouse" or "Manager"). It\'s a map of your personal and professional network.',
+            dataTable: [
+                { field: 'Display Name', example: 'Jane Doe' },
+                { field: 'Phone Number', example: '555-123-4567 (Mobile)' },
+                { field: 'Email Address', example: 'jane.doe@example.com (Work)' },
+                { field: 'Postal Address', example: '123 Main St, Anytown...' },
+                { field: 'Organization', example: 'Acme Corp (Lead Engineer)' },
+                { field: 'Birthday', example: '1990-07-15' },
+                { field: 'Contact Photo', example: '(Image Data)' },
+                { field: 'Interaction History', example: 'Contacted 42 times' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "contact_management_service",
+  "function_name": "findContactsByName",
+  "parameters": {
+    "name_query": "Sarah",
+    "requested_fields": ["phone", "birthday"]
+  }
+}
+
+// User: "AI, text Sarah happy birthday."
+// AI makes this function call:
+contact_management_service.findContactsByName(
+    name_query="Sarah", 
+    requested_fields=["phone", "birthday"]
+);
+`
+        },
+        {
+            id: 'calendar',
+            title: 'Calendar',
+            icon: '📅',
+            risk: 'high',
+            description: 'Allows reading, creating, and modifying all events in your calendars. This reveals your daily schedule, appointments, locations you visit, people you meet (via attendee lists), and personal events.',
+            dataTable: [
+                { field: 'Event Title', example: 'Project Alpha Sync-up' },
+                { field: 'Start/End Time', example: '10:00 - 11:00 UTC' },
+                { field: 'Location', example: 'Conference Room B / Zoom Link' },
+                { field: 'Description/Notes', example: 'Agenda: Review milestones...' },
+                { field: 'Attendees List', example: 'john@example.com (Accepted)' },
+                { field: 'Reminders', example: '15 minutes before' },
+                { field: 'Recurrence Rule', example: 'FREQ=WEEKLY;BYDAY=MO' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "calendar_management_service",
+  "function_name": "getCalendarEvents",
+  "parameters": {
+    "start_datetime_utc": "2024-07-04T12:00:00Z",
+    "end_datetime_utc": "2024-07-04T17:00:00Z"
+  }
+}
+
+// User: "What do I have this afternoon?"
+// AI makes this function call:
+calendar_management_service.getCalendarEvents(
+    start_datetime_utc="...", 
+    end_datetime_utc="..."
+);
+`
+        },
+        {
+            id: 'location',
+            title: 'Location',
+            icon: '📍',
+            risk: 'high',
+            description: 'Provides your geographical location. "Fine" location uses GPS and can be accurate to a few meters, revealing your exact position. "Coarse" location is less precise (city-block level). Continuous access can map your daily movements, home, and workplace.',
+            dataTable: [
+                { field: 'Latitude/Longitude', example: '34.0522, -118.2437' },
+                { field: 'Altitude', example: '71 meters' },
+                { field: 'Accuracy', example: 'Within 5 meters' },
+                { field: 'Speed', example: '1.5 m/s' },
+                { field: 'Bearing (Direction)', example: '180 degrees (South)' },
+                { field: 'Timestamp', example: 'UTC timestamp of fix' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "geolocation_service",
+  "function_name": "getCurrentLocation",
+  "parameters": {
+    "accuracy_preference": "approximate",
+    "purpose_string": "Fetch local weather"
+  }
+}
+
+// User: "What's the weather like?"
+// AI makes this function call:
+geolocation_service.getCurrentLocation(
+    accuracy_preference="approximate"
+);
+`
+        },
+        {
+            id: 'sms_mms',
+            title: 'SMS / MMS',
+            icon: '💬',
+            risk: 'high',
+            description: 'Allows reading all SMS and MMS messages on your device. This is one of the most sensitive permissions, giving access to personal conversations, bank alerts, two-factor authentication codes (2FA), and appointment reminders. Access is heavily restricted by modern operating systems.',
+            dataTable: [
+                { field: 'Message Body', example: 'Your confirmation code is 123456.' },
+                { field: 'Sender Number', example: '+1-800-555-0199' },
+                { field: 'Timestamp', example: 'UTC timestamp of receipt' },
+                { field: 'Read Status', example: 'Unread' },
+                { field: 'MMS Attachments', example: '(Image/Video Data)' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "secure_messaging_service",
+  "function_name": "findMessagesByCriteria",
+  "parameters": {
+    "content_keywords": ["confirmation", "code"],
+    "data_access_purpose": "otp_extraction"
+  }
+}
+
+// AI (proactively): "Extracting OTP code..."
+// AI makes this function call:
+secure_messaging_service.findMessagesByCriteria(
+    data_access_purpose="otp_extraction"
+);
+`
+        },
+        {
+            id: 'call_log',
+            title: 'Call Log',
+            icon: '📞',
+            risk: 'high',
+            description: 'Provides access to your entire call history: incoming, outgoing, and missed calls. This data reveals who you communicate with, how often, and for how long. It can be used to infer the importance of relationships.',
+            dataTable: [
+                { field: 'Phone Number', example: '555-0100' },
+                { field: 'Call Type', example: 'Missed, Incoming, Outgoing' },
+                { field: 'Date & Time', example: 'UTC timestamp' },
+                { field: 'Duration', example: '120 seconds' },
+                { field: 'Contact Name (Cached)', example: 'Jane Doe' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "call_history_service",
+  "function_name": "getLastMissedCall"
+}
+
+// User: "Who just called me?"
+// AI makes this function call:
+call_history_service.getLastMissedCall();
+`
+        },
+        {
+            id: 'camera_media',
+            title: 'Camera & Media',
+            icon: '📷',
+            risk: 'high',
+            description: 'Grants access to use the camera to take pictures/videos, and to read/write files in your device\'s storage. This includes all your photos, videos, and documents. Photo metadata (EXIF) can also reveal when and where a picture was taken.',
+            dataTable: [
+                { field: 'Camera Access', example: '(Live video/image stream)' },
+                { field: 'Stored Photos/Videos', example: '(Access to all media files)' },
+                { field: 'EXIF: GPS Location', example: 'Lat/Lon where photo was taken' },
+                { field: 'EXIF: Timestamp', example: 'Date/Time of photo capture' },
+                { field: 'EXIF: Device Info', example: 'Apple, iPhone 15 Pro' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "multimedia_services_interface",
+  "function_name": "captureImageWithCamera"
+}
+
+// User: "Take a picture of this receipt."
+// AI makes this function call:
+multimedia_services_interface.captureImageWithCamera(
+    preferred_camera="back"
+);
+`
+        },
+        {
+            id: 'microphone',
+            title: 'Microphone',
+            icon: '🎤',
+            risk: 'high',
+            description: 'Allows the app to record audio using the device\'s microphone. While necessary for voice assistants and recording apps, it can potentially be used to listen to conversations in the background if misused.',
+            dataTable: [
+                { field: 'Audio Stream', example: '(Live audio data)' },
+                { field: 'Recorded Audio File', example: '(Saves recording to storage)' },
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "multimedia_services_interface",
+  "function_name": "recordAudioSnippet",
+  "parameters": { "duration_seconds": 10 }
+}
+
+// User: "AI, record a quick voice note."
+// AI makes this function call:
+multimedia_services_interface.recordAudioSnippet(
+    duration_seconds=10
+);
+`
+        },
+        {
+            id: 'installed_apps',
+            title: 'Installed Applications',
+            icon: '🧩',
+            risk: 'medium',
+            description: 'Allows an app to see the full list of other applications installed on your device. This inventory reveals your preferences, the services you use (banking, health, social), and your general interests.',
+            dataTable: [
+                { field: 'Package Name', example: 'com.company.appname' },
+                { field: 'Application Name', example: 'Social Media App' },
+                { field: 'Version', example: '3.14.2' },
+                { field: 'Installation Date', example: 'UTC timestamp' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "device_application_manager",
+  "function_name": "listInstalledApplications"
+}
+
+// User: "Launch my music app."
+// AI: "Which one? I see Spotify and Pandora."
+// AI used this function call:
+device_application_manager.listInstalledApplications(
+    filter_by_category="Music"
+);
+`
+        },
+        {
+            id: 'system_settings',
+            title: 'System Settings',
+            icon: '⚙️',
+            risk: 'medium',
+            description: 'Allows an app to read or modify global system settings. While some uses are benign (e.g., changing screen brightness), it can be abused to enable other settings (like location services) without the user\'s direct intent.',
+            dataTable: [
+                { field: 'Toggle Wi-Fi/Bluetooth', example: 'On/Off' },
+                { field: 'Change Screen Brightness', example: 'Set to 50%' },
+                { field: 'Toggle Location Services', example: 'On/Off' }
+            ],
+            aiUsecase: `
+// Tool Definition
+{
+  "tool_name": "system_control_service",
+  "function_name": "setWifiState",
+  "parameters": { "enabled": false }
+}
+
+// User: "Turn off Wi-Fi to save battery."
+// AI makes this function call:
+system_control_service.setWifiState(
+    enabled=false
+);
+`
+        }
+    ];
+
+    const grid = document.getElementById('permissions-grid');
+    const modal = document.getElementById('permission-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalRisk = document.getElementById('modal-risk');
+    const modalDescription = document.getElementById('modal-description');
+    const modalDataTable = document.getElementById('modal-datatable');
+    const modalAiUsecase = document.getElementById('modal-ai-usecase');
+
+    const riskClasses = {
+        high: 'risk-high',
+        medium: 'risk-medium',
+        low: 'risk-low'
+    };
+
+    function renderCards(filter = 'all') {
+        grid.innerHTML = '';
+        const filteredData = (filter === 'all')
+            ? permissionsData
+            : permissionsData.filter(p => p.risk === filter);
+            
+        filteredData.forEach(p => {
+            const card = document.createElement('div');
+            card.className = `permission-card p-6 bg-white rounded-xl shadow-md cursor-pointer border ${riskClasses[p.risk]}`;
+            card.dataset.id = p.id;
+            card.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="text-4xl">${p.icon}</span>
+                    <span class="px-3 py-1 text-xs font-semibold rounded-full uppercase ${riskClasses[p.risk]}">${p.risk} Risk</span>
+                </div>
+                <h3 class="mt-4 text-xl font-bold text-gray-800">${p.title}</h3>
+                <p class="mt-2 text-sm text-gray-600">${p.description.substring(0, 100)}...</p>
+            `;
+            card.addEventListener('click', () => showModal(p.id));
+            grid.appendChild(card);
+        });
+    }
+
+    function showModal(id) {
+        const data = permissionsData.find(p => p.id === id);
+        if (!data) return;
+
+        modalTitle.textContent = data.title;
+        modalDescription.textContent = data.description;
+        
+        modalRisk.textContent = `${data.risk} Risk`;
+        modalRisk.className = `ml-4 px-3 py-1 text-sm font-semibold rounded-full border ${riskClasses[data.risk]}`;
+
+        modalDataTable.innerHTML = data.dataTable
+            .map(row => `
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td class="p-2 font-medium text-gray-700">${row.field}</td>
+                    <td class="p-2 text-gray-600">${row.example}</td>
+                </tr>
+            `).join('');
+
+        modalAiUsecase.textContent = data.aiUsecase.trim();
+        modal.classList.add('is-open');
+    }
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && modal.classList.contains('is-open')) {
+            closeModal();
+        }
+    });
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const risk = btn.dataset.risk;
+            renderCards(risk);
+            filterButtons.forEach(b => {
+                b.classList.remove('bg-teal-600', 'text-white');
+                b.classList.add('bg-white', 'text-gray-700');
+            });
+            btn.classList.add('bg-teal-600', 'text-white');
+            btn.classList.remove('bg-white', 'text-gray-700');
+        });
+    });
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const monetizationCtx = document.getElementById('monetizationChart').getContext('2d');
+    new Chart(monetizationCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Mobile Advertising', 'In-App Surveys', 'Data Brokering', 'Paid Features'],
+            datasets: [{
+                label: 'Revenue Source',
+                data: [65, 15, 10, 10],
+                backgroundColor: [
+                    'rgba(13, 148, 136, 0.7)',
+                    'rgba(245, 158, 11, 0.7)',
+                    'rgba(239, 68, 68, 0.7)',
+                    'rgba(59, 130, 246, 0.7)'
+                ],
+                borderColor: [
+                    'rgb(13, 148, 136)',
+                    'rgb(245, 158, 11)',
+                    'rgb(239, 68, 68)',
+                    'rgb(59, 130, 246)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    renderCards();
+});
+</script>
+</body>
+</html>
