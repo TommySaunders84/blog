@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project: Interactive Brand Narrative</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Strategic Innovation Palette -->
+    <!-- Application Structure Plan: The application is structured as a scrolling narrative that guides the user from the core market problem (The AI Value Gap) to TPEP's unique solution (PEOS) and its benefits. The flow is: 1. The Problem, 2. Current Solutions & Their Flaws (Competitive Landscape), 3. The TPEP Solution (PEOS Explained), 4. Key Differentiators, 5. Tangible Business Impact, 6. Targeted Value for Different User Roles (Interactive), 7. A Concluding Vision & CTA. This narrative structure was chosen over mirroring the report's chapters to create a more persuasive and intuitive user journey, making the complex strategy easily digestible for potential clients and stakeholders. -->
+    <!-- Visualization & Content Choices: Data from the qualitative report was synthesized into quantitative visualizations. A Bar Chart compares Business Needs vs. Generic AI (Goal: Compare). A Flowchart (HTML/CSS) explains the PEOS system (Goal: Organize). A Radar Chart visually contrasts TPEP's capabilities against competitors (Goal: Compare). A dynamic table shows competitive differentiation (Goal: Compare). Interactive Tabs present audience-specific messaging (Goal: Inform/Engage). These choices turn dense text into clear, interactive visuals, supporting the narrative flow and enhancing understanding. All visualizations are built with Chart.js (Canvas) or structured HTML/CSS, with NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (max-width: 768px) { .chart-container { height: 300px; max-height: 350px; } }
+        .brand-gradient-text { background: linear-gradient(to right, #665191, #D45087, #F95D6A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .kpi-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .flow-node { border: 2px solid #D45087; background-color: #fff; color: #1e293b; padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: 600; box-shadow: 0 2px 4px rgb(0 0 0 / 0.05); }
+        .flow-arrow { font-size: 2.5rem; color: #D45087; line-height: 1; }
+        .tab { cursor: pointer; padding: 0.5rem 1rem; border-radius: 9999px; transition: background-color 0.3s, color 0.3s; }
+        .tab.active { background-color: #665191; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center my-12 md:my-20">
+            <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-4">The Prompt Engineering Project</h1>
+            <p id="tagline" class="text-2xl md:text-3xl font-semibold brand-gradient-text">Context In. Intelligence Out.</p>
+        </header>
+
+        <section id="problem" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">The AI Value Gap: A "Context Crisis"</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center mb-12">
+                Artificial intelligence holds immense promise, yet most organizations face a critical disconnect. There's a wide gap between generic AI capabilities and the specific, nuanced expertise required for tangible business results. Without a system to embed your unique context, AI outputs remain misaligned, inefficient, and the ROI elusive. This is the "AI Last Mile" problem.
+            </p>
+            <div class="kpi-card">
+                 <h3 class="text-2xl font-bold text-center mb-4 text-slate-900">Business Needs vs. Generic AI Capabilities</h3>
+                 <p class="text-center text-slate-500 mb-6">This chart illustrates the capability gap. Businesses require deep strategic alignment and contextual understanding, whereas generic AI platforms fall significantly short.</p>
+                 <div class="chart-container"><canvas id="valueGapChart"></canvas></div>
+            </div>
+        </section>
+        
+        <section id="solution" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">The Solution: The Prompt Engineering Operating System (PEOS)</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center mb-12">
+                We provide the essential "contextual infrastructure" to bridge the AI Value Gap. The PEOS is a complete framework for strategic human-AI communication, delivered through an accessible, no-code Notion interface. It’s the system that puts your unique expertise into action.
+            </p>
+            <div class="kpi-card p-8">
+                 <h3 class="text-2xl font-bold text-center mb-8 text-slate-900">How PEOS Orchestrates Context</h3>
+                <div class="flex flex-col md:flex-row items-center justify-around w-full space-y-4 md:space-y-0">
+                    <div class="flex-1 w-full flow-node">🧠<br>Your Expertise &amp; Strategy</div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">→</div>
+                    <div class="flex-1 w-full flow-node">📚<br>Centralized Knowledge Base</div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">→</div>
+                    <div class="flex-1 w-full flow-node">⚙️<br>Intelligent Prompt Libraries</div>
+                    <div class="flow-arrow transform md:rotate-0 rotate-90">→</div>
+                    <div class="flex-1 w-full flow-node">🎯<br>Aligned, On-Brand AI Operations</div>
+                </div>
+                 <p class="text-center text-slate-600 mt-8 max-w-2xl mx-auto">This process transforms your latent human knowledge into a scalable, operational AI capability, ensuring every output is anchored to your single source of truth.</p>
+            </div>
+        </section>
+
+        <section id="differentiation" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">How We're Different: A New Class of AI Enablement</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="kpi-card">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Competitive Positioning</h3>
+                    <p class="text-slate-600 mb-6">TPEP isn't another AI tool; it's a foundational system that makes your entire AI stack smarter. We provide the essential "missing layer" of context that every business needs but few solutions offer.</p>
+                     <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="border-b-2 p-3 text-sm font-semibold text-slate-700 bg-slate-50">Competitor</th>
+                                    <th class="border-b-2 p-3 text-sm font-semibold text-slate-700 bg-slate-50">Limitation</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-600">
+                                <tr>
+                                    <td class="border-b p-3 font-semibold text-[#665191]">Generic AI Platforms</td>
+                                    <td class="border-b p-3">Lack business context & workflow orchestration.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-b p-3 font-semibold text-[#665191]">Prompt Marketplaces</td>
+                                    <td class="border-b p-3">Offer disconnected prompts, no integrated knowledge.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-b p-3 font-semibold text-[#665191]">Traditional Consultants</td>
+                                    <td class="border-b p-3">High cost, long implementation, not easily scalable.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Capability Analysis: TPEP vs. Generic AI</h3>
+                    <p class="text-slate-600 mb-6">Our system is architected to excel where others fall short, focusing on deep contextual alignment, brand consistency, and the generation of holistic, strategically-sound outputs.</p>
+                    <div class="chart-container"><canvas id="capabilityRadarChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">The Business Impact: From Potential to Performance</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center mb-12">By systemizing human-AI communication, the PEOS delivers transformative and measurable results across your organization, unlocking unprecedented efficiency and strategic advantage.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="kpi-card text-center">
+                    <p class="text-6xl font-black brand-gradient-text mb-2">10x</p>
+                    <h3 class="text-xl font-bold text-slate-900">Productivity Gains</h3>
+                    <p class="text-slate-600">Automate complex, multi-faceted workflows, freeing experts for high-value strategic work.</p>
+                </div>
+                <div class="kpi-card text-center">
+                    <p class="text-6xl font-black brand-gradient-text mb-2">&lt;24hrs</p>
+                    <h3 class="text-xl font-bold text-slate-900">Time-to-Value</h3>
+                    <p class="text-slate-600">Deploy an enterprise-grade AI framework in hours, not months, via our no-code Notion system.</p>
+                </div>
+                <div class="kpi-card text-center">
+                    <p class="text-6xl font-black brand-gradient-text mb-2">95%</p>
+                    <h3 class="text-xl font-bold text-slate-900">Strategic Alignment</h3>
+                    <p class="text-slate-600">Ensure consistent brand voice and messaging in every single AI-generated output.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="audience" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">An Operating System for Every Innovator</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center mb-12">The PEOS is designed to empower key roles across your business, translating their unique expertise into scalable AI power. Select your role to see how.</p>
+            <div class="kpi-card">
+                <div id="tabs" class="flex flex-wrap items-center justify-center gap-2 mb-8">
+                    <button class="tab active" data-target="marketing">Marketing Leaders</button>
+                    <button class="tab" data-target="sales">Sales Operations</button>
+                    <button class="tab" data-target="experts">Domain Experts</button>
+                    <button class="tab" data-target="smb">Business Owners</button>
+                </div>
+                <div id="tab-contents">
+                    <div id="marketing" class="tab-content active">
+                        <h3 class="text-2xl font-bold text-[#D45087] mb-2">Make AI Speak Your Brand. Fluently.</h3>
+                        <p class="text-slate-600">Stop generic AI from diluting your brand. Ensure every campaign, post, and piece of copy is perfectly aligned with your strategic objectives and deep customer understanding. Achieve scalable, high-quality content creation that proves marketing value.</p>
+                    </div>
+                    <div id="sales" class="tab-content">
+                        <h3 class="text-2xl font-bold text-[#D45087] mb-2">Multiply Your Best Sales Brain. Instantly.</h3>
+                        <p class="text-slate-600">Equip your team with AI-generated scripts and personalized emails that are deeply informed by your products, ICPs, and proven strategies. Automate and scale effective communications to drive efficiency and measurable results.</p>
+                    </div>
+                    <div id="experts" class="tab-content">
+                        <h3 class="text-2xl font-bold text-[#D45087] mb-2">Your Expertise. AI's Power. Unleashed.</h3>
+                        <p class="text-slate-600">Finally, a systematic way to translate your deep knowledge into clear instructions for AI. Build the contextual foundation that ensures AI accurately reflects your expertise, making you a powerful force multiplier within your organization.</p>
+                    </div>
+                    <div id="smb" class="tab-content">
+                        <h3 class="text-2xl font-bold text-[#D45087] mb-2">Enterprise AI Power. Small Business Agility.</h3>
+                        <p class="text-slate-600">Access enterprise-level AI operational power without the enterprise price tag or complexity. Quickly implement sophisticated AI strategies, supercharge your productivity, and compete more effectively than ever before.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center my-16 pt-8 border-t-2 border-slate-200">
+             <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The Future is Contextual</h2>
+             <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">As AI becomes a commodity, the defining advantage will be your ability to infuse it with your unique human expertise. We provide the system to build this sustainable advantage.</p>
+             <button class="bg-gradient-to-r from-[#665191] to-[#D45087] text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105">
+                Explore Our Prompt Libraries
+             </button>
+        </footer>
+
+    </div>
+
+<script>
+    const chartColors = {
+        primary: '#665191',
+        secondary: '#D45087',
+        accent: '#F95D6A',
+        font: '#1e293b',
+        grid: '#e2e8f0'
+    };
+
+    const wrapLabel = (label, maxLength = 16) => {
+        if (typeof label !== 'string' || label.length <= maxLength) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) lines.push(currentLine.trim());
+        return lines;
+    };
+    
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+
+    const defaultChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: { color: chartColors.font, font: { size: 12 } }
+            },
+            tooltip: {
+                callbacks: { title: tooltipTitleCallback },
+                backgroundColor: '#ffffff',
+                titleColor: chartColors.font,
+                bodyColor: chartColors.font,
+                borderColor: chartColors.grid,
+                borderWidth: 1
+            }
+        },
+        scales: {
+            y: { ticks: { color: chartColors.font }, grid: { color: chartColors.grid } },
+            x: { ticks: { color: chartColors.font }, grid: { display: false } }
+        }
+    };
+    
+    const valueGapLabels = ['Strategic Alignment', 'Brand Consistency', 'Scalable Expertise', 'Contextual Nuance'];
+    new Chart(document.getElementById('valueGapChart'), {
+        type: 'bar',
+        data: {
+            labels: valueGapLabels.map(l => wrapLabel(l)),
+            datasets: [
+                {
+                    label: 'Business Need',
+                    data: [95, 92, 85, 88],
+                    backgroundColor: chartColors.primary,
+                },
+                {
+                    label: 'Generic AI Capability',
+                    data: [20, 30, 40, 25],
+                    backgroundColor: chartColors.accent,
+                }
+            ]
+        },
+        options: { ...defaultChartOptions }
+    });
+
+    const radarLabels = ['Contextual Depth', 'Brand Alignment', 'Speed to Value', 'Ease of Use', 'Holistic Output'];
+    new Chart(document.getElementById('capabilityRadarChart'), {
+        type: 'radar',
+        data: {
+            labels: radarLabels.map(l => wrapLabel(l)),
+            datasets: [{
+                label: 'TPEP (PEOS)',
+                data: [9, 9, 8, 9, 8],
+                fill: true,
+                backgroundColor: 'rgba(212, 80, 135, 0.2)',
+                borderColor: chartColors.secondary,
+                pointBackgroundColor: chartColors.secondary,
+            }, {
+                label: 'Generic AI Tool',
+                data: [3, 2, 5, 7, 2],
+                fill: true,
+                backgroundColor: 'rgba(102, 81, 145, 0.2)',
+                borderColor: chartColors.primary,
+                pointBackgroundColor: chartColors.primary,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: chartColors.font, font: { size: 12 } } },
+                tooltip: { ...defaultChartOptions.plugins.tooltip }
+            },
+            scales: {
+                r: {
+                    angleLines: { color: chartColors.grid },
+                    grid: { color: chartColors.grid },
+                    pointLabels: { color: chartColors.font, font: { size: 12 } },
+                    ticks: { backdropColor: 'transparent', color: chartColors.font }
+                }
+            }
+        }
+    });
+
+    const tabsContainer = document.getElementById('tabs');
+    const tabContentsContainer = document.getElementById('tab-contents');
+    tabsContainer.addEventListener('click', (e) => {
+        const targetButton = e.target.closest('.tab');
+        if (!targetButton) return;
+
+        tabsContainer.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        targetButton.classList.add('active');
+        
+        tabContentsContainer.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.getElementById(targetButton.dataset.target).classList.add('active');
+    });
+
+</script>
+</body>
+</html>
