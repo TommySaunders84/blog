@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Guide - Productive Headings</title>
+    <!-- Tailwind CSS CDN for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - IBM Plex Sans (including all necessary weights) -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Define the productive-heading styles */
+        .productive-heading-01 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 0.875rem; /* 14px */
+            line-height: 1.125em; /* 18px */
+            font-weight: 600; /* Semi-Bold */
+            letter-spacing: 0.01em; /* Approximately 0.16px, relative to font size */
+        }
+        .productive-heading-02 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 1rem; /* 16px */
+            line-height: 1.375em; /* 22px */
+            font-weight: 600; /* Semi-Bold */
+            letter-spacing: 0;
+        }
+        .productive-heading-03 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.75em; /* 28px */
+            font-weight: 400; /* Regular */
+            letter-spacing: 0;
+        }
+        .productive-heading-04 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 1.75rem; /* 28px */
+            line-height: 2.25em; /* 36px */
+            font-weight: 400; /* Regular */
+            letter-spacing: 0;
+        }
+        .productive-heading-05 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 2rem; /* 32px */
+            line-height: 2.5em; /* 40px */
+            font-weight: 400; /* Regular */
+            letter-spacing: 0;
+        }
+        .productive-heading-06 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 2.625rem; /* 42px */
+            line-height: 3.125em; /* 50px */
+            font-weight: 300; /* Light */
+            letter-spacing: 0;
+        }
+        .productive-heading-07 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 3.375rem; /* 54px */
+            line-height: 4em; /* 64px */
+            font-weight: 300; /* Light */
+            letter-spacing: 0;
+        }
+
+        /* Custom styling for code blocks to make them more readable */
+        pre {
+            background-color: #f8f8f8;
+            border-left: 4px solid #334155; /* slate-700 */
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            color: #334155; /* slate-700 */
+        }
+
+        /* Styling for the simulated Do/Don't Examples */
+        .do-dont-example {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+            border-width: 1px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            min-height: 200px; /* Ensure a minimum height for visibility */
+        }
+
+        .do-dont-example.do {
+            background-color: #ecfdf5; /* green-50 */
+            border-color: #34d399; /* green-400 */
+        }
+
+        .do-dont-example.dont {
+            background-color: #fef2f2; /* red-50 */
+            border-color: #ef4444; /* red-400 */
+        }
+
+        .do-dont-label {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.875rem; /* text-sm */
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* full rounded */
+            display: inline-block;
+        }
+
+        .do-dont-example.do .do-dont-label {
+            background-color: #10b981; /* green-500 */
+            color: white;
+        }
+
+        .do-dont-example.dont .do-dont-label {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+        }
+
+        .do-dont-image-container {
+            width: 100%;
+            height: 150px; /* Fixed height for consistency */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e2e8f0; /* slate-200 */
+            border-radius: 0.25rem; /* rounded-md */
+            overflow: hidden;
+        }
+
+        .do-dont-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image covers the container */
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen font-sans antialiased text-gray-800">
+
+    <header class="bg-white shadow-md p-4">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold text-slate-800">HTML/CSS Style Guide</h1>
+            <p class="text-slate-600 mt-1">Showcasing typographic styles for consistency.</p>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+        <!-- Section for Productive Headings -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-slate-700 mb-6 pb-2 border-b border-gray-200">Productive Headings</h2>
+
+            <!-- Productive Heading 01 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 01</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 14px / .875rem</li>
+                            <li><strong>Line height:</strong> 18px / 1.125em</li>
+                            <li><strong>Weight:</strong> 600 / Semi-Bold</li>
+                            <li><strong>Letter spacing:</strong> .16px</li>
+                        </ul>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-01 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 01
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-01 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.125em; /* 18px */
+    font-weight: 600; /* Semi-Bold */
+    letter-spacing: 0.01em; /* Approximately 0.16px */
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-01"&gt;This is Productive Heading 01&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 02 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 02</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 16px / 1rem</li>
+                            <li><strong>Line height:</strong> 22px / 1.375em</li>
+                            <li><strong>Weight:</strong> 600 / Semi-Bold</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-02 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 02
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-02 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1rem; /* 16px */
+    line-height: 1.375em; /* 22px */
+    font-weight: 600; /* Semi-Bold */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-02"&gt;This is Productive Heading 02&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 03 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 03</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 20px / 1.25rem</li>
+                            <li><strong>Line height:</strong> 28px / 1.75em</li>
+                            <li><strong>Weight:</strong> 400 / Regular</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-03 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 03
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-03 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75em; /* 28px */
+    font-weight: 400; /* Regular */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-03"&gt;This is Productive Heading 03&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 04 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 04</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 28px / 1.75rem</li>
+                            <li><strong>Line height:</strong> 36px / 2.25em</li>
+                            <li><strong>Weight:</strong> 400 / Regular</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-2">This is for layout headings.</p>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-04 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 04
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-04 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1.75rem; /* 28px */
+    line-height: 2.25em; /* 36px */
+    font-weight: 400; /* Regular */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-04"&gt;This is Productive Heading 04&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 05 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 05</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 32px / 2rem</li>
+                            <li><strong>Line height:</strong> 40px / 2.5em</li>
+                            <li><strong>Weight:</strong> 400 / Regular</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-2">This is for layout headings.</p>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-05 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 05
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-05 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 2rem; /* 32px */
+    line-height: 2.5em; /* 40px */
+    font-weight: 400; /* Regular */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-05"&gt;This is Productive Heading 05&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 06 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 06</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 42px / 2.625rem</li>
+                            <li><strong>Line height:</strong> 50px / 3.125em</li>
+                            <li><strong>Weight:</strong> 300 / Light</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-2">This is for layout headings.</p>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-06 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 06
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-06 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 2.625rem; /* 42px */
+    line-height: 3.125em; /* 50px */
+    font-weight: 300; /* Light */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-06"&gt;This is Productive Heading 06&lt;/p&gt;
+                </code></pre>
+            </div>
+
+            <hr class="border-gray-200 my-8">
+
+            <!-- Productive Heading 07 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-medium text-slate-600 mb-3">Productive Heading 07</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-start mb-4">
+                    <div>
+                        <ul class="list-disc list-inside space-y-1 text-lg">
+                            <li><strong>Type:</strong> IBM Plex Sans</li>
+                            <li><strong>Size:</strong> 54px / 3.375rem</li>
+                            <li><strong>Line height:</strong> 64px / 4em</li>
+                            <li><strong>Weight:</strong> 300 / Light</li>
+                            <li><strong>Letter spacing:</strong> 0px</li>
+                        </ul>
+                    </div>
+                    <div class="md:border-l md:border-gray-200 md:pl-6">
+                        <p class="productive-heading-07 p-4 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+                            THIS IS PRODUCTIVE HEADING 07
+                        </p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">CSS Code:</h4>
+                <pre class="rounded-lg shadow-inner mb-4"><code>
+.productive-heading-07 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 3.375rem; /* 54px */
+    line-height: 4em; /* 64px */
+    font-weight: 300; /* Light */
+    letter-spacing: 0;
+}
+                </code></pre>
+                <h4 class="text-lg font-medium text-slate-600 mb-2">HTML Usage:</h4>
+                <pre class="rounded-lg shadow-inner"><code>
+&lt;p class="productive-heading-07"&gt;This is Productive Heading 07&lt;/p&gt;
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- Existing Image Example Section -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-slate-700 mb-4 pb-2 border-b border-gray-200">Image Example</h2>
+
+            <div class="flex flex-col items-center justify-center p-4">
+                <p class="text-lg text-slate-600 mb-4">Here's an example image:</p>
+                <div class="relative w-full max-w-sm h-64 md:h-80 bg-gray-200 rounded-lg overflow-hidden shadow-lg">
+                    <img
+                        class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        alt="Animated illustration placeholder"
+                        src="https://placehold.co/576x300/E0E7FF/007BFF?text=Animated+Illustration"
+                        onerror="this.onerror=null;this.src='https://placehold.co/576x300/E0E7FF/007BFF?text=Image+Load+Error';"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                    <div class="absolute inset-0 flex items-center justify-center text-white text-xs bg-black bg-opacity-30">
+                        <span class="p-2 bg-blue-500 rounded">Placeholder Image</span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Note: The original image path was relative. A placeholder is used here to ensure display.
+                    For a live image, replace the `src` with a publicly accessible URL (e.g., `https://example.com/your-image.png`).
+                </p>
+            </div>
+        </section>
+
+        <!-- New Section for Classic Animation Principles -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-slate-700 mb-4 pb-2 border-b border-gray-200">Classic principles</h2>
+
+            <!-- PageDescription simulation -->
+            <div class="mb-8 text-lg text-gray-700">
+                <p>
+                    Most animators are familiar with the
+                    <a href="https://en.wikipedia.org/wiki/Twelve_basic_principles_of_animation" class="text-blue-600 hover:underline">12 basic principles of animation</a>.
+                    Although these principles originally applied to character animation, our unique
+                    interpretation of each one makes it decidedly relevant when applying motion to
+                    graphic forms.
+                </p>
+            </div>
+
+            <!-- Principle: Squash and stretch -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Squash and stretch</h3>
+            <p class="mb-4 text-gray-600">Embrace acceleration and reaction but refrain from overt stretchiness and
+                deformations. Aim for precision and accuracy, not cartoonish playfulness.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Anticipation -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Anticipation</h3>
+            <p class="mb-4 text-gray-600">Use elements under acceleration and deceleration to instigate instant changes
+                and indicate significance.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Staging -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Staging</h3>
+            <p class="mb-4 text-gray-600">Lead the eye. Forego unnecessarily complex or busy compositions and backgrounds
+                that may detract from meaningful details. Direct attention to what’s most
+                important by leaning on elements animated in sequence and refraining from
+                competing actions.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Pose to pose -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Pose to pose</h3>
+            <p class="mb-4 text-gray-600">Be efficient; create as few key poses as possible while striving to create
+                compelling performances.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Overlapping action -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Overlapping action</h3>
+            <p class="mb-4 text-gray-600">Secondary elements that inherit the motion of a parent on a slight delay can
+                create visual interest and emphasis.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Slow in and slow out -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Slow in and slow out</h3>
+            <p class="mb-4 text-gray-600">Objects should behave according to their material and design but will typically
+                speed up quickly and slow down smoothly. Animation curves that suggest bounce,
+                stretch or abrupt stops aren’t recommended.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Arc -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Arc</h3>
+            <p class="mb-4 text-gray-600">In contrast to this original principle and its advice on creating organic
+                movements, our projection of purpose and seamless organization can be emphasized
+                in motion by translating elements on one axis at a time, with a slight overlap
+                between each one.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Secondary action -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Secondary action</h3>
+            <p class="mb-4 text-gray-600">If necessary, secondary action should be introduced to enhance, or be in
+                response to, the main action, not distract from it.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Timing -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Timing</h3>
+            <p class="mb-4 text-gray-600">Be decisive in getting from point A to point B. Avoid long exponential eases as
+                elements settle into place.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Exaggeration -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Exaggeration</h3>
+            <p class="mb-4 text-gray-600">Exaggeration isn’t employing decoration to create visual interest. Instead,
+                animate elements in a manner that clearly demonstrates function and purpose.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Solid drawing -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Solid drawing</h3>
+            <p class="mb-4 text-gray-600">Be sure to portray an appropriate sense of weight and momentum, especially when
+                depicting recognizable forms or objects with volume and dimension.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principle: Appeal -->
+            <h3 class="text-xl font-semibold text-slate-700 mb-2 mt-6">Appeal</h3>
+            <p class="mb-4 text-gray-600">Look for opportunities to create moments of compelling—yet considered—surprise
+                and delight when applying motion to designs.</p>
+            <div class="grid md:grid-cols-2 gap-6 mb-8 mock-gallery">
+                <div class="do-dont-example do">
+                    <span class="do-dont-label">Do</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/CCFFCC/006600?text=DO" alt="Animated illustration - Do example" />
+                    </div>
+                </div>
+                <div class="do-dont-example dont">
+                    <span class="do-dont-label">Don't</span>
+                    <div class="do-dont-image-container">
+                        <img src="https://placehold.co/200x150/FFCCCC/CC0000?text=DON'T" alt="Animated illustration - Don't example" />
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white p-4 text-center text-sm mt-8">
+        <div class="container mx-auto px-4">
+            &copy; 2025 Style Guide App. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
