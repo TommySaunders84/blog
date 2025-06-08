@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Brand Intelligence Hub</title>
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: A narrative-driven, single-page application structured into thematic sections. It begins with a high-level Dashboard featuring innovative visualizations (Geospatial, Network, Treemap). It then transitions into a "Data Storytelling" section using a three-act structure to build a case. The story culminates in a "Strategic Roadmap," and finally, an "Activation Hub" demonstrates how insights translate to action via a Model Context Protocol. This structure is designed to guide a user from data exploration to strategic execution in a cohesive and engaging flow. -->
+    <!-- Visualization & Content Choices: The application uses Chart.js for all visualizations on Canvas, strictly avoiding SVG/Mermaid. Geospatial Heatmap -> Goal: Show geographic density -> Viz: Bubble Chart on a map background. Competitor Ecosystem -> Goal: Show relationships -> Viz: Scatter Chart with connecting lines. Market Share -> Goal: Show hierarchical composition -> Viz: Treemap (using a Chart.js plugin). Voice of Customer -> Goal: Compare qualitative themes -> Viz: Bubble Chart. Data Story -> Goal: Compare/Show Change -> Viz: Bar and Line charts. This selection provides visual variety and is tailored to the data's narrative purpose. The MCP is shown as a styled code block to make the abstract concept of AI activation tangible. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.3.0/dist/chartjs-chart-treemap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0d1a2e; color: #e0f2fe; }
+        .hero-bg { background-image: radial-gradient(circle at top right, rgba(14, 165, 233, 0.2), transparent 40%), radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.2), transparent 50%); }
+        .section-title { color: #f0f9ff; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .card { background-color: rgba(14, 26, 46, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(56, 189, 248, 0.2); }
+        .chart-container { position: relative; width: 100%; margin-left: auto; margin-right: auto; height: 400px; max-height: 500px; }
+        .story-act { border-left: 3px solid #38bdf8; }
+        .roadmap-step.active .roadmap-circle { background-color: #0ea5e9; box-shadow: 0 0 15px #0ea5e9; }
+        .roadmap-step .roadmap-circle { transition: all 0.3s ease; }
+        .code-block { background-color: #020617; color: #93c5fd; font-family: 'Courier New', Courier, monospace; border: 1px solid #1e3a8a; }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <header class="bg-slate-900/50 backdrop-blur-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-sky-300">Living Brand Intelligence</h1>
+            <div class="hidden md:flex items-center space-x-6 text-sm">
+                <a href="#dashboard" class="text-sky-200 hover:text-white">Dashboard</a>
+                <a href="#story" class="text-sky-200 hover:text-white">Data Story</a>
+                <a href="#roadmap" class="text-sky-200 hover:text-white">Roadmap</a>
+                <a href="#activation" class="text-sky-200 hover:text-white">Activation Hub</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6">
+        <section id="hero" class="hero-bg text-center py-24 my-12 rounded-lg">
+            <h2 class="text-5xl md:text-6xl font-extrabold text-white">From Data to Decision. Instantly.</h2>
+            <p class="max-w-3xl mx-auto mt-4 text-lg text-sky-200">This is not a report. It's a living intelligence hub where real-time data, compelling narratives, and strategic activation converge.</p>
+        </section>
+
+        <section id="dashboard" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-4xl font-bold">Real-time Intelligence Dashboard</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-sky-300">Innovative visualizations to uncover deeper insights from complex data.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl text-sky-200 mb-2">Geospatial Sentiment Heatmap</h3>
+                    <p class="text-sm text-sky-400 mb-4">Opportunity map highlighting underserved markets with high positive sentiment.</p>
+                    <div class="chart-container" style="background: url('https://i.imgur.com/gA3h0hW.png') no-repeat center center; background-size: contain;">
+                        <canvas id="heatmapChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl text-sky-200 mb-2">Competitor Ecosystem Network</h3>
+                    <p class="text-sm text-sky-400 mb-4">Mapping strategic dependencies and vulnerabilities in the competitive landscape.</p>
+                    <div class="chart-container">
+                        <canvas id="networkChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl text-sky-200 mb-2">Market Share Treemap</h3>
+                    <p class="text-sm text-sky-400 mb-4">Multi-layered view of market share by product segment and sales channel.</p>
+                    <div class="chart-container">
+                        <canvas id="treemapChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl text-sky-200 mb-2">Voice of the Customer</h3>
+                    <p class="text-sm text-sky-400 mb-4">Visually prioritized themes, pain points, and desires from customer feedback.</p>
+                    <div class="chart-container">
+                        <canvas id="bubbleChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="story" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-4xl font-bold">The Q2 Engagement Story</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-sky-300">Data tells you what happened. A story explains why it matters.</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-12">
+                <div class="story-act p-6 rounded-r-lg">
+                    <h3 class="text-2xl font-bold text-sky-200">Act I: The Hook</h3>
+                    <p class="mt-2 text-slate-300">We've observed a significant shift in customer engagement over the last quarter, challenging our core assumptions. Instead of growth, we're seeing stagnation. Let's explore why.</p>
+                </div>
+                <div class="story-act p-6 rounded-r-lg">
+                    <h3 class="text-2xl font-bold text-sky-200">Act II: The Rising Action</h3>
+                    <p class="mt-2 text-slate-300 mb-6">Unveiling the evidence, piece by piece, to build a compelling case for change.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="card p-4 rounded-xl">
+                            <h4 class="font-semibold text-center text-sky-300">Insight 1: Core Demo Dip</h4>
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card p-4 rounded-xl">
+                             <h4 class="font-semibold text-center text-sky-300">Insight 2: Competitor Ascent</h4>
+                             <div class="chart-container" style="height: 250px;">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                     <p class="mt-6 text-slate-300">First, we saw a dip in engagement from our key 25-34 demographic. Simultaneously, network diagrams revealed "InnovateCo" gaining traction in this exact segment. Their marketing addresses a pain point we have overlooked: integration with emerging platforms.</p>
+                </div>
+                <div class="story-act p-6 rounded-r-lg">
+                    <h3 class="text-2xl font-bold text-sky-200">Act III: The Resolution</h3>
+                    <p class="mt-2 text-slate-300">The data tells us this is not a sales problem, but a product-market fit issue with our core audience. Our next steps must address this feature gap directly.</p>
+                    <a href="#roadmap" class="mt-4 inline-block bg-sky-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-sky-500 transition">View the Strategic Roadmap</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-4xl font-bold">Interactive Strategic Roadmap</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-sky-300">A dynamic plan to reclaim market leadership. Click each step for details.</p>
+            </div>
+            <div id="roadmap-container" class="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto">
+            </div>
+            <div id="roadmap-details" class="mt-8 card p-6 rounded-xl shadow-lg max-w-5xl mx-auto min-h-[150px]">
+            </div>
+        </section>
+        
+        <section id="activation" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-4xl font-bold">The Activation Hub</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-sky-300">Transforming real-time insights into automated, intelligent action using a Model Context Protocol.</p>
+            </div>
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-sky-200">Signal-to-Strategy Execution</h3>
+                    <p class="text-slate-300">When our intelligence hub detects a critical signal—like a competitor's campaign gaining traction in a key demographic—it doesn't just report it. It triggers an AI agent to execute the next best action.</p>
+                    <div class="p-4 rounded-lg bg-slate-800 border border-sky-800">
+                        <p><strong class="text-sky-400">Signal Detected:</strong> "InnovateCo" sentiment +25% in 25-34 demo.</p>
+                        <p><strong class="text-sky-400">Insight Generated:</strong> Competitor is succeeding with "integration" messaging.</p>
+                        <p><strong class="text-sky-400">Next Best Action:</strong> Launch targeted counter-messaging highlighting our upcoming integration features.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-sky-200 mb-2">Example: AI Agent Function Call</h3>
+                     <p class="text-sm text-sky-400 mb-4">The AI agent uses a Model Context Protocol to call an advertising tool, activating the insight in real-time.</p>
+                    <div class="code-block p-4 rounded-lg text-sm">
+<pre><code>{
+  "tool_name": "marketing_activation_service",
+  "function_name": "launchTargetedCampaign",
+  "parameters": {
+    "campaign_name": "Project_Integration_Q2_Counter",
+    "target_audience": {
+      "demographics": { "age_range": [25, 34] },
+      "interests": ["Tech Early Adopters", "API Developers"]
+    },
+    "messaging_creative_id": "CR-58B3-INTEGRATION",
+    "budget_usd": 50000,
+    "duration_days": 14
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="mt-16 border-t border-sky-900 py-8">
+        <div class="container mx-auto px-6 text-center text-sky-400 text-sm">
+            <p>&copy; 2025 Living Brand Intelligence Inc. | Turning Data Into Action</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const CHART_COLORS = {
+        blue: 'rgba(56, 189, 248, 0.7)',
+        lightBlue: 'rgba(14, 165, 233, 0.7)',
+        darkBlue: 'rgba(30, 64, 175, 0.7)',
+        white: 'rgba(240, 249, 255, 0.9)',
+        accent: 'rgba(251, 146, 60, 0.9)'
+    };
+    
+    Chart.defaults.color = CHART_COLORS.white;
+    Chart.defaults.borderColor = 'rgba(56, 189, 248, 0.2)';
+
+    const defaultTooltip = {
+        enabled: true,
+        backgroundColor: 'rgba(2, 6, 23, 0.8)',
+        titleColor: CHART_COLORS.white,
+        bodyColor: CHART_COLORS.white,
+        borderColor: CHART_COLORS.blue,
+        borderWidth: 1,
+        callbacks: {
+            title: (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) return label.join(' ');
+                return label;
+            }
+        }
+    };
+
+    // 1. Geospatial Heatmap Chart
+    new Chart(document.getElementById('heatmapChart'), {
+        type: 'bubble',
+        data: {
+            datasets: [
+                { label: 'High Sentiment', data: [{x: 2.35, y: 48.85, r: 25}], backgroundColor: 'rgba(56, 189, 248, 0.6)'}, // Europe
+                { label: 'High Sentiment', data: [{x: -118.24, y: 34.05, r: 30}], backgroundColor: 'rgba(56, 189, 248, 0.6)'}, // NA West
+                { label: 'Medium Sentiment', data: [{x: -82, y: 40, r: 20}], backgroundColor: 'rgba(14, 165, 233, 0.5)'}, // NA East
+                { label: 'High Sentiment', data: [{x: 139.69, y: 35.68, r: 28}], backgroundColor: 'rgba(56, 189, 248, 0.6)'}, // Japan
+                { label: 'Low Sentiment', data: [{x: -58.38, y: -34.60, r: 15}], backgroundColor: 'rgba(251, 146, 60, 0.5)'}, // S. America
+                { label: 'Medium Sentiment', data: [{x: 77.20, y: 28.61, r: 22}], backgroundColor: 'rgba(14, 165, 233, 0.5)'}, // India
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { x: { display: false }, y: { display: false } },
+            plugins: { legend: { display: false }, tooltip: defaultTooltip }
+        }
+    });
+
+    // 2. Network Chart
+    const networkData = {
+        datasets: [
+            { label: 'Your Brand', data: [{x: 5, y: 5}], backgroundColor: CHART_COLORS.accent, pointRadius: 15 },
+            { label: 'Competitor A', data: [{x: 7, y: 8}], backgroundColor: CHART_COLORS.blue, pointRadius: 12 },
+            { label: 'Competitor B (InnovateCo)', data: [{x: 3, y: 7}], backgroundColor: CHART_COLORS.blue, pointRadius: 14 },
+            { label: 'Partner', data: [{x: 8, y: 3}], backgroundColor: CHART_COLORS.lightBlue, pointRadius: 10 },
+            { label: 'Market Leader', data: [{x: 2, y: 2}], backgroundColor: CHART_COLORS.darkBlue, pointRadius: 18 }
+        ]
+    };
+    new Chart(document.getElementById('networkChart'), {
+        type: 'scatter', data: networkData,
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { x: { display: false }, y: { display: false } },
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: { ...defaultTooltip, callbacks: { title: (items) => items[0].dataset.label } },
+                annotation: {
+                    annotations: {
+                        line1: { type: 'line', xMin: 5, yMin: 5, xMax: 7, yMax: 8, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1 },
+                        line2: { type: 'line', xMin: 5, yMin: 5, xMax: 3, yMax: 7, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1 },
+                        line3: { type: 'line', xMin: 5, yMin: 5, xMax: 8, yMax: 3, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1 },
+                    }
+                }
+            }
+        }
+    });
+
+    // 3. Treemap Chart
+    new Chart(document.getElementById('treemapChart'), {
+        type: 'treemap',
+        data: {
+            datasets: [{
+                tree: [
+                    {value: 25, group: 'Smartphones', category: 'Direct'},
+                    {value: 15, group: 'Smartphones', category: 'Retail'},
+                    {value: 18, group: 'Laptops', category: 'Direct'},
+                    {value: 12, group: 'Laptops', category: 'Retail'},
+                    {value: 10, group: 'Accessories', category: 'Direct'},
+                    {value: 20, group: 'Accessories', category: 'Retail'},
+                ],
+                key: 'value',
+                groups: ['group', 'category'],
+                captions: {display: true, color: '#fff', font: {size: 12}},
+                labels: {
+                    display: true,
+                    formatter(ctx) { return ctx.raw.g ? `${ctx.raw.g} (${ctx.raw.v}%)` : ''; }
+                },
+                backgroundColor(ctx) {
+                    if (ctx.type !== 'data') return 'transparent';
+                    const group = ctx.raw.g.split(', ')[0];
+                    if (group === 'Smartphones') return CHART_COLORS.blue;
+                    if (group === 'Laptops') return CHART_COLORS.lightBlue;
+                    return CHART_COLORS.darkBlue;
+                }
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: defaultTooltip }
+        }
+    });
+
+    // 4. Bubble Chart
+    new Chart(document.getElementById('bubbleChart'), {
+        type: 'bubble',
+        data: {
+            labels: ['High Price', 'Poor Support', 'Feature Request', 'Great UX', 'Bug Reports'],
+            datasets: [{
+                label: 'Customer Feedback Themes',
+                data: [
+                    {x: 2, y: 7, r: 25, label: 'High Price'},
+                    {x: 4, y: 4, r: 35, label: 'Poor Support'},
+                    {x: 6, y: 8, r: 45, label: 'Feature Request'},
+                    {x: 8, y: 3, r: 20, label: 'Great UX'},
+                    {x: 5, y: 6, r: 30, label: 'Bug Reports'},
+                ],
+                backgroundColor: [CHART_COLORS.accent, CHART_COLORS.blue, CHART_COLORS.lightBlue, CHART_COLORS.darkBlue, CHART_COLORS.blue]
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { x: { display: false }, y: { display: false } },
+            plugins: { legend: { display: false }, tooltip: {...defaultTooltip, callbacks: {title: (items) => items[0].raw.label}} }
+        }
+    });
+
+    // 5. Bar Chart
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Q1', 'Q2'],
+            datasets: [{ label: 'Engagement Index', data: [85, 72], backgroundColor: CHART_COLORS.lightBlue }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: defaultTooltip } }
+    });
+
+    // 6. Line Chart
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: ['Apr', 'May', 'Jun'],
+            datasets: [
+                { label: 'Your Brand', data: [100, 98, 95], borderColor: CHART_COLORS.accent, tension: 0.1 },
+                { label: 'InnovateCo', data: [60, 75, 90], borderColor: CHART_COLORS.blue, tension: 0.1 }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: defaultTooltip } }
+    });
+
+    // 7. Interactive Roadmap
+    const roadmapData = [
+        { id: 'discover', title: 'Discover & Analyze', details: '<strong>Goal:</strong> Identify root cause of engagement dip. <br><strong>KPIs:</strong> Sentiment analysis, competitor share-of-voice. <br><strong>Data Source:</strong> Real-time social listening, market reports.' },
+        { id: 'strategize', title: 'Strategize & Plan', details: '<strong>Goal:</strong> Develop product and marketing counter-strategy. <br><strong>KPIs:</strong> Feature roadmap completion, campaign messaging test scores. <br><strong>Data Source:</strong> Internal planning docs, A/B test results.' },
+        { id: 'activate', title: 'Activate & Execute', details: '<strong>Goal:</strong> Launch targeted campaign and feature updates. <br><strong>KPIs:</strong> Campaign ROI, feature adoption rate. <br><strong>Data Source:</strong> Ad platform analytics, product usage data.' },
+        { id: 'optimize', title: 'Measure & Optimize', details: '<strong>Goal:</strong> Monitor results and iterate on strategy. <br><strong>KPIs:</strong> Engagement index recovery, market share change. <br><strong>Data Source:</strong> Live dashboard, ongoing sentiment tracking.' },
+    ];
+    const roadmapContainer = document.getElementById('roadmap-container');
+    const roadmapDetails = document.getElementById('roadmap-details');
+    roadmapData.forEach((step, index) => {
+        const stepEl = document.createElement('div');
+        stepEl.className = 'roadmap-step flex-1 flex flex-col items-center cursor-pointer p-4';
+        stepEl.dataset.id = step.id;
+        stepEl.innerHTML = `<div class="roadmap-circle w-8 h-8 rounded-full border-2 border-sky-400 flex items-center justify-center font-bold mb-2">${index + 1}</div><p class="text-center text-sm font-semibold">${step.title}</p>`;
+        roadmapContainer.appendChild(stepEl);
+        
+        stepEl.addEventListener('click', () => {
+            document.querySelectorAll('.roadmap-step').forEach(s => s.classList.remove('active'));
+            stepEl.classList.add('active');
+            const data = roadmapData.find(d => d.id === step.id);
+            roadmapDetails.innerHTML = `<h4 class="font-bold text-lg text-sky-200 mb-2">${data.title}</h4><p class="text-sky-300">${data.details}</p>`;
+        });
+    });
+    // Activate first step initially
+    document.querySelector('.roadmap-step').click();
+});
+</script>
+</body>
+</html>
