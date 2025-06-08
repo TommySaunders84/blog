@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst | Living Brand Intelligence</title>
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
+
+        /* Dark Mode Color & Style Variables */
+        :root {
+            --bg-color: #0a0c10;
+            --primary-glow: #4a00e0; /* Deep Purple */
+            --secondary-glow: #8e2de2; /* Lighter Purple */
+            --accent-glow: #00bfff; /* Deep Sky Blue */
+            --text-color: #e0e0e0;
+            --border-color: rgba(74, 0, 224, 0.3);
+            --module-bg: #10141c;
+        }
+
+        /* Base Styles & Scrollbar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary-glow);
+            border-radius: 10px;
+            border: 2px solid var(--bg-color);
+        }
+
+        /* Reusable Components */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+        
+        .module {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 40px rgba(74, 0, 224, 0.1);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .module.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .module h3 {
+            font-size: 1.5rem;
+            color: var(--accent-glow);
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--accent-glow);
+            padding-left: 1rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 6rem 1rem;
+            background: radial-gradient(circle, var(--module-bg) 0%, var(--bg-color) 70%);
+        }
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--accent-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow-text 5s infinite linear;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes glow-text {
+            0% { filter: hue-rotate(0deg) brightness(1.2); }
+            100% { filter: hue-rotate(360deg) brightness(1.2); }
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-color);
+        }
+        
+        .action-button, .gemini-button {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .action-button:hover, .gemini-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 0, 224, 0.3);
+        }
+        .action-button:disabled, .gemini-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .output-area {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            min-height: 100px;
+            border: 1px solid var(--border-color);
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin-top: 1.5rem;
+            line-height: 1.5;
+        }
+
+        /* Data Visualization: Real-time Perception Map */
+        #perception-map-container {
+            position: relative;
+            height: 400px;
+            background-image: url('https://i.imgur.com/k2A0R0E.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .data-point {
+            position: absolute; width: 12px; height: 12px; border-radius: 50%; cursor: pointer;
+        }
+        .data-point::after {
+            content: ''; position: absolute; top: -6px; left: -6px; width: 24px; height: 24px;
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        .positive { background: #00ff84; } .positive::after { border: 2px solid #00ff84; }
+        .neutral { background: #f0f0f0; } .neutral::after { border: 2px solid #f0f0f0; }
+        .negative { background: #ff4757; } .negative::after { border: 2px solid #ff4757; }
+        @keyframes pulse { 0% { transform: scale(0.5); opacity: 0; } 50% { opacity: 1; } 100% { transform: scale(1.2); opacity: 0; } }
+        .tooltip {
+            position: absolute; background: var(--bg-color); color: white; padding: 0.5rem 1rem;
+            border-radius: 5px; border: 1px solid var(--accent-glow); transform: translate(-50%, -150%);
+            display: none; z-index: 10; font-size: 0.9rem; white-space: nowrap;
+        }
+        
+        /* Data Storytelling */
+        .story-arc { display: flex; flex-direction: column; gap: 1.5rem; }
+        .story-act { flex: 1; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 0.5rem; }
+        .story-act h4 { color: var(--secondary-glow); margin-bottom: 1rem; font-size: 1.2rem; }
+
+        /* Content Effectiveness Matrix */
+        #effectiveness-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .matrix-quadrant {
+            padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 0.5rem;
+            text-align: center; cursor: pointer; transition: all 0.3s ease;
+        }
+        .matrix-quadrant:hover { background-color: rgba(74, 0, 224, 0.1); }
+        .matrix-quadrant h4 { font-size: 1.2rem; color: white; }
+        #matrix-details { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-color); border-radius: 0.5rem; border: 1px solid var(--border-color); display: none; }
+        
+        /* Strategic Roadmap */
+        .roadmap-timeline { position: relative; padding: 2rem 0; }
+        .roadmap-timeline::before {
+            content: ''; position: absolute; top: 0; left: 20px;
+            width: 2px; height: 100%; background: var(--border-color);
+        }
+        .roadmap-milestone { position: relative; padding-left: 60px; margin-bottom: 2rem; cursor: pointer; }
+        .roadmap-milestone::before {
+            content: ''; position: absolute; left: 14px; top: 5px; width: 15px; height: 15px;
+            border-radius: 50%; background: var(--secondary-glow); border: 3px solid var(--module-bg);
+            transition: all 0.3s ease;
+        }
+        .roadmap-milestone:hover::before { transform: scale(1.2); box-shadow: 0 0 15px var(--secondary-glow); }
+        .milestone-header h4 { font-size: 1.2rem; color: white; }
+        .milestone-header span { font-size: 0.9rem; color: var(--text-color); }
+        .milestone-details { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .milestone-details.open { max-height: 200px; }
+        .milestone-details p { padding-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Catalyst</h1>
+        <p>The Living Brand Intelligence Hub. Transforming real-time data into strategic action.</p>
+    </header>
+
+    <main class="container">
+
+        <!-- Reporting & Visualization Section -->
+        <section class="module">
+            <h3>Real-time Brand Perception</h3>
+            <div id="perception-map-container">
+                <div class="tooltip" id="map-tooltip"></div>
+            </div>
+        </section>
+        
+        <section class="module">
+            <h3>Content Effectiveness Matrix</h3>
+            <p>Analyze content performance. Click a quadrant to generate tailored content ideas with AI.</p>
+            <div id="effectiveness-matrix">
+                <div class="matrix-quadrant" data-quadrant="champions" data-desc="High Engagement, High Conversion"><h4>🏆 Champions</h4><p>High Engagement, High Conversion</p></div>
+                <div class="matrix-quadrant" data-quadrant="workhorses" data-desc="Low Engagement, High Conversion"><h4>🐎 Workhorses</h4><p>Low Engagement, High Conversion</p></div>
+                <div class="matrix-quadrant" data-quadrant="brand-builders" data-desc="High Engagement, Low Conversion"><h4>📢 Brand Builders</h4><p>High Engagement, Low Conversion</p></div>
+                <div class="matrix-quadrant" data-quadrant="underperformers" data-desc="Low Engagement, Low Conversion"><h4>📉 Underperformers</h4><p>Low Engagement, Low Conversion</p></div>
+            </div>
+            <div id="matrix-details" class="output-area">Click a quadrant above to see details and generate ideas.</div>
+        </section>
+
+        <!-- Data Storytelling Section -->
+        <section class="module">
+            <h3>✨ Data Storytelling: AI-Powered Narrative</h3>
+            <p>Let AI weave your latest data signals into a compelling three-act story.</p>
+            <button class="gemini-button" onclick="generateStory()">Generate Story</button>
+            <div class="story-arc output-area" id="story-output">
+                > AI Storyteller is ready.
+            </div>
+        </section>
+        
+        <!-- Actionable Insights Section -->
+        <section class="module">
+            <h3>✨ Model Context Protocol: Activate Insights</h3>
+            <p>Our AI analyzes real-time signals to generate the next best action.</p>
+            <button class="action-button" onclick="generateInsight()">Generate Actionable Insight</button>
+            <div id="insight-output" class="output-area">> AI is monitoring digital signals... Standing by for instructions.</div>
+        </section>
+
+        <!-- Strategic Roadmap Section -->
+        <section class="module">
+            <h3>✨ Strategic Roadmap Generator</h3>
+            <p>Automatically draft a strategic plan based on the latest AI-generated insight.</p>
+            <div id="roadmap-output" class="output-area">> Waiting for an insight to be generated...</div>
+        </section>
+        
+    </main>
+
+    <script>
+        // --- Gemini API Integration ---
+        /**
+         * A reusable function to call the Gemini API.
+         * @param {string} prompt The prompt to send to the Gemini model.
+         * @returns {Promise<string>} The generated text from the model.
+         */
+        async function callGemini(prompt) {
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will provide this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "Error: Received an empty or invalid response from the AI.";
+                }
+            } catch (error) {
+                console.error("Gemini API call error:", error);
+                return `Error: Could not connect to the AI service. ${error.message}`;
+            }
+        }
+
+        // --- Animate modules on scroll ---
+        const modules = document.querySelectorAll('.module');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        modules.forEach(module => observer.observe(module));
+
+        // --- Real-time Perception Map Logic ---
+        const mapContainer = document.getElementById('perception-map-container');
+        const tooltip = document.getElementById('map-tooltip');
+        const mapPoints = [
+            { x: 15, y: 30, sentiment: 'positive', text: 'USA: Strong positive sentiment' },
+            { x: 50, y: 35, sentiment: 'positive', text: 'Europe: Growing interest' },
+            { x: 75, y: 45, sentiment: 'neutral', text: 'Asia: Brand awareness is neutral' },
+            { x: 25, y: 65, sentiment: 'negative', text: 'S. America: Negative feedback on pricing' },
+            { x: 55, y: 70, sentiment: 'positive', text: 'Africa: Emerging positive signals' },
+            { x: 85, y: 60, sentiment: 'neutral', text: 'Australia: Market is stable' }
+        ];
+
+        mapPoints.forEach(p => {
+            const pointEl = document.createElement('div');
+            pointEl.className = `data-point ${p.sentiment}`;
+            pointEl.style.left = `${p.x}%`;
+            pointEl.style.top = `${p.y}%`;
+            pointEl.addEventListener('mouseover', () => tooltip.textContent = p.text);
+            pointEl.addEventListener('mousemove', e => {
+                const rect = mapContainer.getBoundingClientRect();
+                tooltip.style.left = `${e.clientX - rect.left}px`;
+                tooltip.style.top = `${e.clientY - rect.top}px`;
+                tooltip.style.display = 'block';
+            });
+            pointEl.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+            mapContainer.appendChild(pointEl);
+        });
+
+        // --- Content Matrix Logic ---
+        const matrixQuadrants = document.querySelectorAll('.matrix-quadrant');
+        const matrixDetails = document.getElementById('matrix-details');
+        matrixQuadrants.forEach(quad => {
+            quad.addEventListener('click', async () => {
+                const quadrantName = quad.dataset.quadrant;
+                const quadrantDesc = quad.dataset.desc;
+                const button = quad.querySelector('button');
+                matrixDetails.innerHTML = `<h4>Generating Ideas for ${quadrantName}...</h4>`;
+                matrixDetails.style.display = 'block';
+
+                const prompt = `You are a Content Strategist. For a brand's '${quadrantName}' content (which has ${quadrantDesc}), generate 3 distinct and creative content ideas. Format as a numbered list.`;
+                const ideas = await callGemini(prompt);
+                
+                matrixDetails.innerHTML = `<h4>✨ AI-Generated Ideas for ${quadrantName}</h4><p style="white-space: pre-wrap;">${ideas}</p>`;
+            });
+        });
+        
+        // --- Storytelling Generator ---
+        const storyOutput = document.getElementById('story-output');
+        async function generateStory(button) {
+            button.disabled = true;
+            storyOutput.innerHTML = "> Contacting AI Storyteller...\n> Weaving data points into narrative...";
+            const prompt = `You are a Data Storyteller for a brand intelligence platform. Based on these signals:
+            - Brand Perception: Negative feedback on pricing in South America, but strong positive sentiment in the USA.
+            - Content Matrix: 'Workhorse' content (Low Engagement, High Conversion) like pricing pages are performing best.
+            - Weave these into a compelling three-act narrative for a marketing leadership presentation. Format with 'Act I:', 'Act II:', 'Act III:'.`;
+
+            const story = await callGemini(prompt);
+            storyOutput.innerHTML = story;
+            button.disabled = false;
+        }
+
+        // --- Insight Generator Logic ---
+        const insightOutput = document.getElementById('insight-output');
+        const roadmapOutput = document.getElementById('roadmap-output');
+        let lastInsight = '';
+
+        async function generateInsight(button) {
+            button.disabled = true;
+            insightOutput.innerHTML = "> Analyzing digital signals...\n> Consulting AI oracle...";
+            const prompt = `You are a Brand Intelligence Analyst AI. Based on the following signals:
+            - Signal 1: Abandoned cart rate increased by 8% after competitor X launched a new campaign.
+            - Signal 2: 'Champion' content (High Engagement, High Conversion) is our case study about easy setup.
+            Generate a single, concise, actionable insight and recommend a 'next best action' for a marketing team.`;
+
+            const insight = await callGemini(prompt);
+            insightOutput.innerHTML = insight;
+            lastInsight = insight; // Save the insight for the roadmap generator
+
+            roadmapOutput.innerHTML = `<button class="gemini-button" onclick="generateRoadmap(this)">✨ Draft Roadmap from this Insight</button>`;
+            button.disabled = false;
+        }
+        
+        // --- Roadmap Generator ---
+        async function generateRoadmap(button) {
+            if (!lastInsight) {
+                roadmapOutput.innerHTML = "> Error: No insight has been generated yet.";
+                return;
+            }
+            button.disabled = true;
+            roadmapOutput.innerHTML = "> AI Strategist is drafting the plan...";
+
+            const prompt = `You are a Marketing Strategist AI. Take the following insight and action plan: "${lastInsight}". 
+            Break it down into a 3-phase strategic roadmap. For each phase, define the 'Action' and a measurable 'KPI'. Format each phase clearly.`;
+            
+            const roadmap = await callGemini(prompt);
+            roadmapOutput.innerHTML = `<h4 style="color: var(--accent-glow);">✨ AI-Generated Strategic Roadmap</h4>${roadmap}`;
+        }
+
+    </script>
+</body>
+</html>
