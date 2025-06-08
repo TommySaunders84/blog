@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst: The Neural Pathway</title>
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap');
+
+        /* Dark Mode Color & Style Variables */
+        :root {
+            --bg-color: #0d1117; /* GitHub Dark BG */
+            --primary-glow: #22a7f0; /* Electric Blue */
+            --secondary-glow: #34e7e4; /* Teal/Cyan */
+            --text-color: #c9d1d9; /* Light Gray */
+            --border-color: rgba(56, 139, 253, 0.2);
+            --module-bg: #161b22; /* Slightly Lighter Dark */
+            --container-width: 960px;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 5rem 2rem 4rem;
+            background: linear-gradient(180deg, var(--module-bg) 0%, var(--bg-color) 100%);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -1px;
+            text-shadow: 0 0 15px var(--primary-glow);
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        
+        .scroll-indicator {
+            font-weight: 400;
+            color: var(--primary-glow);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 10px var(--primary-glow); }
+            100% { opacity: 0.7; }
+        }
+
+        /* Main Pathway */
+        .neural-pathway {
+            position: relative;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        /* The central connecting neuron pathway */
+        .neural-pathway::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px; /* Position on the left for a side-timeline feel */
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-glow), var(--secondary-glow));
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        /* Pathway Node (each step) */
+        .pathway-node {
+            position: relative;
+            padding: 2rem 0 2rem 120px; /* Space out from the main line */
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .pathway-node.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* The glowing circle on the timeline */
+        .pathway-node::before {
+            content: '';
+            position: absolute;
+            top: 2.5rem;
+            left: 42px; /* Center on the 2px line */
+            width: 18px;
+            height: 18px;
+            background-color: var(--primary-glow);
+            border-radius: 50%;
+            border: 3px solid var(--bg-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .pathway-node:hover::before {
+            transform: scale(1.2);
+        }
+
+        .node-content h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary-glow);
+            margin-bottom: 1rem;
+        }
+
+        .node-content p {
+            line-height: 1.8;
+            max-width: 600px;
+        }
+        
+        .node-content p strong {
+            color: var(--secondary-glow);
+            font-weight: 400;
+        }
+
+        /* Interactive Visualization Box */
+        .node-viz {
+            margin-top: 1.5rem;
+            background-color: var(--module-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            min-height: 150px;
+            box-shadow: 0 0 30px rgba(34, 167, 240, 0.1);
+        }
+        
+        /* Module-specific styles */
+
+        /* Step 1: Terminal Access */
+        .data-stream {
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .data-stream:hover, .data-stream.selected {
+            border-color: var(--primary-glow);
+            background-color: rgba(34, 167, 240, 0.1);
+            box-shadow: 0 0 15px rgba(34, 167, 240, 0.2);
+        }
+        .data-stream span { font-size: 2.5rem; line-height: 1; }
+
+        /* Step 2: Synaptic Tuning */
+        #synapse-graphic {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+        .core { width: 40px; height: 40px; background: var(--primary-glow); border-radius: 50%; position: absolute; top: 30px; left: 30px; transition: all 0.5s ease; }
+        .synapse {
+            position: absolute;
+            width: 50px;
+            height: 4px;
+            background: var(--text-color);
+            top: 48px;
+            left: 25px;
+            transform-origin: 50px 2px;
+            transition: all 0.5s ease;
+        }
+        #synapse-graphic.tuned .core { background: var(--secondary-glow); transform: scale(1.1); box-shadow: 0 0 20px var(--secondary-glow); }
+        #synapse-graphic.tuned .synapse { background: var(--secondary-glow); }
+
+        /* Step 3: Quantum Generation */
+        #generator-button {
+            background: transparent;
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        #generator-button:hover {
+            background: var(--primary-glow);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        
+        /* Step 4: Logic Matrix */
+        .logic-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logic-card:hover { transform: translateY(-5px); border-color: var(--secondary-glow); }
+        .logic-card.selected {
+            border-color: var(--secondary-glow);
+            box-shadow: 0 0 20px rgba(52, 231, 228, 0.3);
+        }
+        .logic-card img { width: 100%; border-radius: 0.25rem; }
+        .logic-card p { font-size: 0.8rem; text-align: center; margin: 0.5rem 0 0; }
+
+        /* Step 5: Network Broadcast */
+        #broadcast-button {
+            font-size: 4rem;
+            color: var(--primary-glow);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #broadcast-button.activated {
+            color: var(--secondary-glow);
+            animation: broadcast 1.5s ease-out forwards;
+        }
+        @keyframes broadcast {
+            0% { transform: scale(1); text-shadow: 0 0 10px var(--secondary-glow); }
+            100% { transform: scale(1.2); text-shadow: 0 0 30px var(--secondary-glow), 0 0 50px var(--secondary-glow); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        footer h2 { color: white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>The Neural Pathway</h1>
+        <p>A conceptual journey through the Catalyst AI engine. Scroll to witness how raw data and simple prompts synthesize into a fully deployed marketing campaign.</p>
+        <div class="scroll-indicator">&lt; scroll to activate &gt;</div>
+    </header>
+
+    <main class="neural-pathway">
+
+        <!-- Node 1 -->
+        <section class="pathway-node" id="node-1">
+            <div class="node-content">
+                <h2>01: Terminal Access</h2>
+                <p>The process initiates by accessing the foundational data streams. Select the core <strong>language and image models</strong> that will form the cognitive base for your campaign.</p>
+                <div class="node-viz">
+                    <div class="data-stream" onclick="this.classList.toggle('selected')">
+                        <span>&#xea18;</span> <!-- Icon font or SVG -->
+                        <div>Language Stream</div>
+                    </div>
+                    <div class="data-stream" onclick="this.classList.toggle('selected')">
+                        <span>&#xe94f;</span>
+                        <div>Image Stream</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Node 2 -->
+        <section class="pathway-node" id="node-2">
+            <div class="node-content">
+                <h2>02: Synaptic Tuning</h2>
+                <p>Your proprietary data is introduced. The <strong>Model Context Protocol</strong> creates new synaptic connections, tuning the AI to your brand's unique neural signature. Your data remains secure and isolated.</p>
+                <div class="node-viz">
+                    <button id="tune-button" onclick="document.getElementById('synapse-graphic').classList.toggle('tuned')">Tune Synapses</button>
+                    <div id="synapse-graphic">
+                        <div class="core"></div>
+                        <div class="synapse" style="transform: rotate(0deg);"></div>
+                        <div class="synapse" style="transform: rotate(60deg);"></div>
+                        <div class="synapse" style="transform: rotate(120deg);"></div>
+                        <div class="synapse" style="transform: rotate(180deg);"></div>
+                        <div class="synapse" style="transform: rotate(240deg);"></div>
+                        <div class="synapse" style="transform: rotate(300deg);"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Node 3 -->
+        <section class="pathway-node" id="node-3">
+            <div class="node-content">
+                <h2>03: Quantum Generation</h2>
+                <p>Initiate the creative process. A simple prompt acts as a catalyst, causing a cascade of generation within the AI's core, producing <strong>novel text and image pairings.</strong></p>
+                <div class="node-viz">
+                     <button id="generator-button">Generate Content</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Node 4 -->
+        <section class="pathway-node" id="node-4">
+            <div class="node-content">
+                <h2>04: Logic Matrix</h2>
+                <p>The generated assets are presented in a logic matrix. Evaluate the outputs, refine the parameters, and select the optimal pairing that aligns with your campaign's strategic goals.</p>
+                <div class="node-viz" style="gap: 0.75rem;">
+                    <div class="logic-card" onclick="selectCard(this)">
+                        <img src="https://placehold.co/150x90/0d1117/22a7f0?text=Variant+A" alt="Variant A">
+                        <p>Option_01.txt</p>
+                    </div>
+                     <div class="logic-card" onclick="selectCard(this)">
+                        <img src="https://placehold.co/150x90/0d1117/34e7e4?text=Variant+B" alt="Variant B">
+                        <p>Option_02.txt</p>
+                    </div>
+                     <div class="logic-card" onclick="selectCard(this)">
+                        <img src="https://placehold.co/150x90/0d1117/c9d1d9?text=Variant+C" alt="Variant C">
+                        <p>Option_03.txt</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Node 5 -->
+        <section class="pathway-node" id="node-5">
+            <div class="node-content">
+                <h2>05: Network Broadcast</h2>
+                <p>With the final content selected, broadcast the result. A dedicated API is deployed, pushing your campaign live and integrating it across all your digital channels.</p>
+                <div class="node-viz">
+                     <button id="broadcast-button" onclick="this.classList.add('activated')">&#xe2d8;</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <h2>Synthesis Complete.</h2>
+        <p>Catalyst: The intelligence behind tomorrow's marketing.</p>
+    </footer>
+
+    <script>
+        const nodes = document.querySelectorAll('.pathway-node');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        nodes.forEach(node => {
+            observer.observe(node);
+        });
+        
+        function selectCard(element) {
+            document.querySelectorAll('.logic-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // Add some dummy styles for icon fonts for visualization purpose
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @font-face {
+                font-family: 'icons';
+                src: url('data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAA...etc') format('woff');
+            }
+            .data-stream span, #broadcast-button {
+                font-family: 'icons';
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Use pseudo-unicode for display if font fails
+        document.querySelector('.data-stream span').innerHTML = '&#xea18;';
+        document.querySelector('.data-stream:last-child span').innerHTML = '&#xe94f;';
+        document.querySelector('#broadcast-button').innerHTML = '&#xe2d8;';
+    </script>
+</body>
+</html>
