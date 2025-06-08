@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project | Campaign Command Center</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-color: #0a0c10;
+            --module-bg: #10141c;
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+            --accent-yellow: #F59E0B;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Side Menu Styles */
+        #side-menu {
+            width: 240px;
+            background-color: var(--module-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            padding: 2rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #side-menu h2 {
+            font-size: 1.2rem;
+            margin: 0 0 2rem 0;
+            padding: 0 1rem;
+            color: white;
+        }
+
+        #side-menu nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #side-menu nav a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            font-weight: 500;
+        }
+
+        #side-menu nav a:hover {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+        }
+        
+        #side-menu nav a.active {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 240px; /* Same as side menu width */
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .campaign-summary {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .campaign-summary h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .campaign-summary p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .grid-card {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        
+        .grid-card h3 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Spanning grid columns for different layouts */
+        .objectives-card { grid-column: span 12; }
+        .audience-card { grid-column: span 6; }
+        .message-card { grid-column: span 12; }
+        .timeline-card { grid-column: span 12; }
+        .deliverables-card { grid-column: span 7; }
+        .kpi-card { grid-column: span 5; }
+
+        .objective-list, .kpi-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .objective-list li, .kpi-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .objective-list li:last-child, .kpi-list li:last-child { margin-bottom: 0; }
+        
+        .objective-tag {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            color: white;
+            white-space: nowrap;
+        }
+        .tag-primary { background-color: var(--accent-green); }
+        .tag-secondary { background-color: var(--accent-yellow); }
+        .tag-tertiary { background-color: var(--accent-purple); }
+
+        .persona {
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .persona:last-child { margin-bottom: 0; }
+        .persona h4 { margin: 0 0 0.25rem 0; color: var(--text-primary); }
+        .persona p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+
+        .value-prop {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .value-prop blockquote {
+            margin: 0;
+            padding: 0;
+            border-left: 3px solid var(--accent-green);
+            padding-left: 1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .timeline-bar {
+            position: relative;
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-color);
+            border-radius: 99px;
+            margin-top: 1rem;
+        }
+        .timeline-progress {
+            position: absolute;
+            height: 100%;
+            width: 25%; /* Represents Phase 1 complete */
+            background-color: var(--accent-green);
+            border-radius: 99px;
+        }
+        .timeline-phases {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+        .phase {
+            width: 25%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .deliverable-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            list-style: none;
+            padding: 0;
+        }
+        .deliverable-grid li {
+            background-color: var(--bg-color);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+    <aside id="side-menu">
+        <h2>Navigation</h2>
+        <nav>
+            <ul>
+                <li><a href="#objectives" class="active"><span>🎯</span> Objectives</a></li>
+                <li><a href="#audience"><span>👥</span> Target Audience</a></li>
+                <li><a href="#message"><span>🔑</span> Key Message</a></li>
+                <li><a href="#timeline"><span>🗓️</span> Timeline</a></li>
+                <li><a href="#deliverables"><span>📦</span> Deliverables</a></li>
+                <li><a href="#kpis"><span>📊</span> KPIs</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Campaign Command Center</h1>
+                <p>Founders' Subscription Launch & Customer Migration</p>
+            </header>
+            
+            <section class="campaign-summary" id="summary">
+                <h2>Background & Context</h2>
+                <p>We are transitioning from a transactional sales model to a subscription-based model to ensure sustainable, long-term growth. This campaign introduces the new subscription tiers and focuses on migrating our most valuable existing customers—our "power users"—to establish a strong, recurring revenue foundation.</p>
+            </section>
+    
+            <main class="dashboard-grid">
+    
+                <!-- Objectives Card -->
+                <div class="grid-card objectives-card" id="objectives">
+                    <h3>🎯 Campaign Objectives</h3>
+                    <ul class="objective-list">
+                        <li>
+                            <span class="objective-tag tag-primary">Primary</span>
+                            <p>Convert at least 20% of the identified "power user" segment to the new Professional monthly subscription within 60 days of launch.</p>
+                        </li>
+                        <li>
+                            <span class="objective-tag tag-secondary">Secondary</span>
+                            <p>Validate the $49/month price point by achieving a target conversion rate on new visitor traffic via a 30-day A/B test.</p>
+                        </li>
+                        <li>
+                            <span class="objective-tag tag-tertiary">Tertiary</span>
+                            <p>Establish the subscription tiers as the primary offering on our website, clearly communicating their value.</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Audience Cards -->
+                <div class="grid-card audience-card" id="audience">
+                    <h3>👥 Primary Audience</h3>
+                    <div class="persona">
+                        <h4>The Power User</h4>
+                        <p>Existing customers who have purchased 2+ prompt libraries in the past 12 months. They believe in our product and are receptive to an exclusive "founders'" offer that rewards their loyalty.</p>
+                    </div>
+                </div>
+                <div class="grid-card audience-card">
+                    <h3>👥 Secondary Audience</h3>
+                     <div class="persona">
+                        <h4>The High-Intent New Visitor</h4>
+                        <p>New visitors who navigate directly to our pricing page. They are actively evaluating our solution and provide a clean slate for A/B testing our new pricing structure.</p>
+                    </div>
+                </div>
+    
+                <!-- Key Message Card -->
+                <div class="grid-card message-card" id="message">
+                    <h3>🔑 Key Message & Value Proposition</h3>
+                    <div class="value-prop">
+                        <blockquote>Unlock the full potential of The Prompt Engineering Project. Get complete access to every current and future prompt library, plus exclusive features, for one simple, predictable price.</blockquote>
+                    </div>
+                </div>
+                
+                <!-- Timeline Card -->
+                <div class="grid-card timeline-card" id="timeline">
+                    <h3>🗓️ Proposed Timeline (8 Weeks)</h3>
+                    <div class="timeline-bar">
+                        <div class="timeline-progress"></div>
+                    </div>
+                    <div class="timeline-phases">
+                        <div class="phase"><strong>Phase 1:</strong> Creative</div>
+                        <div class="phase"><strong>Phase 2:</strong> Development</div>
+                        <div class="phase"><strong>Phase 3:</strong> Launch</div>
+                        <div class="phase"><strong>Phase 4:</strong> Reporting</div>
+                    </div>
+                </div>
+    
+                <!-- Deliverables Card -->
+                <div class="grid-card deliverables-card" id="deliverables">
+                    <h3>📦 Key Deliverables & Assets</h3>
+                    <ul class="deliverable-grid">
+                        <li>✅ Power User Segment List</li>
+                        <li>✅ Email Campaign Copy</li>
+                        <li>✅ Founders' Offer Landing Page</li>
+                        <li>✅ Redesigned Pricing Page</li>
+                        <li>✅ Feature Comparison Matrix</li>
+                        <li>✅ Cost Comparison Tool</li>
+                        <li>✅ A/B Test Plan</li>
+                        <li>✅ Engineering Brief</li>
+                    </ul>
+                </div>
+                
+                <!-- KPIs Card -->
+                <div class="grid-card kpi-card" id="kpis">
+                    <h3>📊 Metrics for Success (KPIs)</h3>
+                    <ul class="kpi-list">
+                        <li><p><strong>Migration Rate:</strong> > 20%</p></li>
+                        <li><p><strong>New Subscriber MRR</strong></p></li>
+                        <li><p><strong>A/B Test Conversion Rate</strong></p></li>
+                        <li><p><strong>Email Campaign Rates (Open, CTR)</strong></p></li>
+                        <li><p><strong>Customer Lifetime Value (LTV)</strong></p></li>
+                    </ul>
+                </div>
+    
+            </main>
+        </div>
+    </div>
+<script>
+    // Smooth scrolling and active link highlighting
+    const navLinks = document.querySelectorAll('#side-menu nav a');
+    const sections = document.querySelectorAll('.grid-card');
+
+    const observerOptions = {
+        root: null, // observes intersections relative to the viewport
+        rootMargin: '0px',
+        threshold: 0.3 // Trigger when 30% of the element is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    navLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>
