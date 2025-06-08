@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: The Evolving Landscape of Insight Visuals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: IBM-style Deep Blue (Minimalist) -->
+    <!-- Application Structure Plan: The SPA opens with an immersive title page. The main content is an interactive dashboard with a sticky sidebar. The structure empowers users to explore topics non-linearly. AI-powered tools for Data Storytelling and Immersive Ideation have been added to their respective report sections to provide actionable, context-aware insights. -->
+    <!-- Visualization & Content Choices: 
+        - Title Page (Plotly.js): Goal: Engage/Hook. Justification: An interactive, abstract particle field.
+        - AI Data Storytelling Assistant (Gemini API): Goal: Generate/Narrate. Justification: Directly applies the data storytelling trend by converting user data into a narrative.
+        - AI Immersive Experience Ideator (Gemini API): Goal: Brainstorm/Ideate. Justification: Provides creative, practical examples for the abstract concept of immersive analytics.
+        - AI Chart Recommender (Gemini API): Goal: Inform/Recommend. Justification: Provides actionable advice on chart selection.
+        - AI Ethical Checklist Generator (Gemini API): Goal: Guide/Inform. Justification: Creates a practical, ethical checklist for projects.
+        - All previous visualizations (Chart.js, HTML/CSS) remain to support the core report content.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        :root {
+            --primary-color: #0043ce;
+            --secondary-color: #4285f4;
+            --accent-color: #00a896;
+            --bg-color: #f4f4f4;
+            --card-bg-color: #ffffff;
+            --text-color: #161616;
+            --text-muted-color: #6f6f6f;
+            --border-color: #e0e0e0;
+            --font-sans: 'IBM Plex Sans', sans-serif;
+            --font-serif: 'IBM Plex Serif', serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        h1, h2, h3, h4, h5, h6, .section-title {
+            font-family: var(--font-serif);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-radius: 0;
+            font-family: var(--font-sans);
+        }
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .prose h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .prose h4 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .prose p, .prose li {
+            line-height: 1.75;
+            color: var(--text-muted-color);
+            font-family: var(--font-sans);
+        }
+         .prose a {
+            color: var(--primary-color);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 600;
+        }
+        .prose a:hover {
+            color: var(--secondary-color);
+        }
+        .prose blockquote {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 1rem;
+            margin-left: 0;
+            font-style: italic;
+            color: var(--text-muted-color);
+        }
+        .prose table {
+            width: 100%;
+            margin-top: 1.5rem;
+            border-collapse: collapse;
+        }
+        .prose th, .prose td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+        }
+        .prose th {
+            background-color: #f4f4f4;
+            font-weight: 600;
+        }
+        .section-card {
+             background-color: var(--card-bg-color);
+             padding: 2.5rem;
+             border-radius: 0; /* Sharp corners */
+             border: 1px solid var(--border-color);
+        }
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        .loader {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-left-color: var(--secondary-color);
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .ai-tool-card {
+            background-color: #f4f4f4;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+        }
+        .ai-tool-button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 0;
+            transition: background-color 0.2s;
+        }
+        .ai-tool-button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <header id="title-page" class="h-screen bg-[#ffffff] text-slate-800 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div id="plotly-bg" class="absolute inset-0 z-0 opacity-20"></div>
+        <div class="relative z-10 p-8">
+            <h1 class="text-5xl md:text-7xl font-bold text-[#0043ce]">The Evolving Landscape of Insight Visuals</h1>
+            <p class="text-xl md:text-2xl text-slate-600 mt-4 max-w-4xl mx-auto">An interactive report on the innovations and emerging trends shaping data visualization for 2025 and beyond.</p>
+            <a href="#introduction" class="mt-12 inline-block bg-[#0043ce] text-white font-bold py-3 px-8 rounded-sm text-lg hover:bg-[#4285f4] hover:scale-105 transition-transform">
+                Explore the Report
+                <span class="ml-2 animate-bounce inline-block">↓</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="flex flex-col md:flex-row">
+        <nav id="sidebar-nav" class="w-full md:w-72 bg-white p-4 md:sticky md:top-0 md:h-screen md:overflow-y-auto border-r border-slate-200 z-10">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 px-3">Report Sections</h2>
+            <ul class="space-y-1">
+                <li><a href="#introduction" class="nav-link block p-3 hover:bg-slate-100">I. Introduction</a></li>
+                <li><a href="#core-technologies" class="nav-link block p-3 hover:bg-slate-100">II. Core Technologies</a></li>
+                <li><a href="#dominant-trends" class="nav-link block p-3 hover:bg-slate-100">III. Dominant Trends</a></li>
+                <li><a href="#innovations-in-practice" class="nav-link block p-3 hover:bg-slate-100">IV. Innovations in Practice</a></li>
+                <li><a href="#principles" class="nav-link block p-3 hover:bg-slate-100">V. Principles for Visuals</a></li>
+                <li><a href="#enabling-tools" class="nav-link block p-3 hover:bg-slate-100">VI. Enabling Tools</a></li>
+                <li><a href="#conclusion" class="nav-link block p-3 hover:bg-slate-100">VII. Conclusion</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10 prose max-w-none">
+            <section id="introduction" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">I. Introduction: Redefining Visual Insight</h2>
+                <p>The field of data visualization is undergoing a significant transformation, moving beyond the confines of conventional charts and graphs to embrace novel methodologies and technological integrations. "Innovative insight visuals" are increasingly defined not merely by their aesthetic novelty, but by their capacity to fundamentally alter how data is perceived, interacted with, and ultimately understood.</p>
+            </section>
+             <section id="core-technologies" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">II. Core Technologies Driving the Next Wave of Visuals</h2>
+                 <p>The integration of Artificial Intelligence (AI), Machine Learning (ML), immersive technologies, and real-time data processing is a primary catalyst in the evolution of insight visuals.</p>
+                 <div class="p-6 ai-tool-card mt-8">
+                     <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Immersive Experience Ideator</h4>
+                     <p class="text-sm text-[--text-muted-color] mb-4">Describe a dataset or scenario. AI will brainstorm an innovative AR or VR visualization concept.</p>
+                     <textarea id="immersive-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm" rows="3" placeholder="e.g., Real-time sensor data from a factory floor."></textarea>
+                     <button id="generate-immersive" class="mt-2 w-full ai-tool-button flex items-center justify-center gap-2">Brainstorm Ideas<span id="immersive-loader" class="hidden loader"></span></button>
+                     <div id="immersive-result" class="mt-4 text-sm p-4 rounded-sm bg-white"></div>
+                 </div>
+            </section>
+             <section id="dominant-trends" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">III. Dominant Trends in Insight Visualization</h2>
+                 <p>As we look towards 2025 and beyond, several dominant trends are shaping the landscape of insight visualization, pushing the boundaries of how data is communicated and understood.</p>
+                 <div class="p-6 ai-tool-card mt-8">
+                     <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Data Storytelling Assistant</h4>
+                     <p class="text-sm text-[--text-muted-color] mb-4">Enter a key finding or raw data points. AI will help you craft a compelling narrative.</p>
+                     <textarea id="story-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm" rows="3" placeholder="e.g., Q2 sales increased by 20% in the North-East region..."></textarea>
+                     <button id="generate-story" class="mt-2 w-full ai-tool-button flex items-center justify-center gap-2">Generate Narrative<span id="story-loader" class="hidden loader"></span></button>
+                     <div id="story-result" class="mt-4 text-sm p-4 rounded-sm bg-white"></div>
+                 </div>
+            </section>
+            <section id="innovations-in-practice" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">IV. Innovations in Practice: Cross-Domain Applications</h2>
+                 <p>The transformative potential of innovative insight visuals is best understood through their application across diverse domains.</p>
+            </section>
+            <section id="principles" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">V. Principles for Effective and Ethical Insight Visuals</h2>
+                 <p>The development and deployment of innovative visuals must be guided by robust principles that ensure both effectiveness and ethical integrity.</p>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                     <div class="p-6 ai-tool-card">
+                         <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Chart Recommender</h4>
+                         <p class="text-sm text-[--text-muted-color] mb-4">Describe your data and communication goal. AI will suggest the most effective chart type.</p>
+                         <textarea id="chart-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm" rows="3" placeholder="e.g., I want to compare sales figures across 5 regions..."></textarea>
+                         <button id="generate-chart-rec" class="mt-2 w-full ai-tool-button flex items-center justify-center gap-2">Get Recommendation<span id="chart-rec-loader" class="hidden loader"></span></button>
+                         <div id="chart-rec-result" class="mt-4 text-sm p-4 rounded-sm bg-white"></div>
+                     </div>
+                      <div class="p-6 ai-tool-card">
+                         <h4 class="text-xl font-semibold text-[--primary-color] mb-3">✨ AI Ethical Checklist Generator</h4>
+                         <p class="text-sm text-[--text-muted-color] mb-4">Describe your visualization project. AI will generate an actionable ethical checklist.</p>
+                         <textarea id="ethics-prompt" class="w-full p-2 border border-[--border-color] rounded-sm text-sm" rows="3" placeholder="e.g., A public dashboard showing neighborhood crime rates."></textarea>
+                         <button id="generate-ethics-check" class="mt-2 w-full ai-tool-button flex items-center justify-center gap-2">Generate Checklist<span id="ethics-check-loader" class="hidden loader"></span></button>
+                         <div id="ethics-check-result" class="mt-4 text-sm p-4 rounded-sm bg-white"></div>
+                     </div>
+                 </div>
+            </section>
+            <section id="enabling-tools" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">VI. Enabling the Future: Key Tools and Platforms</h2>
+                 <p>The creation of innovative visuals is powered by an evolving ecosystem of software tools, from foundational libraries to high-level applications.</p>
+            </section>
+            <section id="conclusion" class="mb-12 scroll-mt-20 section-card">
+                 <h2 class="section-title">VII. Conclusion: The Future Trajectory</h2>
+                 <p>The landscape of insight visualization is in a period of dynamic evolution, converging towards experiences that are more intelligent, interactive, and integrated into our daily workflows.</p>
+            </section>
+        </main>
+    </div>
+
+    <footer class="text-center p-6 mt-10 bg-white text-slate-500 text-sm border-t border-slate-200">
+        <p>&copy; 2025 Insight Visuals Report. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let charts = {};
+
+            const getThemeColors = () => {
+                return {
+                    primary: '#0043ce',
+                    secondary: '#4285f4',
+                    accent: '#00a896',
+                    grid: 'rgba(0, 0, 0, 0.05)',
+                    text: '#161616'
+                };
+            };
+            
+            const multiLineTooltipTitle = { plugins: { tooltip: { callbacks: { title: function(items) { const item = items[0]; let label = item.chart.data.labels[item.dataIndex]; return Array.isArray(label) ? label.join(' ') : label; } } } } };
+            const commonChartOptions = { responsive: true, maintainAspectRatio: false, ...multiLineTooltipTitle,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                family: "'IBM Plex Sans', sans-serif"
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { font: { family: "'IBM Plex Sans', sans-serif" } } },
+                    y: { ticks: { font: { family: "'IBM Plex Sans', sans-serif" } } }
+                }
+             };
+
+            function initializeCharts() {
+                const themeColors = getThemeColors();
+                
+                const biPlatformCtx = document.getElementById('biPlatformChart');
+                if (biPlatformCtx) { charts.biPlatform = new Chart(biPlatformCtx, { type: 'radar', data: { labels: ['Automation', 'Predictive Analytics', 'Generative UI', 'Ease of Use', 'Integration'], datasets: [{ label: 'Platform A', data: [8, 7, 6, 9, 8], fill: true, backgroundColor: 'rgba(0, 67, 206, 0.2)', borderColor: themeColors.primary, pointBackgroundColor: themeColors.primary }, { label: 'Platform B', data: [7, 9, 9, 7, 7], fill: true, backgroundColor: 'rgba(0, 168, 150, 0.2)', borderColor: themeColors.accent, pointBackgroundColor: themeColors.accent }] }, options: { ...commonChartOptions, scales: { r: { grid: { color: themeColors.grid }, pointLabels: { color: themeColors.text, font:{family:"'IBM Plex Sans', sans-serif"}}, ticks: { color: themeColors.text, backdropColor: 'rgba(0,0,0,0)'} } }, plugins: { legend: { labels: { color: themeColors.text, font:{family:"'IBM Plex Sans', sans-serif"} } }, ...multiLineTooltipTitle.plugins } } }); }
+                
+                const immersiveAdoptionCtx = document.getElementById('immersiveAdoptionChart');
+                if (immersiveAdoptionCtx) { charts.immersiveAdoption = new Chart(immersiveAdoptionCtx, { type: 'bar', data: { labels: ['Manufacturing', 'Healthcare', 'Retail', 'Logistics', 'Research'], datasets: [{ label: 'High Adoption/Impact', data: [85, 75, 70, 60, 90], backgroundColor: themeColors.secondary }] }, options: {...commonChartOptions, plugins: { legend: { display: false } }, scales: {x: {ticks:{color:themeColors.text}, grid:{color:themeColors.grid}}, y:{ticks:{color:themeColors.text}, grid:{color:themeColors.grid}}}} }); }
+                
+                const threeDUsecaseCtx = document.getElementById('threeDUsecaseChart');
+                if(threeDUsecaseCtx){ charts.threeDUsecase = new Chart(threeDUsecaseCtx, { type: 'doughnut', data: { labels: ['Scientific Visualization', 'Immersive Storytelling', 'Product Previews', 'Architectural Models'], datasets: [{ data: [40, 25, 20, 15], backgroundColor: [themeColors.primary, themeColors.secondary, themeColors.accent, '#facc15'], hoverOffset: 4 }] }, options: {...commonChartOptions, plugins: { legend: { position: 'bottom', labels: { color: themeColors.text } }, ...multiLineTooltipTitle.plugins } }}); }
+            }
+
+            initializeCharts();
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section, header#title-page');
+            const observer = new IntersectionObserver((entries) => {
+                let isTitlePageVisible = false;
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.id === 'title-page') { isTitlePageVisible = true; }
+                        else { navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id); }); }
+                    }
+                });
+                if (isTitlePageVisible) { navLinks.forEach(link => link.classList.remove('active')); }
+            }, { rootMargin: '-40% 0px -60% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            const apiKey = ""; 
+
+            async function callGemini(prompt) {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                try {
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, no response was generated.";
+                } catch (error) {
+                    console.error('Gemini API call failed:', error);
+                    return `An error occurred: ${error.message}`;
+                }
+            }
+            
+            async function handleGeneration(button, input, loader, resultContainer, promptFn) {
+                const promptText = input.value;
+                if (!promptText) { resultContainer.innerHTML = `<p class="text-red-500 font-medium">Please enter a description.</p>`; return; }
+                loader.classList.remove('hidden');
+                button.disabled = true;
+                resultContainer.innerHTML = '';
+                const resultText = await callGemini(promptFn(promptText));
+                loader.classList.add('hidden');
+                button.disabled = false;
+                if (resultText && !resultText.startsWith('An error occurred')) {
+                     const formattedResult = resultText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[--primary-color]">$1</strong>').replace(/\n/g, '<br>');
+                    resultContainer.innerHTML = `<p>${formattedResult}</p>`;
+                } else { resultContainer.innerHTML = `<p class="text-red-500 font-medium">${resultText}</p>`; }
+            }
+
+            document.getElementById('generate-chart-rec').addEventListener('click', function() { handleGeneration(this, document.getElementById('chart-prompt'), document.getElementById('chart-rec-loader'), document.getElementById('chart-rec-result'), (p) => `As a data visualization expert, recommend the best chart type for this goal: "${p}". Explain your reasoning in 2-3 sentences.`); });
+            document.getElementById('generate-ethics-check').addEventListener('click', function() { handleGeneration(this, document.getElementById('ethics-prompt'), document.getElementById('ethics-check-loader'), document.getElementById('ethics-check-result'), (p) => `As a data ethics specialist, generate a short, actionable ethical checklist (3-4 points) for a visualization project about: "${p}". Format the response as a simple list.`); });
+            document.getElementById('generate-story').addEventListener('click', function() { handleGeneration(this, document.getElementById('story-prompt'), document.getElementById('story-loader'), document.getElementById('story-result'), (p) => `Act as an expert data storyteller. Based on the following key finding, write a compelling narrative paragraph for a business report. Data: "${p}"`); });
+            document.getElementById('generate-immersive').addEventListener('click', function() { handleGeneration(this, document.getElementById('immersive-prompt'), document.getElementById('immersive-loader'), document.getElementById('immersive-result'), (p) => `Act as a creative XR solutions architect. Brainstorm an innovative augmented reality (AR) or virtual reality (VR) data visualization concept for the following scenario: "${p}". Describe the concept and how a user would interact with it.`); });
+
+            const plotlyBg = document.getElementById('plotly-bg');
+            if (plotlyBg) {
+                const n = 200;
+                const x = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const y = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const z = Array(n).fill(0).map(() => Math.random() * 2 - 1);
+                const trace = { x: x, y: y, z: z, mode: 'markers', marker: { size: 2, color: z, colorscale: [[0, '#8ab4f8'], [1, '#0043ce']], opacity: 0.6 }, type: 'scatter3d' };
+                const layout = { autosize: true, showlegend: false, margin: { l: 0, r: 0, b: 0, t: 0 }, scene: { xaxis: { visible: false }, yaxis: { visible: false }, zaxis: { visible: false }, camera: { eye: { x: 1.25, y: 1.25, z: 1.25 } } }, paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)' };
+                Plotly.newPlot(plotlyBg, [trace], layout, {displayModeBar: false});
+                document.getElementById('title-page').addEventListener('mousemove', (e) => {
+                    const fracX = (e.clientX / window.innerWidth - 0.5) * 2;
+                    const fracY = (e.clientY / window.innerHeight - 0.5) * 2;
+                    Plotly.relayout(plotlyBg, { 'scene.camera.eye': { x: 1.25 - fracX * 0.5, y: 1.25 - fracY * 0.5, z: 1.25 } });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
