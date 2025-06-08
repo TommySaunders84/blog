@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Guide | Visionary Views</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e7eb;
+        }
+        h1, h2, h3, h4, .font-sans-header {
+            font-family: 'DM Sans', sans-serif;
+        }
+        .bg-primary-dark { background-color: #002d9c; }
+        .text-primary-light { color: #3b82f6; }
+        .border-primary-light { border-color: #3b82f6; }
+
+        /* Custom styles for the style guide page */
+        .style-section {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #1f2937; /* border-gray-800 */
+        }
+        .style-section:last-child {
+            border-bottom: none;
+        }
+        .style-heading {
+            border-left: 4px solid #3b82f6; /* border-primary-light */
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+        .color-swatch {
+            width: 100%;
+            height: 100px;
+            border-radius: 0.5rem;
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .code-block {
+            background-color: #111827; /* gray-900 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: #d1d5db; /* gray-300 */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #1f2937;
+        }
+    </style>
+</head>
+<body class="bg-black">
+
+    <!-- Header -->
+    <header class="bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 sticky top-0 z-10">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-3xl font-bold text-white font-sans-header">Visionary Views: Style Guide</h1>
+            <p class="text-gray-400 mt-1">A comprehensive design and component reference.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6">
+
+        <!-- Color Palette Section -->
+        <section id="colors" class="style-section">
+            <div class="style-heading">
+                <h2 class="text-3xl font-bold text-white">Color Palette</h2>
+                <p class="text-gray-400">The core colors that define the brand's visual identity.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <!-- Primary Color -->
+                <div class="space-y-2">
+                    <div class="color-swatch bg-primary-dark"></div>
+                    <p class="font-bold text-white">Primary Dark</p>
+                    <p class="text-sm text-gray-400">#002d9c</p>
+                    <p class="text-xs text-gray-500">Usage: Primary buttons, key actions.</p>
+                </div>
+                <!-- Accent Color -->
+                <div class="space-y-2">
+                    <div class="color-swatch bg-blue-500"></div>
+                    <p class="font-bold text-white">Primary Light (Accent)</p>
+                    <p class="text-sm text-gray-400">#3b82f6</p>
+                    <p class="text-xs text-gray-500">Usage: Links, highlights, borders.</p>
+                </div>
+                 <!-- Backgrounds -->
+                <div class="space-y-2">
+                    <div class="color-swatch bg-black"></div>
+                    <p class="font-bold text-white">Background</p>
+                    <p class="text-sm text-gray-400">#0a0a0a (near black)</p>
+                    <p class="text-xs text-gray-500">Usage: Main page background.</p>
+                </div>
+                 <div class="space-y-2">
+                    <div class="color-swatch bg-gray-900"></div>
+                    <p class="font-bold text-white">Component Background</p>
+                    <p class="text-sm text-gray-400">#111827</p>
+                    <p class="text-xs text-gray-500">Usage: Cards, modals, footers.</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="color-swatch bg-gray-800"></div>
+                    <p class="font-bold text-white">Borders & Dividers</p>
+                    <p class="text-sm text-gray-400">#1f2937</p>
+                    <p class="text-xs text-gray-500">Usage: Borders, separators.</p>
+                </div>
+            </div>
+             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mt-8">
+                 <!-- Text Colors -->
+                 <div class="space-y-2">
+                    <div class="color-swatch bg-gray-200"></div>
+                    <p class="font-bold text-white">Text: Primary</p>
+                    <p class="text-sm text-gray-400">#e5e7eb</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="color-swatch bg-gray-400"></div>
+                    <p class="font-bold text-white">Text: Secondary</p>
+                    <p class="text-sm text-gray-400">#9ca3af</p>
+                </div>
+                 <div class="space-y-2">
+                    <div class="color-swatch bg-gray-500"></div>
+                    <p class="font-bold text-white">Text: Muted</p>
+                    <p class="text-sm text-gray-400">#6b7280</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Section -->
+        <section id="typography" class="style-section">
+            <div class="style-heading">
+                <h2 class="text-3xl font-bold text-white">Typography</h2>
+                <p class="text-gray-400">Font hierarchy and usage guidelines.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Headings (DM Sans)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h1 class="text-5xl font-bold">Heading 1</h1>
+                            <p class="text-sm text-gray-500 mt-1">font-family: 'DM Sans', sans-serif; text-5xl font-bold</p>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-bold">Heading 2</h2>
+                            <p class="text-sm text-gray-500 mt-1">font-family: 'DM Sans', sans-serif; text-4xl font-bold</p>
+                        </div>
+                         <div>
+                            <h3 class="text-3xl font-bold">Heading 3</h3>
+                            <p class="text-sm text-gray-500 mt-1">font-family: 'DM Sans', sans-serif; text-3xl font-bold</p>
+                        </div>
+                         <div>
+                            <h4 class="text-2xl font-bold">Heading 4</h4>
+                            <p class="text-sm text-gray-500 mt-1">font-family: 'DM Sans', sans-serif; text-2xl font-bold</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Body & Paragraph (IBM Plex Sans)</h3>
+                    <div class="space-y-4">
+                        <p class="text-lg text-gray-300">This is large paragraph text (text-lg). Ideal for introductions and featured excerpts. It provides a comfortable reading experience for key content. Font is 'IBM Plex Sans'.</p>
+                        <p class="text-base text-gray-400">This is standard body text (text-base). It's used for the main content of articles and detailed descriptions. The line height is optimized for readability in long-form content.</p>
+                        <p class="text-sm text-gray-500">This is smaller text (text-sm). Often used for meta information like author names, dates, categories, and captions. It provides secondary information without distracting from the main content.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="style-section">
+            <div class="style-heading">
+                <h2 class="text-3xl font-bold text-white">Components</h2>
+                <p class="text-gray-400">Reusable UI elements for building pages.</p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-white mb-4">Buttons</h3>
+                <div class="bg-gray-900 p-8 rounded-lg space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap items-center">
+                    <button class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-5 rounded-lg transition-colors">Primary Button</button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors">Secondary Button</button>
+                    <button class="text-primary-light hover:text-blue-400 font-semibold py-2 px-5 rounded-lg transition-colors">Tertiary/Link Button</button>
+                     <button class="bg-primary-dark text-white font-semibold py-2 px-5 rounded-lg opacity-50 cursor-not-allowed" disabled>Disabled Button</button>
+                </div>
+                 <div class="mt-4">
+                    <p class="text-lg font-semibold text-white mb-2">Primary Button Code</p>
+                    <div class="code-block">
+                        &lt;button class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-5 rounded-lg transition-colors"&gt;...&lt;/button&gt;
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Card -->
+            <div class="mb-12">
+                 <h3 class="text-2xl font-bold text-white mb-4">Article Card</h3>
+                 <div class="max-w-sm">
+                    <article class="group bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-primary-light transition-all duration-300 flex flex-col">
+                        <div class="relative overflow-hidden">
+                           <img src="https://placehold.co/800x600/1a1a1a/ffffff?text=Sample" alt="Sample Image" class="article-image w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <span class="article-category text-sm font-semibold text-primary-light uppercase font-sans-header">Category</span>
+                            <h3 class="article-title text-xl font-bold mt-2 mb-3 text-white group-hover:text-blue-400 transition-colors duration-300">Article Title Goes Here</h3>
+                            <p class="article-excerpt text-gray-400 text-sm flex-grow">This is a short excerpt describing the article content. It should be engaging and concise.</p>
+                        </div>
+                        <div class="p-6 pt-0 mt-auto">
+                            <button class="w-full text-center text-sm font-semibold text-primary-light hover:text-white bg-gray-800 hover:bg-gray-700 rounded-md py-2 px-4 transition-colors duration-300 flex items-center justify-center space-x-2 font-sans-header">
+                               <span>✨ Generate Cover Art</span>
+                            </button>
+                        </div>
+                    </article>
+                 </div>
+                 <div class="mt-4">
+                    <p class="text-lg font-semibold text-white mb-2">Article Card Code</p>
+                    <div class="code-block">
+                        &lt;article class="group bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-primary-light transition-all duration-300 flex flex-col"&gt;
+    &lt;!-- Image container --&gt;
+    &lt;div class="p-6 flex-grow flex flex-col"&gt;
+        &lt;span class="text-sm font-semibold text-primary-light uppercase font-sans-header"&gt;...&lt;/span&gt;
+        &lt;h3 class="text-xl font-bold mt-2 mb-3 text-white group-hover:text-blue-400"&gt;...&lt;/h3&gt;
+        &lt;p class="text-gray-400 text-sm flex-grow"&gt;...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- Button container --&gt;
+&lt;/article&gt;
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logo -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-white mb-4">Logo</h3>
+                <div class="bg-gray-900 p-8 rounded-lg">
+                    <a href="#" class="text-3xl font-bold text-white tracking-tighter font-sans-header">Visionary<span class="text-primary-light">.</span>Views</a>
+                </div>
+                 <div class="mt-4">
+                    <p class="text-lg font-semibold text-white mb-2">Logo Code</p>
+                    <div class="code-block">
+                        &lt;a href="#" class="text-3xl font-bold text-white tracking-tighter font-sans-header"&gt;
+    Visionary&lt;span class="text-primary-light"&gt;.&lt;/span&gt;Views
+&lt;/a&gt;
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
