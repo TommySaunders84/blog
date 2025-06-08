@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Style Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral with Blue Accent -->
+    <!-- Application Structure Plan: The SPA is structured as an interactive, single-page document. A universal top header menu provides high-level category navigation (Home, Visuals, Components, Raw Code). A sticky sidebar navigation offers detailed jump links within these categories. This dual-navigation approach enhances explorability and user-friendliness for a comprehensive style guide. Interactive elements like the counter and color swatches allow real-time style demonstration, complemented by raw CSS and variable displays for deeper understanding. -->
+    <!-- Visualization & Content Choices: The source material is a style guide, not a data report, so traditional charts are not applicable. Instead, the "visualizations" are the UI elements themselves. Colors are shown as interactive swatches that copy hex codes on click (Goal: Inform/Utility). Typography is demonstrated with styled text blocks (Goal: Inform). The core button and interaction styles are showcased via a fully functional counter component, allowing users to experience the hover, active, and focus states directly (Goal: Demonstrate/Compare). Raw CSS code blocks provide a direct view of how the styles are defined (Goal: Inform/Utility). This approach turns the static rules from the report into a tangible, interactive experience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .section-container {
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* CSS Variables - Defined directly for demonstration */
+        :root {
+            /* Brand identity */
+            --brand-name: "Style Guide App";
+
+            /* Color palette - aligned with current SPA's palette */
+            --color-primary-blue: #3b82f6; /* Blue 500 */
+            --color-secondary-blue: #2563eb; /* Blue 600 */
+            --color-background: #f5f5f4; /* Stone 100 */
+            --color-surface: #ffffff; /* White */
+            --color-text-dark: #292524; /* Stone 800 */
+            --color-text-medium: #78716c; /* Stone 600 approx */
+            --color-text-light: #a8a29e; /* Stone 500 approx */
+            --color-border-default: #e7e5e4; /* Stone 200 */
+
+            /* Typography */
+            --font-family-base: 'Inter', sans-serif;
+            --font-size-base: 16px;
+            --line-height-base: 1.6; /* Based on body text leading-relaxed */
+            --font-size-h1: 2.5rem; /* text-4xl equivalent */
+            --font-size-h2: 2rem;   /* text-3xl equivalent */
+
+            /* Spacing scale (multiples of 4px) */
+            --space-0: 0;
+            --space-1: 4px;   /* 0.25rem */
+            --space-2: 8px;   /* 0.5rem */
+            --space-3: 16px;  /* 1rem */
+            --space-4: 24px;  /* 1.5rem */
+            --space-5: 32px;  /* 2rem */
+
+            /* Border & radius */
+            --border-radius-sm: 0.25rem; /* rounded-lg equivalent */
+            --border-radius-md: 0.5rem;  /* rounded-xl equivalent */
+            --border-width-default: 1px;
+        }
+
+        /* Raw CSS Examples (for demonstration) */
+        .example-body {
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            color: var(--color-text-dark);
+            background-color: var(--color-background);
+        }
+        .example-h1 { font-size: var(--font-size-h1); margin-bottom: var(--space-3); font-weight: 800; }
+        .example-h2 { font-size: var(--font-size-h2); margin-bottom: var(--space-3); font-weight: 700; }
+        .example-p { margin-bottom: var(--space-2); line-height: var(--line-height-base); color: var(--color-text-medium); }
+
+        .example-btn {
+            display: inline-block;
+            padding: var(--space-2) var(--space-3);
+            font-family: var(--font-family-base);
+            font-size: 1rem;
+            border: var(--border-width-default) solid transparent;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .example-btn-primary {
+            background-color: var(--color-primary-blue);
+            color: var(--color-surface);
+        }
+        .example-btn-primary:hover {
+            background-color: var(--color-secondary-blue);
+            transform: scale(1.05);
+        }
+        .example-btn-outline {
+            background: none;
+            border-color: var(--color-primary-blue);
+            color: var(--color-primary-blue);
+        }
+        .example-btn-outline:hover {
+            background-color: var(--color-primary-blue);
+            color: var(--color-surface);
+            transform: scale(1.05);
+        }
+
+        .example-input, .example-textarea, .example-select {
+            width: 100%;
+            padding: var(--space-2);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-family-base);
+            font-size: 1rem;
+            margin-bottom: var(--space-3);
+            box-sizing: border-box; /* Crucial for form elements */
+        }
+        .example-input:focus, .example-textarea:focus, .example-select:focus {
+            outline: none;
+            border-color: var(--color-primary-blue);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4); /* blue-500 with opacity */
+        }
+
+        .example-container {
+            max-width: 900px; /* Aligned with section-container */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 var(--space-3);
+        }
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-3);
+        }
+        .example-col {
+            padding: var(--space-2);
+            background-color: var(--color-surface);
+            border-radius: var(--border-radius-sm);
+            border: var(--border-width-default) solid var(--color-border-default);
+        }
+
+        .example-text-center { text-align: center; }
+        .example-shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .example-rounded { border-radius: var(--border-radius-sm); }
+
+        .example-img-responsive {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Media Queries for Responsiveness Example */
+        .responsive-box {
+            background-color: var(--color-primary-blue);
+            color: white;
+            padding: var(--space-2);
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+            font-weight: bold;
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .responsive-box { background-color: var(--color-secondary-blue); padding: var(--space-3); }
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .responsive-box { background-color: #05DBF2; padding: var(--space-4); } /* A light blue for md */
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .responsive-box { background-color: #004AAD; padding: var(--space-5); } /* A dark blue for lg */
+        }
+
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <!-- Universal Header Menu -->
+    <header class="bg-white shadow-md py-4 px-6 sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-blue-600">Brand Guide</h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#introduction" class="text-stone-600 hover:text-blue-600 font-semibold transition duration-200">Home</a></li>
+                    <li><a href="#colors" class="text-stone-600 hover:text-blue-600 font-semibold transition duration-200">Visuals</a></li>
+                    <li><a href="#components" class="text-stone-600 hover:text-blue-600 font-semibold transition duration-200">Components</a></li>
+                    <li><a href="#raw-css-examples" class="text-stone-600 hover:text-blue-600 font-semibold transition duration-200">Raw Code</a></li>
+                </ul>
+            </nav>
+            <!-- Mobile Menu Toggle (optional, if you want a hamburger menu instead of select) -->
+            <!-- For now, the existing select dropdown for mobile is used -->
+        </div>
+    </header>
+
+    <div class="relative min-h-screen md:flex">
+        <!-- Sidebar Navigation -->
+        <aside class="sticky top-[68px] h-[calc(100vh-68px)] bg-white md:w-64 py-6 px-2 md:px-4 shadow-md hidden md:block z-10 overflow-y-auto">
+            <h2 class="text-xl font-bold text-blue-600 px-4 mb-4">Style Guide</h2>
+            <nav id="desktop-nav">
+                <a href="#introduction" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Introduction</a>
+                <a href="#colors" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Colors</a>
+                <a href="#typography" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Typography</a>
+                <a href="#spacing" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Spacing</a>
+                <a href="#components" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Interactive Components</a>
+                <a href="#effects" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Shadows & Effects</a>
+                <a href="#brand-variables" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Brand Variables</a>
+                <a href="#raw-css-examples" class="nav-link block font-semibold text-stone-600 hover:bg-blue-50 hover:text-blue-600 rounded px-4 py-2.5 transition duration-200">Raw CSS Examples</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-10 pt-4 md:pt-10">
+            <!-- Mobile Header (adjusted to sit below the new universal header) -->
+            <div class="md:hidden flex justify-between items-center mb-6 pb-4 border-b">
+                <h1 class="text-2xl font-bold text-blue-600">Style Guide Sections</h1>
+                 <select id="mobile-nav" class="bg-white border border-stone-300 rounded-md py-2 px-3 text-stone-700 font-semibold">
+                    <option value="#introduction">Introduction</option>
+                    <option value="#colors">Colors</option>
+                    <option value="#typography">Typography</option>
+                    <option value="#spacing">Spacing</option>
+                    <option value="#components">Interactive Components</option>
+                    <option value="#effects">Shadows & Effects</option>
+                    <option value="#brand-variables">Brand Variables</option>
+                    <option value="#raw-css-examples">Raw CSS Examples</option>
+                </select>
+            </div>
+
+            <!-- Introduction Section -->
+            <section id="introduction" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-4">Introduction</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        This is a living style guide that demonstrates the core visual and interaction principles of our application. It's built to be a practical resource for developers and designers, providing clear, interactive examples of our design system. Use the navigation to explore the different sections and interact with the components to see them in action. This expanded version now also includes raw CSS code blocks and defined variables for a deeper understanding.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Colors Section -->
+            <section id="colors" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-4">Color Palette</h2>
+                    <p class="text-lg text-stone-600 mb-8">The color palette is designed for clarity and a clean user experience. It features a neutral base with a strong, accessible blue for interactive elements. Click on any swatch to copy its hex code.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div class="color-swatch" data-color="#f5f5f4">
+                            <div class="h-24 w-full rounded-lg bg-stone-100 border border-stone-200"></div>
+                            <h3 class="font-bold mt-2">Stone 100</h3>
+                            <p class="text-stone-500">#f5f5f4</p>
+                        </div>
+                        <div class="color-swatch" data-color="#ffffff">
+                            <div class="h-24 w-full rounded-lg bg-white border border-stone-200"></div>
+                            <h3 class="font-bold mt-2">White</h3>
+                            <p class="text-stone-500">#ffffff</p>
+                        </div>
+                        <div class="color-swatch" data-color="#292524">
+                            <div class="h-24 w-full rounded-lg bg-stone-800"></div>
+                            <h3 class="font-bold mt-2">Stone 800</h3>
+                            <p class="text-stone-500">#292524</p>
+                        </div>
+                         <div class="color-swatch" data-color="#3b82f6">
+                            <div class="h-24 w-full rounded-lg bg-blue-500"></div>
+                            <h3 class="font-bold mt-2">Blue 500</h3>
+                            <p class="text-stone-500">#3b82f6</p>
+                        </div>
+                         <div class="color-swatch" data-color="#2563eb">
+                            <div class="h-24 w-full rounded-lg bg-blue-600"></div>
+                            <h3 class="font-bold mt-2">Blue 600</h3>
+                            <p class="text-stone-500">#2563eb</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Typography Section -->
+            <section id="typography" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Typography</h2>
+                     <p class="text-lg text-stone-600 mb-8">All text uses the 'Inter' font family, prized for its readability on screens. The typographic scale is designed to create clear hierarchy and guide the user's focus.</p>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-sm text-stone-500 mb-1">Heading 1 (font-extrabold, text-4xl)</p>
+                            <h1 class="text-4xl font-extrabold text-stone-800">The Quick Brown Fox</h1>
+                        </div>
+                        <div>
+                            <p class="text-sm text-stone-500 mb-1">Heading 2 (font-bold, text-3xl)</p>
+                            <h2 class="text-3xl font-bold text-stone-800">Jumps Over the Lazy Dog</h2>
+                        </div>
+                         <div>
+                            <p class="text-sm text-stone-500 mb-1">Body Text (text-lg, leading-relaxed)</p>
+                            <p class="text-lg text-stone-600 leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-stone-500 mb-1">Button Text (font-semibold)</p>
+                            <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg">Font Semibold</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Spacing Section -->
+            <section id="spacing" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Spacing</h2>
+                    <p class="text-lg text-stone-600 mb-8">A consistent spacing scale (based on a 4px grid) is used for all padding, margins, and layout gaps. This creates a balanced and harmonious visual rhythm.</p>
+                    <div class="flex items-end space-x-2 h-48 bg-stone-100 p-4 rounded-lg">
+                        <div class="w-12 text-center">
+                            <div class="bg-blue-400" style="height: 1rem;"></div>
+                            <p class="text-xs mt-1">4 (1rem)</p>
+                        </div>
+                        <div class="w-12 text-center">
+                            <div class="bg-blue-500" style="height: 2rem;"></div>
+                            <p class="text-xs mt-1">8 (2rem)</p>
+                        </div>
+                        <div class="w-12 text-center">
+                             <div class="bg-blue-600" style="height: 4rem;"></div>
+                            <p class="text-xs mt-1">16 (4rem)</p>
+                        </div>
+                         <div class="w-12 text-center">
+                             <div class="bg-blue-700" style="height: 6rem;"></div>
+                            <p class="text-xs mt-1">24 (6rem)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Components Section -->
+            <section id="components" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Interactive Components</h2>
+                    <p class="text-lg text-stone-600 mb-8">This section provides a live demonstration of our core interactive components. Interact with the counter below to see button styles, hover effects, focus states, and transitions in action. A basic form input is also included to show styling for interactive fields.</p>
+                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg text-center max-w-md w-full mx-auto border mb-8">
+                        <h3 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-6">
+                            Live Counter
+                        </h3>
+                        <p id="counter-display" class="text-5xl sm:text-6xl font-extrabold text-blue-600 mb-8">
+                            0
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <button id="decrement-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                                Decrement
+                            </button>
+                            <button id="increment-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                                Increment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg max-w-md w-full mx-auto border">
+                        <h3 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-6 text-center">
+                            Form Elements
+                        </h3>
+                        <label for="example-input" class="block text-left text-stone-700 font-semibold mb-2">Example Input Field</label>
+                        <input type="text" id="example-input" placeholder="Type something..." class="example-input" />
+
+                        <label for="example-textarea" class="block text-left text-stone-700 font-semibold mb-2">Example Textarea</label>
+                        <textarea id="example-textarea" placeholder="Enter longer text here..." rows="4" class="example-textarea"></textarea>
+
+                        <label for="example-select" class="block text-left text-stone-700 font-semibold mb-2">Example Select</label>
+                        <select id="example-select" class="example-select">
+                            <option value="">Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </select>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Effects Section -->
+            <section id="effects" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                     <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Shadows & Effects</h2>
+                    <p class="text-lg text-stone-600 mb-8">Subtle shadows and rounded corners are used to create depth and a modern, soft aesthetic. Hover over the cards to see transition effects.</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md transition duration-300 hover:shadow-xl hover:scale-[1.02]">
+                            <h3 class="font-bold text-stone-800">Shadow MD</h3>
+                            <p class="text-stone-600">A subtle shadow for buttons and smaller elements.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg transition duration-300 hover:shadow-2xl hover:scale-[1.02]">
+                            <h3 class="font-bold text-stone-800">Shadow LG</h3>
+                            <p class="text-stone-600">A larger shadow for cards and primary containers.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brand Variables Section -->
+            <section id="brand-variables" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Brand Variables</h2>
+                    <p class="text-lg text-stone-600 mb-8">
+                        These CSS custom properties (`:root` variables) define the core values for our brand's identity, color palette, typography, and spacing. By centralizing these, we ensure consistency and easy updates across all projects.
+                    </p>
+                    <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                        <pre><code class="language-css">
+:root {
+  /* Brand identity */
+  --brand-name: "Style Guide App";
+
+  /* Color palette */
+  --color-primary-blue: #3b82f6;
+  --color-secondary-blue: #2563eb;
+  --color-background: #f5f5f4;
+  --color-surface: #ffffff;
+  --color-text-dark: #292524;
+  --color-text-medium: #78716c;
+  --color-text-light: #a8a29e;
+  --color-border-default: #e7e5e4;
+
+  /* Typography */
+  --font-family-base: 'Inter', sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+
+  /* Spacing scale (multiples of 4px) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+
+  /* Border & radius */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-width-default: 1px;
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Raw CSS Examples Section -->
+            <section id="raw-css-examples" class="mb-16 scroll-mt-20">
+                <div class="section-container">
+                    <h2 class="text-3xl font-extrabold text-stone-800 border-b pb-3 mb-6">Raw CSS Examples</h2>
+                    <p class="text-lg text-stone-600 mb-8">
+                        This section provides simplified, raw CSS code examples for key elements and components, demonstrating how our design principles translate into standard stylesheets. These examples utilize the <span class="font-semibold text-blue-600">Brand Variables</span> defined above.
+                    </p>
+
+                    <!-- Base & Typography Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Base & Typography</h3>
+                        <p class="text-lg text-stone-600 mb-4">Core styles for the body, headings, and paragraphs, ensuring consistent text presentation throughout the application.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                            <h1 class="example-h1 text-stone-800">Example Heading 1</h1>
+                            <h2 class="example-h2 text-stone-800">Example Heading 2</h2>
+                            <p class="example-p text-stone-600">This is an example paragraph demonstrating the base text styles. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.</p>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
+  box-sizing: border-box; /* Universal box model */
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  margin-bottom: var(--space-3);
+  font-weight: 800; /* Extra bold */
+  color: var(--color-text-dark);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--space-3);
+  font-weight: 700; /* Bold */
+  color: var(--color-text-dark);
+}
+
+p {
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-base);
+  color: var(--color-text-medium);
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Layout & Grid Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Layout & Grid</h3>
+                        <p class="text-lg text-stone-600 mb-4">Demonstrates how to structure content using a responsive container and a simple grid system for arranging elements.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                            <div class="example-container bg-stone-100 p-4 rounded-lg border border-stone-200">
+                                <p class="text-sm text-stone-600 mb-2 text-center">.container Example (Max Width 900px, Auto Margins)</p>
+                                <div class="example-grid">
+                                    <div class="example-col text-stone-700">Grid Item 1</div>
+                                    <div class="example-col text-stone-700">Grid Item 2</div>
+                                    <div class="example-col text-stone-700">Grid Item 3</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+.container {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--space-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.col {
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-sm);
+  border: var(--border-width-default) solid var(--color-border-default);
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Buttons Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Buttons</h3>
+                        <p class="text-lg text-stone-600 mb-4">Consistent styling for interactive buttons, including primary and outline variations, with subtle hover effects.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex gap-4 justify-center flex-wrap mb-6">
+                            <button class="example-btn example-btn-primary">Primary Button</button>
+                            <button class="example-btn example-btn-outline">Outline Button</button>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+.btn {
+  display: inline-block;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: var(--border-width-default) solid transparent;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-blue);
+  color: var(--color-surface);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-secondary-blue);
+  transform: scale(1.05);
+}
+
+.btn-outline {
+  background: none;
+  border-color: var(--color-primary-blue);
+  color: var(--color-primary-blue);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-blue);
+  color: var(--color-surface);
+  transform: scale(1.05);
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Forms & Inputs Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Forms & Inputs</h3>
+                        <p class="text-lg text-stone-600 mb-4">Standardized styling for input fields, textareas, and select elements, ensuring a consistent user experience for form interactions.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mb-6">
+                             <label for="raw-example-input" class="block text-left text-stone-700 font-semibold mb-2">Input Field</label>
+                            <input type="text" id="raw-example-input" placeholder="Type something..." class="example-input" />
+
+                            <label for="raw-example-textarea" class="block text-left text-stone-700 font-semibold mb-2">Textarea</label>
+                            <textarea id="raw-example-textarea" placeholder="Enter longer text here..." rows="3" class="example-textarea"></textarea>
+
+                            <label for="raw-example-select" class="block text-left text-stone-700 font-semibold mb-2">Select Field</label>
+                            <select id="raw-example-select" class="example-select">
+                                <option value="">Choose an option</option>
+                                <option value="optionA">Option A</option>
+                                <option value="optionB">Option B</option>
+                            </select>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+input, textarea, select {
+  width: 100%;
+  padding: var(--space-2);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  margin-bottom: var(--space-3);
+  box-sizing: border-box; /* Ensures padding/border are included in width */
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary-blue);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                     <!-- Images Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Images</h3>
+                        <p class="text-lg text-stone-600 mb-4">Basic responsive styling for images to ensure they scale correctly within their containers.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-6 flex justify-center">
+                            <img src="https://placehold.co/300x200/a8a29e/ffffff?text=Image+Placeholder" alt="Placeholder image" class="example-img-responsive rounded-lg" />
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Removes extra space below image */
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Utility Classes Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Utility Classes</h3>
+                        <p class="text-lg text-stone-600 mb-4">Common helper classes for quick adjustments like text alignment, shadows, and border-radius.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-6 space-y-4">
+                            <div class="example-text-center p-4 bg-stone-100 rounded-lg">Text will be centered</div>
+                            <div class="p-4 bg-stone-100 example-shadow rounded-lg">This box has a shadow</div>
+                            <div class="p-4 bg-stone-100 example-rounded example-shadow">This box has rounded corners</div>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+.text-center { text-align: center; }
+.text-right  { text-align: right; } /* Example not shown in preview */
+.mt-1 { margin-top: var(--space-1); } /* Example not shown in preview */
+.mb-3 { margin-bottom: var(--space-3); } /* Example not shown in preview */
+.p-3  { padding: var(--space-3); } /* Example not shown in preview */
+
+.shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); } /* Example shadow */
+.rounded { border-radius: var(--border-radius-sm); } /* Example rounded */
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Responsive Design Raw CSS -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-stone-800 mb-4">Responsive Design</h3>
+                        <p class="text-lg text-stone-600 mb-4">Example of media queries for responsive adjustments across different screen sizes. Watch the box change color and padding as you resize the window.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                            <div class="responsive-box">
+                                <p>Resize me!</p>
+                                <p>Current color/padding changes based on breakpoint</p>
+                            </div>
+                        </div>
+                        <div class="bg-stone-800 text-stone-100 p-6 rounded-lg shadow-inner overflow-x-auto">
+                            <pre><code class="language-css">
+/* Mobile First styles are default */
+.responsive-box {
+  background-color: var(--color-primary-blue);
+  color: white;
+  padding: var(--space-2); /* 8px */
+}
+
+/* Small devices (sm: 640px and up) */
+@media (min-width: 640px) {
+  .responsive-box {
+    background-color: var(--color-secondary-blue);
+    padding: var(--space-3); /* 16px */
+  }
+}
+
+/* Medium devices (md: 768px and up) */
+@media (min-width: 768px) {
+  .responsive-box {
+    background-color: #05DBF2; /* A lighter blue */
+    padding: var(--space-4); /* 24px */
+  }
+}
+
+/* Large devices (lg: 1024px and up) */
+@media (min-width: 1024px) {
+  .responsive-box {
+    background-color: #004AAD; /* A darker blue */
+    padding: var(--space-5); /* 32px */
+  }
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const countDisplay = document.getElementById('counter-display');
+            const incrementBtn = document.getElementById('increment-btn');
+            const decrementBtn = document.getElementById('decrement-btn');
+            let count = 0;
+
+            incrementBtn.addEventListener('click', () => {
+                count++;
+                countDisplay.textContent = count;
+            });
+
+            decrementBtn.addEventListener('click', () => {
+                count--;
+                countDisplay.textContent = count;
+            });
+
+            const colorSwatches = document.querySelectorAll('.color-swatch');
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', () => {
+                    const color = swatch.dataset.color;
+                    navigator.clipboard.writeText(color).then(() => {
+                        const originalText = swatch.querySelector('p').textContent;
+                        swatch.querySelector('p').textContent = 'Copied!';
+                        swatch.classList.add('cursor-pointer');
+                        setTimeout(() => {
+                            swatch.querySelector('p').textContent = originalText;
+                        }, 1500);
+                    });
+                });
+            });
+
+            // Mobile Navigation Logic (adjusted to be below the new universal header)
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                 window.location.hash = e.target.value.substring(1);
+                 document.querySelector(e.target.value).scrollIntoView();
+            });
+            
+            // Active Nav Link Highlighting on Scroll (for both desktop sidebar and new top header)
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link'); // Sidebar links
+            const headerNavLinks = document.querySelectorAll('header nav ul li a'); // Top header links
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Handle sidebar links
+                        navLinks.forEach(link => {
+                            link.classList.remove('bg-blue-50', 'text-blue-600');
+                            if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                link.classList.add('bg-blue-50', 'text-blue-600');
+                            }
+                        });
+
+                        // Handle top header links - highlight the parent category
+                        headerNavLinks.forEach(link => {
+                            link.classList.remove('text-blue-600', 'font-extrabold'); // Reset styling
+                            if (
+                                (link.getAttribute('href') === '#introduction' && entry.target.id === 'introduction') ||
+                                (link.getAttribute('href') === '#colors' && (entry.target.id === 'colors' || entry.target.id === 'typography' || entry.target.id === 'spacing' || entry.target.id === 'effects')) ||
+                                (link.getAttribute('href') === '#components' && entry.target.id === 'components') ||
+                                (link.getAttribute('href') === '#raw-css-examples' && (entry.target.id === 'brand-variables' || entry.target.id === 'raw-css-examples'))
+                            ) {
+                                link.classList.add('text-blue-600', 'font-extrabold');
+                            }
+                        });
+
+                        // Update mobile nav dropdown
+                        mobileNav.value = `#${entry.target.id}`;
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
