@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Catalyst Content Factory</title>
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        /* Color & Style Variables */
+        :root {
+            --primary-color: #2c5282; /* Deep Blue */
+            --secondary-color: #38a169; /* Green */
+            --accent-color: #ecc94b; /* Yellow */
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --border-color: #e2e8f0;
+            --container-width: 900px;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 1rem;
+            color: #4a5568;
+        }
+        
+        .scroll-down-indicator {
+            font-weight: 600;
+            color: var(--secondary-color);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Factory Pipeline */
+        .factory-pipeline {
+            position: relative;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        /* The central connecting pipe */
+        .factory-pipeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 100%;
+            background-color: var(--border-color);
+            z-index: -1;
+        }
+
+        /* Factory Module (each step) */
+        .factory-module {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .factory-module.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .factory-module:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .module-content {
+            width: 45%;
+        }
+
+        .module-content h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .module-content p {
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        /* Interactive Visualization Area */
+        .module-viz {
+            width: 45%;
+            height: 250px;
+            background-color: white;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* The pipe connector from the central line to the module */
+        .module-viz::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 2.5%; /* 50% of the parent width's 5% gap */
+            height: 6px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+        
+        .factory-module:nth-child(odd) .module-viz::before {
+            left: -2.5%;
+        }
+        .factory-module:nth-child(even) .module-viz::before {
+            right: -2.5%;
+        }
+        
+        /* Module-specific styles and animations */
+
+        /* Step 1: Model Selection */
+        .model-card {
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .model-card:hover { transform: translateY(-5px); border-color: var(--secondary-color); }
+        .model-card.selected { background-color: #c6f6d5; border-color: var(--secondary-color); }
+        .model-card span { font-size: 2rem; }
+
+        /* Step 2: Tuning */
+        @keyframes flow-in {
+            from { transform: translateX(-150px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .doc { position: absolute; font-size: 2rem; transition: all 0.5s ease; animation: flow-in 0.5s ease-out forwards; }
+        #hopper { font-size: 4rem; color: var(--primary-color); transition: color 0.5s ease; }
+        #hopper.processing { color: var(--secondary-color); animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Step 3: Generation */
+        #prompt-input {
+            width: 80%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+        }
+        #generate-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Step 4: Refinement */
+        .content-card {
+            width: 120px;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .content-card:hover { transform: scale(1.05); }
+        .content-card.selected { border-color: var(--accent-color); box-shadow: 0 0 15px rgba(236, 201, 75, 0.5); }
+        .content-card img { width: 100%; border-radius: 0.25rem; }
+        .content-card p { font-size: 0.7rem; line-height: 1.2; margin: 0.25rem 0 0; }
+
+        /* Step 5: Deployment */
+        #api-display {
+            font-family: 'Courier New', monospace;
+            background-color: #2d3748;
+            color: #9ae6b4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            text-align: left;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        #api-display.visible { opacity: 1; }
+        .social-icon { font-size: 2.5rem; margin: 0 0.5rem; transform: scale(0); transition: transform 0.5s ease; }
+        
+        /* Final Section */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        footer h2 { color: var(--primary-color); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>The Catalyst Content Factory</h1>
+        <p>An interactive journey through our AI-powered marketing platform. Scroll down to see how ideas are transformed into complete campaigns.</p>
+        <div class="scroll-down-indicator">&darr; Scroll to Begin &darr;</div>
+    </header>
+
+    <main class="factory-pipeline">
+
+        <!-- Module 1: Model Selection -->
+        <section class="factory-module" id="module-1">
+            <div class="module-content">
+                <h2><span class="step-number">1</span>Model Selection</h2>
+                <p>The process starts at the **Reservoir**. Here, you select the foundational language and image models that will serve as the raw power for your campaign.</p>
+            </div>
+            <div class="module-viz" style="display: flex; gap: 1rem;">
+                <div class="model-card" onclick="selectModel(this)">
+                    <span>&#128221;</span><div>Language</div>
+                </div>
+                <div class="model-card" onclick="selectModel(this)">
+                    <span>&#128444;</span><div>Image</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Module 2: Model Tuning -->
+        <section class="factory-module" id="module-2">
+            <div class="module-content">
+                <h2><span class="step-number">2</span>Model Tuning</h2>
+                <p>Next, your brand documents are fed into the **Infusion Chamber**. Our Model Context Protocol analyzes your unique voice, creating a secure, custom-tuned AI expert.</p>
+            </div>
+            <div class="module-viz">
+                <div class="doc" style="left: 10%; top: 20%;">📄</div>
+                <div class="doc" style="left: 20%; top: 60%;">📄</div>
+                <div class="doc" style="left: 5%; top: 45%;">📄</div>
+                <div id="hopper" style="margin-left: 100px;">📥</div>
+            </div>
+        </section>
+
+        <!-- Module 3: Content Generation -->
+        <section class="factory-module" id="module-3">
+            <div class="module-content">
+                <h2><span class="step-number">3</span>Content Generation</h2>
+                <p>In the **Crucible**, your simple prompts are forged into content. Describe your needs, and your custom AI will generate tailored text and image options.</p>
+            </div>
+            <div class="module-viz" style="flex-direction: column; gap: 1rem;">
+                 <input type="text" id="prompt-input" placeholder="e.g., 'A healthy granola bar on a rustic table...'">
+                 <button id="generate-button">Generate</button>
+            </div>
+        </section>
+        
+        <!-- Module 4: Refinement -->
+        <section class="factory-module" id="module-4">
+            <div class="module-content">
+                <h2><span class="step-number">4</span>Refinement</h2>
+                <p>The generated assets move to the **Finishing Station**. Review the pairings, make direct edits, and select the perfect combination for your campaign.</p>
+            </div>
+            <div class="module-viz" style="gap: 0.5rem;">
+                <div class="content-card" onclick="selectFinal(this)">
+                    <img src="https://placehold.co/100x60/38a169/ffffff?text=ImageA" alt="Image A">
+                    <p>Wholesome goodness in every bite...</p>
+                </div>
+                <div class="content-card" onclick="selectFinal(this)">
+                    <img src="https://placehold.co/100x60/2c5282/ffffff?text=ImageB" alt="Image B">
+                    <p>Fuel your day the right way...</p>
+                </div>
+                <div class="content-card" onclick="selectFinal(this)">
+                    <img src="https://placehold.co/100x60/ecc94b/2d3748?text=ImageC" alt="Image C">
+                    <p>Pure ingredients, pure taste...</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Module 5: Deployment -->
+        <section class="factory-module" id="module-5">
+            <div class="module-content">
+                <h2><span class="step-number">5</span>Deployment</h2>
+                <p>Finally, at the **Distribution Hub**, your campaign is ready. Deploy your models to get a custom API and publish your content across all channels with a single click.</p>
+            </div>
+            <div class="module-viz" style="flex-direction: column; justify-content: space-around;">
+                 <div id="api-display">
+                    &gt; API Endpoint: Active<br>
+                    &gt; Status: Ready to Integrate
+                 </div>
+                 <div class="social-icons">
+                    <span class="social-icon">💻</span>
+                    <span class="social-icon">✉️</span>
+                    <span class="social-icon">📱</span>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <h2>The Factory Has Delivered.</h2>
+        <p>From a simple idea to a multi-channel campaign in minutes. That's the power of Catalyst.</p>
+    </footer>
+
+    <script>
+        // --- Animate modules on scroll ---
+        const modules = document.querySelectorAll('.factory-module');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Trigger module-specific animations
+                    runModuleAnimation(entry.target.id);
+                }
+            });
+        }, {
+            rootMargin: '0px',
+            threshold: 0.2
+        });
+
+        modules.forEach(module => {
+            observer.observe(module);
+        });
+        
+        // --- Interactive functions ---
+        function selectModel(element) {
+            element.classList.toggle('selected');
+        }
+        
+        function selectFinal(element) {
+            document.querySelectorAll('.content-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // --- Logic for timed animations within modules ---
+        function runModuleAnimation(moduleId) {
+            switch(moduleId) {
+                case 'module-2': {
+                    const hopper = document.getElementById('hopper');
+                    setTimeout(() => { hopper.classList.add('processing'); }, 1000);
+                    break;
+                }
+                case 'module-5': {
+                    setTimeout(() => {
+                        document.getElementById('api-display').classList.add('visible');
+                        const icons = document.querySelectorAll('.social-icon');
+                        icons.forEach((icon, index) => {
+                            setTimeout(() => {
+                                icon.style.transform = 'scale(1)';
+                            }, index * 200);
+                        });
+                    }, 500);
+                    break;
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
