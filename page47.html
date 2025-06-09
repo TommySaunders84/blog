@@ -1,0 +1,378 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project | Content Unit</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-color: #0a0c10;
+            --module-bg: #10141c;
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+            --linkedin-blue: #0077b5;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 { font-size: 2.5rem; font-weight: 700; }
+        header p { color: var(--text-secondary); font-size: 1.1rem; margin-top: 0.5rem; }
+        
+        .content-brief-container {
+            background-color: var(--module-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 2rem; margin-bottom: 3rem;
+        }
+        .content-brief-container h2 {
+            margin: 0 0 1.5rem 0; text-align: center;
+            font-size: 1.8rem; color: white;
+        }
+        .brief-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .brief-list dt { font-weight: 600; color: var(--accent-green); margin-bottom: 0.5rem; font-size: 1rem; }
+        .brief-list dd { margin: 0; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+
+        .core-message {
+            background-color: var(--module-bg); border: 1px dashed var(--accent-blue);
+            padding: 1.5rem; border-radius: 0.5rem; text-align: center; margin-bottom: 3rem;
+        }
+        .core-message h3 { margin: 0; font-size: 1.2rem; color: var(--accent-blue); }
+
+        .creative-intelligence-container {
+            background-color: var(--module-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 2rem; margin-bottom: 3rem;
+        }
+        .creative-intelligence-container h2 {
+            margin: 0 0 1.5rem 0; text-align: center;
+            font-size: 1.8rem; color: white;
+        }
+        .creative-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .creative-card {
+            background-color: var(--bg-color); border-radius: 0.5rem;
+            padding: 1rem; text-align: center; cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .creative-card:hover { transform: translateY(-5px); }
+        .creative-icon {
+            width: 50px; height: 50px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; margin: 0 auto 1rem;
+            font-size: 1.5rem; font-weight: 700; color: white;
+        }
+        .icon-text { background-color: #2f80ed; }
+        .icon-graphics { background-color: #f2994a; }
+        .icon-images { background-color: #eb5757; }
+        .icon-videos { background-color: #9B51E0; }
+        .icon-musicdj { background-color: #219653; }
+        .icon-music { background-color: #F2C94C; }
+        .icon-voice { background-color: #56CCF2; }
+        .creative-card h3 { margin: 0; font-size: 1rem; color: var(--text-primary); }
+
+        #content-unit-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; }
+        .content-card {
+            background-color: var(--module-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 1.5rem; display: flex; flex-direction: column;
+        }
+        
+        .content-card.blog-post { grid-column: span 12; }
+        .content-card.email-newsletter, .content-card.tweet-thread, .content-card.instagram-post { grid-column: span 4; }
+        .content-card.linkedin-carousel, .content-card.video-script { grid-column: span 6; }
+
+        .platform-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .platform-icon {
+            width: 40px; height: 40px; border-radius: 0.5rem; display: flex;
+            align-items: center; justify-content: center; font-size: 1.5rem; color: white;
+        }
+        .icon-blog { background-color: #f2994a; } .icon-email { background-color: #bb6bd9; }
+        .icon-twitter { background-color: #2f80ed; } .icon-linkedin { background-color: var(--linkedin-blue); }
+        .icon-video { background-color: #eb5757; } .icon-instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+
+        .platform-header h2 { margin: 0; font-size: 1.5rem; }
+        .content-body { flex-grow: 1; }
+        .content-body h3 { font-size: 1.2rem; color: var(--accent-green); margin-top: 0; }
+        .content-body p, .content-body li { line-height: 1.7; color: var(--text-secondary); }
+        .content-body ul { padding-left: 20px; }
+        
+        .tweet, .carousel-slide { border-left: 2px solid var(--border-color); padding-left: 1rem; margin-bottom: 1rem; }
+        .tweet:last-child, .carousel-slide:last-child { margin-bottom: 0; }
+        .video-script-scene { margin-bottom: 1rem; }
+        .video-script-scene strong { color: var(--text-primary); }
+        .ig-image { width: 100%; height: 200px; background-color: #374151; border-radius: 0.5rem; margin-bottom: 1rem; }
+
+        .gemini-action-bar {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .gemini-button {
+            width: 100%; background-color: var(--accent-blue); color: white; border: none;
+            padding: 0.6rem 1rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .gemini-button:hover { background-color: #60A5FA; }
+        .gemini-button:disabled { background-color: #374151; cursor: not-allowed; }
+
+        .ai-output {
+            margin-top: 1rem; padding: 1rem; background-color: var(--bg-color);
+            border-radius: 0.5rem; border: 1px dashed var(--accent-green);
+            color: var(--text-secondary); white-space: pre-wrap;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); display: flex;
+            justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--module-bg); padding: 2rem; border-radius: 0.75rem;
+            border: 1px solid var(--border-color); width: 90%; max-width: 600px;
+            transform: scale(0.95); transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-content h2 { margin-top: 0; }
+        .modal-body {
+            background-color: var(--bg-color); padding: 1.5rem;
+            border-radius: 0.5rem; margin-top: 1rem; color: var(--text-secondary);
+            white-space: pre-wrap; line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Content Unit: Efficiency & Speed</h1>
+            <p>Visualizing a single core message adapted for multiple platforms and content formats.</p>
+        </header>
+        
+        <section class="content-brief-container">
+            <!-- Content Brief content remains the same -->
+             <h2>Content Brief</h2>
+            <dl class="brief-list">
+                <div>
+                    <dt>The Main Idea?</dt>
+                    <dd>An AI-powered platform can dramatically accelerate the content creation process for marketing teams.</dd>
+                </div>
+                <div>
+                    <dt>What’s the Point?</dt>
+                    <dd>To demonstrate how this core efficiency benefit is versatile and can be applied across all major marketing channels and content formats.</dd>
+                </div>
+                <div>
+                    <dt>What’s the Value Proposition?</dt>
+                    <dd>Save significant time and resources, allowing marketing professionals to shift their focus from repetitive writing to high-impact strategic work.</dd>
+                </div>
+                <div>
+                    <dt>Why Does It Matter?</dt>
+                    <dd>In a competitive market, speed and strategic focus are critical advantages. This tool enables teams to execute faster and smarter.</dd>
+                </div>
+                <div>
+                    <dt>What is the Contextual Condition?</dt>
+                    <dd>This content addresses the common pain point of marketing teams being overwhelmed by content demands, which stifles their ability to plan and strategize effectively.</dd>
+                </div>
+            </dl>
+        </section>
+
+        <div class="core-message">
+            <h3 id="core-message-text">Core Message: Our AI platform generates on-brand marketing content in seconds, freeing up your team to focus on strategy.</h3>
+        </div>
+
+        <section class="creative-intelligence-container">
+            <h2>✨ Creative Intelligence</h2>
+            <div class="creative-grid">
+                <div class="creative-card" data-tool="TextFX" data-type="text" data-prompt-idea="Generate 5 alternative headlines for a blog post about AI-powered content efficiency.">
+                    <div class="creative-icon icon-text">T</div>
+                    <h3>Text → TextFX</h3>
+                </div>
+                <div class="creative-card" data-tool="Whisk" data-type="graphics" data-prompt-idea="Create a prompt for a simple infographic that visualizes the time saved using AI for content creation versus manual methods.">
+                    <div class="creative-icon icon-graphics">G</div>
+                    <h3>Graphics → Whisk</h3>
+                </div>
+                <div class="creative-card" data-tool="ImageFX" data-type="images" data-prompt-idea="Create a prompt for a photorealistic image showing a relaxed, collaborative marketing team brainstorming at a whiteboard, with abstract data streams floating in the air.">
+                    <div class="creative-icon icon-images">I</div>
+                    <h3>Images → ImageFX</h3>
+                </div>
+                <div class="creative-card" data-tool="Flow" data-type="videos" data-prompt-idea="Create a prompt for a short, dynamic 15-second video. Start with a shot of a stressed marketer, then transition to a clean UI generating content, and end on a shot of the successful campaign results.">
+                    <div class="creative-icon icon-videos">V</div>
+                    <h3>Videos → Flow</h3>
+                </div>
+                 <div class="creative-card" data-tool="MusicFX DJ" data-type="musicdj" data-prompt-idea="Create a prompt for a continuous DJ set that starts with a tense, busy mood and gradually transitions to an upbeat, inspiring, and futuristic electronic track.">
+                    <div class="creative-icon icon-musicdj">DJ</div>
+                    <h3>MusicDJ → MusicFX DJ</h3>
+                </div>
+                <div class="creative-card" data-tool="MusicFX" data-type="music" data-prompt-idea="Create a prompt for a 30-second background music track for a product demo video. The track should be inspiring, slightly futuristic, with a positive, electronic feel.">
+                    <div class="creative-icon icon-music">🎵</div>
+                    <h3>Music → MusicFX</h3>
+                </div>
+                <div class="creative-card" data-tool="VoiceFX" data-type="voice" data-prompt-idea="Create a prompt for a clear, confident, and professional voiceover for a short product video script about AI efficiency.">
+                    <div class="creative-icon icon-voice">🗣️</div>
+                    <h3>Voice → VoiceFX</h3>
+                </div>
+            </div>
+        </section>
+
+        <main id="content-unit-grid">
+            <!-- Cards will be populated by JS -->
+        </main>
+    </div>
+
+    <!-- AI Modal -->
+    <div class="modal-overlay" id="ai-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Creative Idea Generation</h2>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="gemini-action-bar" style="border-top: none; padding-top: 0; margin-top: 1rem;">
+                <button class="gemini-button" style="width: auto;" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Gemini API Call ---
+        async function callGemini(prompt, button, outputElement) {
+            button.disabled = true;
+            button.textContent = 'Generating...';
+            outputElement.innerHTML = `<p>✨ AI is generating a new version...</p>`;
+            
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas provides this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const result = await response.json();
+                const text = result.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+                outputElement.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                outputElement.innerHTML = `<p>Error: ${error.message}</p>`;
+            } finally {
+                button.disabled = false;
+                button.textContent = '✨ Generate with AI';
+            }
+        }
+        
+        // --- Content Card Data and Generation ---
+        const contentTemplates = [
+            { type: 'Blog Post', gridClass: 'blog-post', icon: '📝', iconClass: 'icon-blog', content: `<h3>Stop Wasting Hours on Copywriting. Here's How AI Can Help.</h3><p>In today's fast-paced marketing landscape, speed is everything. Yet, many teams find themselves bogged down by one of the most time-consuming tasks: content creation. Writing blog posts, social media updates, and email copy from scratch is a significant drain on resources—resources that could be better spent on high-level strategy and campaign analysis.</p><p>What if you could reclaim those hours? Generative AI is no longer a futuristic concept; it's a practical tool that can revolutionize your workflow. Our Prompt Engineering Project empowers your team to generate high-quality, on-brand content in seconds...</p>` },
+            { type: 'Email Newsletter', gridClass: 'email-newsletter', icon: '✉️', iconClass: 'icon-email', content: `<h3>Subject: Free up your week. Let AI handle the content.</h3><p>Hi [Name],</p><p>Are you spending more time writing than strategizing? It's a common problem for marketing leaders.</p><p>The Prompt Engineering Project is built to solve this. Our secure AI learns your brand voice to instantly generate:</p><ul><li>Blog Posts</li><li>Social Media Updates</li><li>Ad Copy</li></ul><p>Imagine what your team could achieve with that time back. <br><br><strong>Ready to see how?</strong></p><p>-> Get a personalized demo.</p>` },
+            { type: 'Tweet Thread', gridClass: 'tweet-thread', icon: '🐦', iconClass: 'icon-twitter', content: `<div class="tweet"><p>Marketing teams are drowning in content tasks. The average blog post takes 4+ hours to write. That's half a day that could be spent on strategy. (1/3)</p></div><div class="tweet"><p>We're changing that. Our AI platform, The Prompt Engineering Project, generates on-brand drafts in seconds. Not hours. (2/3)</p></div><div class="tweet"><p>Free up your team to do what they do best: think strategically. Reclaim your time and supercharge your content engine. #MarketingTwitter #AI #ContentMarketing (3/3)</p></div>` },
+            { type: 'Instagram Post', gridClass: 'instagram-post', icon: '📸', iconClass: 'icon-instagram', content: `<div class="ig-image"></div><p><strong>[Image: A striking graphic that says "From Prompt to Published in 60 Seconds."]</strong></p><p>Tired of the content grind? 😴 Your marketing team has bigger fish to fry than writing copy from scratch. </p><p>Our AI platform learns your brand voice to create high-quality drafts in an instant. Free up your team for what really matters: strategy.</p><p>#AIinMarketing #ContentCreation #MarTech #MarketingStrategy #WorkSmarter</p>` },
+            { type: 'LinkedIn Carousel', gridClass: 'linkedin-carousel', icon: 'in', iconClass: 'icon-linkedin', content: `<div class="carousel-slide"><p><strong>Slide 1 (Hook):</strong> Is your marketing team buried in content tasks?</p></div><div class="carousel-slide"><p><strong>Slide 2 (Problem):</strong> Every hour spent writing boilerplate copy is an hour lost on high-level strategy and revenue-driving activities.</p></div><div class="carousel-slide"><p><strong>Slide 3 (Solution):</strong> Introducing The Prompt Engineering Project—an AI platform that generates on-brand content in seconds.</p></div><div class="carousel-slide"><p><strong>Slide 4 (Benefit):</strong> Empower your team to shift their focus from syntax to strategy. Drive real business results.</p></div><div class="carousel-slide"><p><strong>Slide 5 (CTA):</strong> Swipe up to learn how leaders at [Company X] are reclaiming their team's time. #AI #MarketingAutomation #ContentStrategy</p></div>` },
+            { type: 'Video Script', gridClass: 'video-script', icon: '▶️', iconClass: 'icon-video', content: `<h3>Title: Your Marketing Team's New Superpower</h3><div class="video-script-scene"><p><strong>(SCENE 1 - FAST CUTS):</strong> A marketer looking stressed, staring at a blank screen. A calendar overflowing with "Content Due" notifications. A clock spinning rapidly.</p><p><strong>VOICEOVER:</strong> Feeling the pressure to create more content, faster?</p></div><div class="video-script-scene"><p><strong>(SCENE 2 - CLEAN UI):</strong> A cursor types a simple prompt into The Prompt Engineering Project interface. Instantly, a full blog post appears.</p><p><strong>VOICEOVER:</strong> Stop writing. Start prompting.</p></div><div class="video-script-scene"><p><strong>(SCENE 3 - TEAM COLLABORATING):</strong> The same marketer, now relaxed, brainstorming with their team at a whiteboard.</p><p><strong>VOICEOVER & ON-SCREEN TEXT:</strong> The Prompt Engineering Project. More strategy, less syntax.</p></div>` }
+        ];
+
+        const contentGrid = document.getElementById('content-unit-grid');
+        contentTemplates.forEach((template, i) => {
+            const card = document.createElement('div');
+            card.className = `content-card ${template.gridClass}`;
+            card.innerHTML = `
+                <div class="platform-header">
+                    <div class="platform-icon ${template.iconClass}">${template.icon}</div>
+                    <h2>${template.type}</h2>
+                </div>
+                <div class="content-body">${template.content}</div>
+                <div class="gemini-action-bar">
+                    <button class="gemini-button" id="gen-btn-${i}">✨ Generate with AI</button>
+                    <div class="ai-output" id="output-${i}" style="display: none;"></div>
+                </div>
+            `;
+            contentGrid.appendChild(card);
+        });
+        
+        // Add event listeners for content generation
+        contentTemplates.forEach((template, i) => {
+            const button = document.getElementById(`gen-btn-${i}`);
+            const outputEl = document.getElementById(`output-${i}`);
+            const coreMessage = document.getElementById('core-message-text').innerText;
+            
+            button.addEventListener('click', () => {
+                outputEl.style.display = 'block';
+                const prompt = `You are a creative marketing copywriter. Your task is to rewrite a core message for a specific content format.
+
+                **Core Message:** "${coreMessage}"
+
+                **Target Format:** ${template.type}
+
+                Please generate a new, creative version of the content suitable for this format. Provide only the rewritten content.`;
+                callGemini(prompt, button, outputEl);
+            });
+        });
+
+        // --- Creative Intelligence Modal Logic ---
+        const creativeCards = document.querySelectorAll('.creative-card');
+        const modal = document.getElementById('ai-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        creativeCards.forEach(card => {
+            card.addEventListener('click', async () => {
+                const tool = card.dataset.tool;
+                const promptIdea = card.dataset.promptIdea;
+                const coreMessage = document.getElementById('core-message-text').innerText;
+                
+                modalTitle.textContent = `✨ AI Ideas for ${tool}`;
+                modalBody.textContent = 'Generating...';
+                modal.classList.add('visible');
+
+                const finalPrompt = `You are a creative director. For the core marketing message: "${coreMessage}", please generate creative ideas for the following tool.
+                
+                **Tool:** ${tool}
+                **Task:** ${promptIdea}
+                
+                Provide 3-4 distinct and actionable ideas or prompts.`;
+                
+                let chatHistory = [{ role: "user", parts: [{ text: finalPrompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas provides this
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                    const result = await response.json();
+                    modalBody.textContent = result.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+                } catch (error) {
+                    modalBody.textContent = `Error: ${error.message}`;
+                }
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('visible');
+        }
+
+    </script>
+</body>
+</html>
+
+```
