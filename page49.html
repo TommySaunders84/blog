@@ -1,0 +1,1744 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Libraries | The Prompt Engineering Project</title>
+    <meta name="description" content="Explore our pre-built and customizable Prompt Library frameworks designed to transform expert knowledge into strategic AI operations for specific business functions.">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #9333ea;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .cta-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .cta-button-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            padding: 80px 0;
+            background: linear-gradient(120deg, #f9fafb, #e2e8f0);
+            text-align: center;
+        }
+        
+        .page-header-descriptor {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            margin-bottom: 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .breadcrumbs-list {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumbs-list li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs-list li:not(:last-child)::after {
+            content: '/';
+            margin: 0 10px;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs-list a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs-list a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs-list li:last-child a {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding-right: 40px;
+        }
+        
+        .section-descriptor {
+            background-color: rgba(147, 51, 234, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        h2 {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .section-content p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 1.125rem;
+        }
+        
+        .section-image {
+            position: relative;
+        }
+        
+        .section-image img {
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            height: auto;
+        }
+        
+        .featured-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        .new-tag {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .popular-tag {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .libraries-section {
+            background-color: white;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-button {
+            background-color: var(--light);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .libraries-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .library-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .library-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .library-image {
+            height: 200px;
+            background-color: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .library-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .library-category {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .library-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .library-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .structure-section {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .structure-section .section-descriptor {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .structure-section h2 {
+            color: white;
+        }
+        
+        .structure-section p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .structure-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .structure-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .structure-icon {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .structure-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .structure-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+        }
+        
+        .benefits-section {
+            background-color: var(--light);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .benefit-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            height: 100%;
+        }
+        
+        .benefit-icon {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .benefit-card p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+        
+        .customization-section {
+            background-color: white;
+        }
+        
+        .customization-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .customization-card {
+            border: 1px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .customization-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .customization-level {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: var(--light);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .level-basic {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .level-advanced {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .level-enterprise {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .customization-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .customization-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .use-cases-section {
+            background-color: var(--light);
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .use-case {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .use-case-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .use-case-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .use-case-content p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+        
+        .testimonial-section {
+            background-color: white;
+        }
+        
+        .testimonial-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+            background-color: var(--gray-light);
+            overflow: hidden;
+        }
+        
+        .author-info h4 {
+            font-size: 1.125rem;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .library-detail {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .library-detail h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .detail-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 20px;
+        }
+        
+        .detail-tab {
+            padding: 10px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--gray);
+            position: relative;
+        }
+        
+        .detail-tab.active {
+            color: var(--primary);
+        }
+        
+        .detail-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .detail-content {
+            display: none;
+        }
+        
+        .detail-content.active {
+            display: block;
+        }
+        
+        .detail-features {
+            margin-top: 20px;
+        }
+        
+        .detail-feature {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .detail-feature-icon {
+            color: var(--primary);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .cta-section {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 40px;
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .cta-white {
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .cta-transparent {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+        
+        /* Additional styles */
+        .faq-section {
+            background-color: var(--light);
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--secondary);
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question:hover {
+            background-color: var(--light);
+        }
+        
+        .faq-question svg {
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active svg {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .faq-question.active + .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        
+        .search-bar {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .prompt-features {
+            margin: 20px 0;
+        }
+        
+        .prompt-feature {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-feature-icon {
+            color: var(--primary);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 1024px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section-content {
+                padding-right: 0;
+            }
+            
+            .libraries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .structure-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .customization-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .use-case-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .libraries-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .structure-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .filters {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">The Prompt Engineering Project</div>
+                <div class="nav-links">
+                    <a href="#">Solutions</a>
+                    <a href="#">Our Approach</a>
+                    <a href="#" class="active">Prompt Libraries</a>
+                    <a href="#">Resources</a>
+                    <a href="#">About Us</a>
+                </div>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <ul class="breadcrumbs-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Prompt Libraries</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-descriptor">Prompt Libraries</div>
+            <h1>Pre-Built & Customizable AI Frameworks for Strategic Operations</h1>
+            <p>Our Prompt Libraries provide systematically architected frameworks that transform expert knowledge into consistent, high-quality AI outputs for specific business functions.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-content">
+                    <div class="section-descriptor">What Are Prompt Libraries?</div>
+                    <h2>Far More Than Simple Collections of Prompts</h2>
+                    <p>At The Prompt Engineering Project, <strong>Prompt Libraries</strong> are a cornerstone of our methodology for transforming how organizations achieve strategic, consistent, and scalable results with Artificial Intelligence.</p>
+                    
+                    <p>They are far more than simple collections of prompts; they are systematically architected frameworks of interconnected <strong>Column Prompts</strong>, deeply integrated with your organization's unique knowledge and designed to drive specific, high-value <strong>Intelligent Operations</strong>.</p>
+                    
+                    <div class="prompt-features">
+                        <div class="prompt-feature">
+                            <div class="prompt-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Embed Expertise</strong> — Transform your unique human knowledge and strategic intent into clear, actionable instructions for AI
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-feature">
+                            <div class="prompt-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Ensure Consistency & Quality</strong> — Drive reliable and high-quality AI outputs by standardizing the communication process
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-feature">
+                            <div class="prompt-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Enhance Efficiency & Scalability</strong> — Move beyond ad-hoc, individual prompting efforts to a systematic approach that can be scaled
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-feature">
+                            <div class="prompt-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Promote Strategic Alignment</strong> — Ensure that AI-driven activities are directly tied to and support your core business objectives
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-image">
+                    <img src="/api/placeholder/550/400" alt="Prompt Library Structure">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="libraries-section">
+        <div class="container">
+            <div class="section-descriptor">Library Catalog</div>
+            <h2>Pre-Packaged Prompt Libraries for Key Business Functions</h2>
+            <p>We offer a selection of pre-developed (but fully customizable) Prompt Libraries designed for common business functions and specific industry needs. These libraries provide a robust starting point that can be adapted to your unique organizational context.</p>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search libraries by function, industry, or keyword...">
+                <button class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                </button>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-button active">All Libraries</button>
+                <button class="filter-button">Marketing & Content</button>
+                <button class="filter-button">Sales & Revenue</button>
+                <button class="filter-button">Customer Experience</button>
+                <button class="filter-button">Product Development</button>
+                <button class="filter-button">Knowledge Management</button>
+                <button class="filter-button">Operations</button>
+            </div>
+            
+            <div class="libraries-grid">
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Content Generation">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Marketing & Content</span>
+                        <h3>Content Generation Library <span class="featured-tag popular-tag">Popular</span></h3>
+                        <p>Transform content creation from creative guesswork to strategic, on-brand messaging with systematically structured prompts that ensure consistency across all channels while maintaining audience relevance.</p>
+                        <a href="#content-generation" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Sales Enablement">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Sales & Revenue</span>
+                        <h3>Sales Enablement Library</h3>
+                        <p>Equip sales teams with intelligence-driven conversation tools that translate product features into compelling customer benefits, handle objections effectively, and drive consistent messaging across the sales organization.</p>
+                        <a href="#sales-enablement" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Knowledge Management">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Knowledge Management</span>
+                        <h3>Knowledge Synthesis Library <span class="featured-tag new-tag">New</span></h3>
+                        <p>Transform organizational knowledge into actionable intelligence with frameworks for synthesis, analysis, and distribution that ensure expertise is preserved and operationalized across your entire organization.</p>
+                        <a href="#knowledge-synthesis" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Customer Journey">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Customer Experience</span>
+                        <h3>Customer Journey Library</h3>
+                        <p>Design cohesive customer journeys with libraries that optimize touchpoints from awareness through loyalty, ensuring consistent messaging, personalized experiences, and effective conversion at every stage.</p>
+                        <a href="#customer-journey" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Product Development">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Product Development</span>
+                        <h3>Product Innovation Library</h3>
+                        <p>Accelerate innovation cycles with prompt libraries that structure ideation, feedback analysis, requirements generation, and documentation processes while maintaining strategic alignment with market needs.</p>
+                        <a href="#product-innovation" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Operations & Process">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Operations</span>
+                        <h3>Process Automation Library <span class="featured-tag new-tag">New</span></h3>
+                        <p>Streamline workflows with libraries that automate complex operational tasks while maintaining human oversight, ensuring compliance with organizational policies and strategic objectives through structured AI operations.</p>
+                        <a href="#process-automation" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Brand Management">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Marketing & Content</span>
+                        <h3>Brand Management Library</h3>
+                        <p>Maintain brand consistency across all touchpoints with structured prompts that ensure messaging, visual elements, and customer interactions adhere to brand guidelines while adapting to different contexts and channels.</p>
+                        <a href="#brand-management" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Customer Support">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Customer Experience</span>
+                        <h3>Customer Support Library</h3>
+                        <p>Enhance customer support interactions with structured prompts that ensure consistent, accurate, and empathetic responses to customer inquiries, reducing resolution time while improving satisfaction and loyalty.</p>
+                        <a href="#customer-support" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="library-card">
+                    <div class="library-image">
+                        <img src="/api/placeholder/400/200" alt="Market Analysis">
+                    </div>
+                    <div class="library-content">
+                        <span class="library-category">Strategy & Research</span>
+                        <h3>Market Analysis Library</h3>
+                        <p>Generate comprehensive market insights with structured prompts that systematically analyze competitors, industry trends, and customer preferences, enabling data-driven strategic decisions and competitive positioning.</p>
+                        <a href="#market-analysis" class="cta-button">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="structure-section">
+        <div class="container">
+            <div class="section-descriptor">Library Structure</div>
+            <h2>The Anatomy of Our Prompt Libraries</h2>
+            <p>Our Prompt Libraries are systematically architectured frameworks with multiple interconnected components that work together to ensure consistent, high-quality AI outputs.</p>
+            
+            <div class="structure-cards">
+                <div class="structure-card">
+                    <div class="structure-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <h3>Column Prompts</h3>
+                    <p>The core operational units within each library - systematically structured, standardized commands that direct AI models with precision. Each Column Prompt follows a defined framework to ensure consistency in how AI is instructed across the organization.</p>
+                </div>
+                
+                <div class="structure-card">
+                    <div class="structure-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                    <h3>Knowledge Base Integration</h3>
+                    <p>Explicit references to specific sections of your Knowledge Base Pages, grounding every AI action in verified organizational knowledge. This ensures contextual accuracy and strategic alignment with your unique expertise and objectives.</p>
+                </div>
+                
+                <div class="structure-card">
+                    <div class="structure-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-output"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M2 15h10"></path><path d="m5 12-3 3 3 3"></path></svg>
+                    </div>
+                    <h3>Output Specifications</h3>
+                    <p>Precise definitions of content or data structures generated by each Column Prompt, enabling seamless integration with downstream systems and workflows. This ensures AI outputs are immediately actionable without significant rework.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content-generation" class="benefits-section">
+        <div class="container">
+            <div class="section-descriptor">Library Highlight</div>
+            <h2>Content Generation Library</h2>
+            <p>Transform content creation from creative guesswork to strategic, on-brand messaging with systematically structured prompts that ensure consistency across all channels.</p>
+            
+            <div class="library-detail">
+                <div class="detail-tabs">
+                    <div class="detail-tab active">Overview</div>
+                    <div class="detail-tab">Key Components</div>
+                    <div class="detail-tab">Use Cases</div>
+                    <div class="detail-tab">Customization</div>
+                </div>
+                
+                <div class="detail-content active">
+                    <p>The Content Generation Library provides a comprehensive framework for transforming how your organization creates, maintains, and distributes content across all channels. Unlike simple prompts or templates, this library contains systematically structured Column Prompts that integrate your brand voice, strategic messaging, audience insights, and content strategy directly into AI instructions.</p>
+                    
+                    <p>This library enables you to move beyond ad-hoc prompting to create a scalable content engine that ensures consistency, strategic alignment, and high quality across all content outputs - from social media posts and emails to blog articles and website copy.</p>
+                    
+                    <div class="detail-features">
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Strategic Integration</strong> — Column Prompts reference your content strategy, brand guidelines, and audience insights to ensure strategic alignment
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Channel Optimization</strong> — Structured prompts for adapting content to specific channels while maintaining consistent messaging
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Scalable Workflow</strong> — Framework enables consistent quality even when multiple team members are generating content
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Integrated Measurement</strong> — Built-in feedback loops for continuous improvement based on content performance
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-content">
+                    <p>The Content Generation Library contains several interconnected components that work together to create a comprehensive content creation system:</p>
+                    
+                    <div class="detail-features">
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            </div>
+                            <div>
+                                <strong>Content Strategy Column Prompts</strong> — Generate content plans, topic clusters, and editorial calendars aligned with business objectives
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            </div>
+                            <div>
+                                <strong>Channel-Specific Content Prompts</strong> — Generate optimized content for social media, email, blogs, website, and more
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            </div>
+                            <div>
+                                <strong>Brand Voice Integration Prompts</strong> — Ensure all content consistently reflects your brand personality and tone
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            </div>
+                            <div>
+                                <strong>Audience Targeting Prompts</strong> — Customize content for specific segments while maintaining strategic messaging
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            </div>
+                            <div>
+                                <strong>Content Review & Optimization Prompts</strong> — Refine and improve content based on performance data and strategic priorities
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-content">
+                    <p>The Content Generation Library can be applied to various content creation and management scenarios:</p>
+                    
+                    <div class="detail-features">
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Multi-Channel Content Campaigns</strong> — Create cohesive content across multiple platforms while optimizing for each channel
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Product Launches</strong> — Generate consistent messaging across all touchpoints during critical product introductions
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Scaled Production</strong> — Maintain consistent quality when rapidly increasing content volume or working with multiple creators
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Personalization at Scale</strong> — Create segment-specific variations while ensuring strategic messaging consistency
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>
+                                <strong>Brand Refreshes</strong> — Efficiently update content across all platforms when evolving brand messaging or positioning
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-content">
+                    <p>The Content Generation Library can be customized to meet your specific organizational needs:</p>
+                    
+                    <div class="detail-features">
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <strong>Brand Voice Integration</strong> — We'll adapt the library to incorporate your specific brand voice, tone, and messaging guidelines
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <strong>Channel Expansion</strong> — Add prompts for additional channels or platforms specific to your marketing strategy
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <strong>Integration Adapters</strong> — Create connections with your specific content management and marketing automation systems
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <strong>Industry-Specific Adaptations</strong> — Tailor the library to the unique requirements of your specific industry or sector
+                            </div>
+                        </div>
+                        
+                        <div class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <strong>Workflow Integration</strong> — Adapt the library to fit your specific content creation and approval workflows
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "The Content Generation Library has completely transformed how our marketing team produces content. We've reduced content creation time by 65% while maintaining perfect brand consistency across all channels. The systematic approach to prompt engineering ensures that every piece of content aligns with our strategic objectives, regardless of who on the team is creating it. It's given us a genuine competitive advantage in how we leverage our expertise at scale."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="/api/placeholder/60/60" alt="Sarah Johnson">
+                    </div>
+                    <div class="author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>VP of Marketing, Enterprise Solutions Inc.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="customization-section">
+        <div class="container">
+            <div class="section-descriptor">Implementation Options</div>
+            <h2>Flexible Customization Approaches</h2>
+            <p>We offer multiple options for implementing and customizing our Prompt Libraries to meet your specific organizational needs, resources, and timeline.</p>
+            
+            <div class="customization-grid">
+                <div class="customization-card">
+                    <div class="customization-level level-basic">Standard</div>
+                    <h3>Pre-Built Library</h3>
+                    <p>Access our pre-built Prompt Libraries with basic customization options. Ideal for organizations looking to quickly implement proven prompt frameworks with minimal adaptation required.</p>
+                    <ul class="detail-features">
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Pre-developed Column Prompts</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Self-implementation guidance</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Basic customization options</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Documentation and support</div>
+                        </li>
+                    </ul>
+                    <p><strong>From $5,000</strong> per library</p>
+                    <a href="#" class="cta-button">Get Started</a>
+                </div>
+                
+                <div class="customization-card">
+                    <div class="customization-level level-advanced">Advanced</div>
+                    <h3>Custom Implementation</h3>
+                    <p>A collaborative approach where we work with your team to tailor our Prompt Libraries to your specific organizational context, knowledge base, and strategic objectives.</p>
+                    <ul class="detail-features">
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Tailored Column Prompt development</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Knowledge Base architecture design</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Full implementation support</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Training and enablement</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>90-day optimization period</div>
+                        </li>
+                    </ul>
+                    <p><strong>From $25,000</strong> per implementation</p>
+                    <a href="#" class="cta-button">Request Quote</a>
+                </div>
+                
+                <div class="customization-card">
+                    <div class="customization-level level-enterprise">Enterprise</div>
+                    <h3>Enterprise Solution</h3>
+                    <p>A comprehensive approach for organizations seeking to implement multiple Prompt Libraries and integrate them into their existing systems, workflows, and AI infrastructure.</p>
+                    <ul class="detail-features">
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Enterprise-wide implementation</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Multiple Prompt Libraries</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Advanced system integration</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Custom Column Prompt development</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Ongoing optimization and support</div>
+                        </li>
+                        <li class="detail-feature">
+                            <div class="detail-feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Executive strategy consulting</div>
+                        </li>
+                    </ul>
+                    <p><strong>Custom pricing</strong> based on requirements</p>
+                    <a href="#" class="cta-button">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-descriptor">Common Questions</div>
+            <h2>Frequently Asked Questions</h2>
+            <p>Get answers to common questions about our Prompt Libraries and implementation process.</p>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How are Prompt Libraries different from regular prompts or templates?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Unlike simple prompts or templates, our Prompt Libraries are systematically architected frameworks of interconnected Column Prompts that are deeply integrated with your organization's unique knowledge. They don't just provide instructions for AI models - they establish structured communication channels between your strategic intent and AI execution, ensuring consistency, alignment, and quality across all AI outputs.</p>
+                    <p>Each Column Prompt explicitly references specific sections of your Knowledge Base, grounding AI actions in verified organizational knowledge and ensuring outputs meet your exact requirements. This systematic approach enables scalable, consistent AI operations that ad-hoc prompting cannot achieve.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How much customization is required for implementation?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p>The level of customization depends on your specific organizational needs and the implementation approach you choose. Our pre-built libraries provide a robust starting point that can be implemented with minimal adaptation for organizations looking to get started quickly.</p>
+                    <p>For more tailored implementations, we work collaboratively to adapt the libraries to your specific organizational context, knowledge base, and strategic objectives. This can include integrating your brand voice, adapting to industry-specific requirements, connecting with your existing systems, and aligning with your specific workflows.</p>
+                    <p>The Enterprise Solution offers the highest level of customization, with custom Column Prompt development, advanced system integration, and ongoing optimization to create a comprehensive AI implementation across your organization.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What technical infrastructure or AI models are required?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Our Prompt Libraries are designed to work with a wide range of AI models and technical infrastructures. They can be implemented with commercially available large language models (LLMs), including OpenAI's GPT models, Anthropic's Claude, and other enterprise-grade alternatives.</p>
+                    <p>The implementation can be adapted to your existing technical infrastructure, whether you're using direct API access to these models, have implemented a retrieval-augmented generation (RAG) system, or are using enterprise AI platforms. We can provide guidance on the most appropriate technical setup based on your specific requirements and existing infrastructure.</p>
+                    <p>For organizations with advanced AI infrastructure or specific security requirements, we can design implementations that accommodate these needs, including on-premises deployments, specialized model configurations, or integration with existing AI governance frameworks.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do you measure success and ROI?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p>We establish clear metrics and measurement frameworks tailored to your specific objectives and use cases. Common success metrics include:</p>
+                    <ul>
+                        <li><strong>Efficiency Gains:</strong> Reduced time to generate content or complete processes (typically 40-70% reduction)</li>
+                        <li><strong>Quality Improvements:</strong> Decrease in revisions, errors, or inconsistencies (typically 60-80% reduction)</li>
+                        <li><strong>Scale Improvements:</strong> Increased output volume without proportional resource increases (typically 3-5x improvement)</li>
+                        <li><strong>Strategic Alignment:</strong> Higher consistency with business objectives and brand guidelines</li>
+                        <li><strong>User Adoption:</strong> Team member satisfaction and usage rates</li>
+                    </ul>
+                    <p>Our implementation process includes establishing baseline measurements and ongoing monitoring to track improvements over time. We can also help you calculate direct ROI based on time savings, quality improvements, and increased output capacity relative to your investment.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long does implementation typically take?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Implementation timelines vary based on the complexity of your requirements and the approach you choose:</p>
+                    <ul>
+                        <li><strong>Pre-Built Library:</strong> Can be implemented in as little as 2-4 weeks, including basic customization and team training</li>
+                        <li><strong>Custom Implementation:</strong> Typically takes 6-12 weeks, including knowledge discovery, library customization, system integration, and team enablement</li>
+                        <li><strong>Enterprise Solution:</strong> Usually requires 3-6 months for comprehensive implementation across multiple libraries and systems</li>
+                    </ul>
+                    <p>We work closely with your team to develop a realistic implementation timeline based on your specific needs, resources, and priorities. Our phased approach allows for incremental value delivery throughout the implementation process.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your AI Implementation?</h2>
+            <p>Discover how our Prompt Libraries can help your organization bridge the gap between AI potential and business value with systematic frameworks designed for your specific needs.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-white">Schedule a Consultation</a>
+                <a href="#demo" class="cta-transparent">Request a Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">The Prompt Engineering Project</div>
+                    <p>Transforming how organizations implement AI through systematically architected Prompt Libraries and knowledge-driven operations.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Solutions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Prompt Libraries</a></li>
+                        <li><a href="#">Column Prompts</a></li>
+                        <li><a href="#">Knowledge Integration</a></li>
+                        <li><a href="#">System Implementation</a></li>
+                        <li><a href="#">Training & Enablement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Whitepapers</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 The Prompt Engineering Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple tab functionality for library detail
+        document.addEventListener('DOMContentLoaded', function() {
+            const detailTabs = document.querySelectorAll('.detail-tab');
+            const detailContents = document.querySelectorAll('.detail-content');
+            
+            detailTabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    detailTabs.forEach(t => t.classList.remove('active'));
+                    detailContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    detailContents[index].classList.add('active');
+                });
+            });
+            
+            // FAQ accordion functionality
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    question.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+```
