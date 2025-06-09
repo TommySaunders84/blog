@@ -1,0 +1,1459 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Identity Prompt Library | The Prompt Engineering Project</title>
+    <meta name="description" content="Transform your brand messaging with our Company Identity Prompt Library. A comprehensive Notion template with 20+ AI-driven prompts to articulate your company's core identity and streamline brand messaging.">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #9333ea;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --discount: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .cta-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .cta-button-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .breadcrumbs {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .breadcrumbs-list {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumbs-list li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumbs-list li:not(:last-child)::after {
+            content: '/';
+            margin: 0 10px;
+            color: var(--gray);
+        }
+        
+        .breadcrumbs-list a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumbs-list a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs-list li:last-child a {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .product-hero {
+            padding: 100px 0 60px;
+            background: linear-gradient(120deg, #f9fafb, #e2e8f0);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .product-badge {
+            display: inline-block;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+        }
+        
+        .product-title {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .product-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .product-image {
+            position: relative;
+            text-align: center;
+        }
+        
+        .product-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .price-tag {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .price-current {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .price-original {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--gray);
+            text-decoration: line-through;
+            margin-left: 15px;
+        }
+        
+        .price-save {
+            display: inline-block;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--discount);
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 6px;
+            margin-left: 15px;
+            font-size: 0.875rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .buy-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+        
+        .buy-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .demo-button {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .demo-button:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .product-benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .benefit-icon {
+            color: var(--success);
+        }
+        
+        .features-section {
+            background-color: white;
+        }
+        
+        .section-title {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--secondary);
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 50px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-icon {
+            background-color: rgba(37, 99, 235, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .feature-description {
+            color: var(--gray);
+        }
+        
+        .prompts-section {
+            background-color: var(--light);
+        }
+        
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .prompt-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .prompt-number {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 0.875rem;
+        }
+        
+        .prompt-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+        
+        .prompt-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .prompt-description {
+            color: var(--gray);
+            flex-grow: 1;
+        }
+        
+        .how-it-works-section {
+            background-color: white;
+        }
+        
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 54px;
+            left: 24px;
+            width: 2px;
+            height: calc(100% + 30px);
+            background-color: var(--gray-light);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-right: 30px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .step-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .pricing-section {
+            background-color: var(--light);
+        }
+        
+        .pricing-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .pricing-header {
+            background-color: var(--primary);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+        
+        .pricing-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-subtitle {
+            opacity: 0.9;
+            font-size: 1.125rem;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .pricing-original {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .pricing-save {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .pricing-content {
+            padding: 30px;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-feature {
+            padding: 10px 0;
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .pricing-feature:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-check {
+            color: var(--success);
+            margin-right: 15px;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        
+        .pricing-text {
+            color: var(--gray);
+        }
+        
+        .pricing-cta {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .testimonial-section {
+            background-color: white;
+        }
+        
+        .testimonial-card {
+            max-width: 800px;
+            margin: 50px auto 0;
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .testimonial-quote {
+            position: absolute;
+            top: -20px;
+            left: 40px;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.2;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: var(--gray-light);
+            overflow: hidden;
+        }
+        
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .author-title {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .faq-section {
+            background-color: var(--light);
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: white;
+        }
+        
+        .faq-question {
+            padding: 20px 30px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question h3 {
+            font-size: 1.125rem;
+            color: var(--secondary);
+        }
+        
+        .faq-arrow {
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .faq-question.active + .faq-answer {
+            padding: 0 30px 20px;
+            max-height: 300px;
+        }
+        
+        .faq-answer p {
+            color: var(--gray);
+        }
+        
+        .cta-section {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .cta-primary {
+            background-color: white;
+            color: var(--primary);
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cta-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-heading {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+        
+        .bundle-banner {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .bundle-text {
+            flex-grow: 1;
+        }
+        
+        .bundle-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .bundle-cta {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+        
+        .bundle-cta:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .prompts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-title {
+                font-size: 2.25rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bundle-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .bundle-cta {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">The Prompt Engineering Project</div>
+                <div class="nav-links">
+                    <a href="#">Solutions</a>
+                    <a href="#">Our Approach</a>
+                    <a href="#">Prompt Libraries</a>
+                    <a href="#">Resources</a>
+                    <a href="#">About Us</a>
+                </div>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <ul class="breadcrumbs-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Prompt Libraries</a></li>
+                <li><a href="#">Company Identity Prompt Library</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="product-hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div>
+                    <div class="product-badge">Notion Template</div>
+                    <h1 class="product-title">Company Identity Prompt Library</h1>
+                    <p class="product-subtitle">Your blueprint for continuous brand evolution. From early-stage positioning to long-term market leadership, these prompts become your brand's voice of consistency.</p>
+                    
+                    <div class="price-tag">
+                        <div class="price-current">$23.99</div>
+                        <div class="price-original">$43.68</div>
+                        <div class="price-save">Save 45%</div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="#buy" class="buy-button">BUY NOW →</a>
+                        <a href="#demo" class="demo-button">View Demo</a>
+                    </div>
+                    
+                    <div class="product-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Instant Download</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>20+ Professionally Crafted Prompts</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Custom AI Auto-Fill</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Auto-Update On Page Edits</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div>Save Hundreds of Hours</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bundle-banner">
+                        <div class="bundle-text">
+                            <div class="bundle-title">BEST VALUE: Company Identity + Brand Identity Bundle</div>
+                            <div>Complete your brand strategy with our comprehensive bundle</div>
+                        </div>
+                        <a href="#bundle" class="bundle-cta">Get Bundle for $39.95 →</a>
+                    </div>
+                </div>
+                
+                <div class="product-image">
+                    <img src="/api/placeholder/550/400" alt="Company Identity Prompt Library Notion Template">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Define Your Brand's Core Identity—All in One Place</h2>
+            <p class="section-subtitle">Crafting a compelling company identity has never been easier. Our Company Identity Prompt Library gives you a structured, AI-driven roadmap to articulate everything from your business type to your mission and vision.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>
+                    </div>
+                    <h3 class="feature-title">Prompt Library</h3>
+                    <p class="feature-description">A Notion Database filled with a curated collection of prompts that automatically execute simultaneously with Notion's 'Auto-update on page edits' feature. Organized by related use cases, it functions as a centralized prompt repository for your company identity needs.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-columns"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="12" x2="12" y1="3" y2="21"></line></svg>
+                    </div>
+                    <h3 class="feature-title">Column Prompts</h3>
+                    <p class="feature-description">Customized prompts stored within the Prompt Library that utilize Notion's 'Custom autofill' to generate content based on the customized instruction of each Column Prompt, ensuring strategic alignment and brand consistency.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                    <h3 class="feature-title">Knowledge Base Page</h3>
+                    <p class="feature-description">A Notion Page that serves as the underlying data source that provides context and anchors the Column Prompts. This enables effective prompt execution that is accurate and consistent with your company's brand, messaging, and objectives.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+                    </div>
+                    <h3 class="feature-title">Streamlined Brand Definition</h3>
+                    <p class="feature-description">Establish a clear, on-brand identity that resonates with customers and stakeholders. Articulate everything from Business Type and Industry to Mission and Vision—all in one place.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    </div>
+                    <h3 class="feature-title">Consistent Messaging</h3>
+                    <p class="feature-description">Auto-generate professional, coherent copy for 'About Us', 'What We Do', and other crucial brand statements. Prevent brand drift by keeping all identity elements rooted in a unified Knowledge Base.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <h3 class="feature-title">Accelerated Workflow</h3>
+                    <p class="feature-description">Save hundreds of hours with Notion's Custom AI Auto-Fill and Auto-Update features, executing prompts all at once. No more juggling multiple documents; your entire company identity is managed within a single, integrated workspace.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="prompts-section">
+        <div class="container">
+            <h2 class="section-title">Comprehensive Column Prompts</h2>
+            <p class="section-subtitle">Our Company Identity Prompt Library includes 20+ professionally crafted Column Prompts designed to define every aspect of your company's identity.</p>
+            
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="prompt-number">01</div>
+                    <h3 class="prompt-title">Business Type</h3>
+                    <h4 class="prompt-subtitle">Business Type Classifier</h4>
+                    <p class="prompt-description">Define your business category with precision and strategic intent. Move beyond generic industry classifications with AI-generated business type definitions that position your organization optimally within your competitive landscape.</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <div class="prompt-number">03</div>
+                    <h3 class="prompt-title">Company Identity Summary</h3>
+                    <h4 class="prompt-subtitle">Identity Synthesis Engine</h4>
+                    <p class="prompt-description">Create compelling company identity summaries in minutes, not weeks. Distill complex organizational attributes into concise, powerful identity statements that resonate with target audiences and provide foundation for all marketing communications.</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <div class="prompt-number">07</div>
+                    <h3 class="prompt-title">About Us</h3>
+                    <h4 class="prompt-subtitle">About Us Narrative Builder</h4>
+                    <p class="prompt-description">Craft About Us content that converts visitors into engaged prospects. Generate compelling company stories that communicate your unique value while establishing credibility and building emotional connections with your audience.</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <div class="prompt-number">14</div>
+                    <h3 class="prompt-title">Why Choose Us</h3>
+                    <h4 class="prompt-subtitle">Value Proposition Amplifier</h4>
+                    <p class="prompt-description">Craft "Why Choose Us" messaging that makes your case irresistibly. Create powerful, evidence-based arguments for selecting your organization that directly address customer decision criteria and overcome objections.</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <div class="prompt-number">18</div>
+                    <h3 class="prompt-title">Mission Statement</h3>
+                    <h4 class="prompt-subtitle">Mission Clarification Engine</h4>
+                    <p class="prompt-description">Craft mission statements that provide clear strategic direction. Create concise, powerful expressions of organizational purpose that inspire stakeholders and guide strategic decisions at every level.</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <div class="prompt-number">21</div>
+                    <h3 class="prompt-title">Company Value Proposition</h3>
+                    <h4 class="prompt-subtitle">Value Proposition Factory</h4>
+                    <p class="prompt-description">Generate compelling value proposition statements at scale. Create diverse, targeted expressions of your unique value that resonate with specific segments, personas, and decision-making contexts.</p>
+                </div>
+            </div>
+            
+            <div class="text-center" style="text-align: center; margin-top: 40px;">
+                <a href="#full-list" class="cta-button">View All 20+ Column Prompts</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works-section">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Getting started with our Company Identity Prompt Library is simple and intuitive.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Add Template to Workspace</h3>
+                        <p>Choose the Prompt Library template and click "Purchase Template" to integrate it into your Notion workspace. You'll get immediate access to the complete Company Identity Prompt Library and all included resources.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Populate Your Knowledge Base Page</h3>
+                        <p>Input your company data, brand guidelines, product information, and market insights using the included questionnaire template. This ensures prompts are informed by real-time, relevant context that's specific to your organization.</p>
+                        <p>Alternative methods include:</p>
+                        <ul style="color: var(--gray); margin-left: 20px;">
+                            <li>Use Notion Web Clipper to scrape your existing website and social profiles</li>
+                            <li>Add existing structured or unstructured content directly to the Knowledge Base Page</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Start Generating Content</h3>
+                        <p>Once your Knowledge Base is complete, Notion's Custom AI Auto-Fill runs all prompts at once, instantly generating all 20+ identity components. You can also manually trigger updates by hovering over a property and clicking the wand button.</p>
+                        <p>All your generated content stays in sync with your Knowledge Base, automatically updating when your company information changes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="section-title">One-Time Purchase, Lifetime Value</h2>
+            <p class="section-subtitle">No subscriptions or recurring fees. Pay once and use forever.</p>
+            
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-title">Company Identity Prompt Library</div>
+                    <div class="pricing-subtitle">AI-Powered Notion Template</div>
+                    <div class="pricing-price">
+                        <span class="pricing-original">$43.68</span>
+                        $23.99
+                        <span class="pricing-save">Save 45%</span>
+                    </div>
+                </div>
+                
+                <div class="pricing-content">
+                    <ul class="pricing-features">
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>20+ Column Prompts</strong> for comprehensive brand identity
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Custom AI Auto-Fill</strong> to generate content efficiently
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Auto-Update On Page Edits</strong> for always-current content
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Questionnaire Template</strong> to capture company information
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Knowledge Base Page Templates</strong> for efficient organization
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Knowledge Base Database Template</strong> for streamlined information management
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Example Content</strong> to guide your implementation
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>Instant Download</strong> - get started immediately
+                            </div>
+                        </li>
+                        <li class="pricing-feature">
+                            <div class="pricing-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div class="pricing-text">
+                                <strong>One-time purchase</strong> - no subscriptions or recurring fees
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="pricing-cta">
+                        <a href="#buy-now" class="buy-button">BUY NOW → $23.99</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary);">BEST VALUE: Bundle and Save</h3>
+                <p style="color: var(--gray); margin-bottom: 20px;">Company Identity + Brand Identity Bundle: <strong>$39.95</strong></p>
+                <a href="#bundle" class="cta-button">Get the Bundle</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-subtitle">See how our Company Identity Prompt Library is helping businesses streamline their brand messaging.</p>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">The Company Identity Prompt Library saved us countless hours and completely transformed our approach to brand messaging. Having a systematic way to generate all our core identity elements in one place has ensured consistency across all our marketing channels. The auto-updating feature means our messaging stays aligned even as our company evolves. This is truly how you leverage AI for business!</p>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="/api/placeholder/50/50" alt="Michael Chen">
+                    </div>
+                    <div>
+                        <div class="author-name">Michael Chen</div>
+                        <div class="author-title">Marketing Director, TechNova Solutions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Get answers to common questions about our Company Identity Prompt Library.</p>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What is included in the Company Identity Prompt Library?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The Company Identity Prompt Library includes 20+ Column Prompts, a Questionnaire Template, Knowledge Base Page Templates, a Knowledge Base Database Template, and example content—all packaged as a Notion template. The library covers essential aspects of company identity including Business Type, Industry, Company Overview, About Us, Mission Statement, Vision Statement, Value Proposition, and much more.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Do I need a Notion account to use this template?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you will need a Notion account to use this template. Notion offers a free plan that works with our template, though some advanced features may require a paid Notion plan. The template leverages Notion's Custom AI Auto-Fill and Auto-Update features to generate content.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How does the "Auto-Update on Page Edits" feature work?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The "Auto-Update on Page Edits" feature automatically regenerates content when you make changes to your Knowledge Base Page. This ensures that all your brand messaging stays consistent and up-to-date as your company evolves. When you modify your company information, mission, values, or other details, the Column Prompts will use that updated information to refresh all related content.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is this a one-time purchase or a subscription?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>This is a one-time purchase. You pay once and can use the template forever with no additional fees or subscriptions. After purchase, you'll get immediate access to download the template and add it to your Notion workspace.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I customize the prompts for my specific industry or business needs?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! The Column Prompts are fully customizable. You can modify the instructions, add industry-specific context, or adjust them to better fit your unique business needs. The template provides a strong foundation that you can build upon and refine for your specific requirements.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What's the difference between this and just using ChatGPT or Claude directly?</h3>
+                        <div class="faq-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While you could use ChatGPT or Claude to generate individual brand elements, our Company Identity Prompt Library offers several significant advantages:</p>
+                        <ol style="color: var(--gray); margin-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Systematic approach:</strong> All prompts work together as a cohesive system rather than isolated one-offs</li>
+                            <li><strong>Contextual awareness:</strong> All prompts draw from the same Knowledge Base, ensuring consistency</li>
+                            <li><strong>Simultaneous generation:</strong> Generate all 20+ brand elements at once rather than one at a time</li>
+                            <li><strong>Auto-updating:</strong> Content automatically refreshes when your company information changes</li>
+                            <li><strong>Professionally crafted prompts:</strong> Each prompt is strategically designed to produce optimal results</li>
+                            <li><strong>Organized storage:</strong> Everything lives in a centralized Notion workspace</li>
+                        </ol>
+                        <p>This template saves hundreds of hours compared to crafting individual prompts and managing the results manually.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Define Your Brand's Core Identity Today</h2>
+            <p class="cta-subtitle">Transform fragmented brand elements into a cohesive company identity with our AI-powered Notion template. Save hundreds of hours and ensure consistent messaging across all touchpoints.</p>
+            <div class="cta-buttons">
+                <a href="#buy-now" class="cta-primary">BUY NOW → $23.99</a>
+                <a href="#demo" class="cta-secondary">View Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">The Prompt Engineering Project</div>
+                    <p>Transforming how organizations implement AI through systematically architected Prompt Libraries and knowledge-driven operations.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Solutions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Prompt Libraries</a></li>
+                        <li><a href="#">Column Prompts</a></li>
+                        <li><a href="#">Knowledge Integration</a></li>
+                        <li><a href="#">System Implementation</a></li>
+                        <li><a href="#">Training & Enablement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Whitepapers</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 The Prompt Engineering Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    // Toggle active state
+                    question.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+```
