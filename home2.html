@@ -1,0 +1,198 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prompt Engineering Project | LinkedIn Ad Generation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-color: #0a0c10;
+            --module-bg: #10141c;
+            --border-color: #374151;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        #ad-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ad-card {
+            background-color: var(--module-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .ad-image {
+            height: 180px;
+            background-color: #374151;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .ad-details {
+            padding: 1.5rem;
+        }
+        
+        .ad-meta {
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .ad-meta div {
+            margin-bottom: 0.25rem;
+        }
+        .ad-meta strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .ad-copy h3 {
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-blue);
+        }
+        
+        .ad-copy p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0 0 1rem 0;
+        }
+        
+        .ad-copy .cta {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>The Prompt Engineering Project</h1>
+            <p>Generated LinkedIn Ad Variations (20 Segments)</p>
+        </header>
+
+        <main id="ad-grid">
+            <!-- Ad cards will be dynamically generated here -->
+        </main>
+    </div>
+
+    <script>
+        const adVariations = [
+            // Audience: Marketing Managers
+            { audience: 'Marketing Managers', campaign: 'Lead Generation', angle: 'Efficiency', headline: 'Stop Wasting Hours on Copywriting.', body: 'Our AI platform generates on-brand marketing content in seconds, not days. Free up your team to focus on strategy, not syntax.', cta: 'Get a Demo ->', image: 'efficiency' },
+            { audience: 'Marketing Managers', campaign: 'Brand Awareness', angle: 'Consistency', headline: 'Is Your Brand Voice Consistent?', body: 'Ensure every piece of content, from social posts to emails, perfectly reflects your brand. Our AI learns your voice.', cta: 'Learn More', image: 'consistency' },
+            // Audience: Startup Founders
+            { audience: 'Startup Founders', campaign: 'User Acquisition', angle: 'Speed & Cost', headline: 'Launch Your Next Campaign, Faster.', body: 'Don\'t have a big marketing team? Our platform acts as your AI-powered copywriter, getting you to market in record time and under budget.', cta: 'Start for Free ->', image: 'speed' },
+            { audience: 'Startup Founders', campaign: 'Lead Generation', angle: 'Competitive Edge', headline: 'Out-Market Your Competitors.', body: 'Leverage generative AI to produce high-quality content at scale. The ultimate unfair advantage for lean teams.', cta: 'Request Early Access', image: 'edge' },
+            // Audience: Content Strategists
+            { audience: 'Content Strategists', campaign: 'Product Education', angle: 'Advanced Customization', headline: 'Go Beyond Generic AI Content.', body: 'Fine-tune models with your own data. Our platform gives you the control to create truly unique, expert-level content for any niche.', cta: 'Explore Features', image: 'customization' },
+            { audience: 'Content Strategists', campaign: 'Thought Leadership', angle: 'Quality & Scale', headline: 'Scale Your Content, Not Your Team.', body: 'Produce high-quality blog posts, whitepapers, and articles without burning out your writers. Perfect for ambitious content calendars.', cta: 'See How It Works', image: 'scale' },
+            // Audience: Digital Marketing Agencies
+            { audience: 'Digital Marketing Agencies', campaign: 'Client Acquisition', angle: 'ROI for Clients', headline: 'Deliver Faster Results for Your Clients.', body: 'Use our AI platform to slash content production time and deliver high-performing campaigns in a fraction of the time. A powerful addition to your toolkit.', cta: 'Become a Partner ->', image: 'roi' },
+            { audience: 'Digital Marketing Agencies', campaign: 'Client Retention', angle: 'Service Expansion', headline: 'Offer AI-Powered Content Services.', body: 'Expand your agency\'s offerings by providing AI-driven content generation. Increase client value and retention.', cta: 'Learn About Agency Plans', image: 'services' },
+            // Audience: E-commerce Managers
+            { audience: 'E-commerce Managers', campaign: 'Conversion Rate Optimization', angle: 'Product Descriptions', headline: 'High-Converting Product Descriptions, Instantly.', body: 'Generate hundreds of unique, SEO-optimized product descriptions that sell. Stop using generic templates.', cta: 'Optimize Your Listings', image: 'ecommerce' },
+            { audience: 'E-commerce Managers', campaign: 'Customer Engagement', angle: 'Email Marketing', headline: 'Personalized Email Campaigns at Scale.', body: 'Draft targeted email campaigns, from abandoned carts to new arrivals, in minutes. Boost your customer LTV.', cta: 'Supercharge Your Emails', image: 'email' },
+            // Audience: C-Level Executives (CMO, CEO)
+            { audience: 'C-Level Executives', campaign: 'Brand Building', angle: 'Innovation', headline: 'Is Your Marketing Ready for the AI Revolution?', body: 'The future of marketing is here. Position your brand at the forefront of innovation by empowering your team with generative AI.', cta: 'Read the Executive Brief', image: 'innovation' },
+            { audience: 'C-Level Executives', campaign: 'Financial', angle: 'Cost Reduction', headline: 'Reduce Content Costs by up to 70%.', body: 'Drastically cut down on freelance and agency fees by bringing content generation in-house with our powerful, secure AI platform.', cta: 'Calculate Your Savings', image: 'cost' },
+            // Audience: HR Managers (Hiring for Marketing)
+            { audience: 'HR Managers', campaign: 'Talent Attraction', angle: 'Modern Toolkit', headline: 'Attract Top Marketing Talent.', body: 'Showcase that your company invests in cutting-edge tools. Our platform is a major draw for ambitious marketers looking to work smarter.', cta: 'Learn About Our Culture', image: 'talent' },
+            // Audience: Sales Enablement Teams
+            { audience: 'Sales Enablement Teams', campaign: 'Tool Adoption', angle: 'Sales Collateral', headline: 'Never Run Out of Sales Content Again.', body: 'Instantly generate case studies, one-pagers, and personalized outreach emails to support your sales team and close more deals.', cta: 'Empower Your Sales Team', image: 'sales' },
+            // Audience: SEO Specialists
+            { audience: 'SEO Specialists', campaign: 'Organic Growth', angle: 'Content for SEO', headline: 'Fuel Your SEO with AI-Generated Content.', body: 'Create SEO-friendly articles, blog posts, and landing pages at scale to dominate search rankings for your target keywords.', cta: 'Boost Your Rankings', image: 'seo' },
+            // Audience: Social Media Managers
+            { audience: 'Social Media Managers', campaign: 'Engagement', angle: 'Endless Post Ideas', headline: 'Beat Creative Block Forever.', body: 'Generate a month\'s worth of social media posts across all platforms in a single afternoon. Includes text and image ideas.', cta: 'Plan Your Calendar', image: 'social' },
+            // Audience: PR Professionals
+            { audience: 'PR Professionals', campaign: 'Media Outreach', angle: 'Press Releases', headline: 'Draft Press Releases in Minutes.', body: 'Our AI helps you draft professional, compelling press releases and media pitches, so you can focus on building relationships.', cta: 'Streamline Your PR', image: 'pr' },
+            // Audience: Event Marketers
+            { audience: 'Event Marketers', campaign: 'Event Promotion', angle: 'Promo Copy', headline: 'Promote Your Next Event Effortlessly.', body: 'From registration page copy to reminder emails and social media announcements, generate all your event promo content with AI.', cta: 'Fill Your Next Event', image: 'event' },
+            // Audience: Data Scientists in Marketing
+            { audience: 'Data Scientists (Marketing)', campaign: 'Tool Integration', angle: 'API & Models', headline: 'Integrate. Customize. Deploy.', body: 'Our platform offers robust API access, allowing you to integrate our foundation models directly into your custom marketing analytics workflows.', cta: 'Read API Documentation', image: 'api' },
+            // Audience: Financial Services Marketers
+            { audience: 'Financial Services Marketers', campaign: 'Compliance & Trust', angle: 'Security & Control', headline: 'Secure, Compliant AI for Finance.', body: 'Generate marketing content in a secure, private environment. Fine-tune models with your proprietary data while maintaining full control and compliance.', cta: 'Request a Security Demo', image: 'security' },
+        ];
+
+        function generateAdCards() {
+            const grid = document.getElementById('ad-grid');
+            adVariations.forEach(ad => {
+                const card = document.createElement('div');
+                card.className = 'ad-card';
+                card.innerHTML = `
+                    <div class="ad-image" style="background-image: url('https://placehold.co/600x400/${ad.audience.charCodeAt(0) % 2 === 0 ? '0a0c10' : '10141c'}/${ad.audience.charCodeAt(1) % 2 === 0 ? '3B82F6' : '10B981'}?text=${ad.image}')">
+                    </div>
+                    <div class="ad-details">
+                        <div class="ad-meta">
+                            <div><strong>Audience:</strong> ${ad.audience}</div>
+                            <div><strong>Campaign:</strong> ${ad.campaign}</div>
+                            <div><strong>Angle:</strong> ${ad.angle}</div>
+                        </div>
+                        <div class="ad-copy">
+                            <h3>${ad.headline}</h3>
+                            <p>${ad.body}</p>
+                            <div class="cta">${ad.cta}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        window.onload = generateAdCards;
+    </script>
+</body>
+</html>
+
+```
