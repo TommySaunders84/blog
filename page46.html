@@ -1,0 +1,488 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Marketing Firm | Brand Intelligence in the Age of AI Workshop</title>
+    <!-- Chosen Palette: Deep Tech Blue -->
+    <!-- Application Structure Plan: A single-page, narrative-driven landing page for a workshop. The structure flows logically: 1. Hero section to establish the "invisible infrastructure" concept. 2. A section explaining the AI-driven paradigm shift. 3. An interactive AI Operations Workflow diagram. 4. A comprehensive, categorized "Data Points Explorer" using accordions. 5. A detailed Workshop Agenda. 6. A "Why Us" section highlighting proprietary methods. 7. A final call-to-action. This guides the user from the high-level concept to the tangible details of the workshop, building value at each step. -->
+    <!-- Visualization & Content Choices: The core interactive elements are the AI Workflow diagram and the Data Points Explorer. The workflow is visualized using styled HTML/CSS to represent a data pipeline, making the abstract process tangible. The vast list of data points is organized into a searchable, collapsible accordion, which is the most effective way to present a large, hierarchical list without overwhelming the user. No charts are needed as the goal is to educate on the *types* of data, not visualize specific metrics. The code block for MCP in the final module serves as a concrete example of "activation." -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #e2e8f0; }
+        .hero-bg {
+            background-color: #020617;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(29, 78, 216, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(30, 64, 175, 0.2) 0%, transparent 50%);
+            background-size: 100% 100%;
+            animation: pulse-bg 15s infinite ease-in-out;
+        }
+        @keyframes pulse-bg {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .section-title { color: #f8fafc; }
+        .card { background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.1); }
+        .accordion-header { transition: background-color 0.3s ease; }
+        .accordion-header:hover { background-color: rgba(30, 41, 59, 0.7); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .accordion-content.open { max-height: 5000px; /* Increased max-height for larger content */ }
+        .workflow-step { border: 1px solid rgba(56, 189, 248, 0.2); transition: all 0.3s ease; }
+        .workflow-step:hover { transform: translateY(-5px) scale(1.02); background-color: rgba(30, 64, 175, 0.3); border-color: #38bdf8; }
+        .workflow-arrow { color: #38bdf8; }
+        .data-point { background-color: #1e293b; color: #94a3b8; display: inline-block; }
+        .data-point-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-slate-900/50 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-sky-300">Agentic Marketing Firm</h1>
+            <div class="hidden md:flex items-center space-x-6 text-sm">
+                <a href="#dashboard" class="text-slate-300 hover:text-white transition">Dashboard</a>
+                <a href="#story" class="text-slate-300 hover:text-white transition">Data Story</a>
+                <a href="#data-points" class="text-slate-300 hover:text-white transition">Data Points</a>
+                <a href="#agenda" class="text-slate-300 hover:text-white transition">Workshop Agenda</a>
+                <a href="#contact" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition">Register Interest</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-bg">
+            <div class="container mx-auto px-6 text-center py-24 md:py-32">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-white leading-tight">Make the Invisible, Actionable.</h2>
+                <p class="max-w-3xl mx-auto mt-6 text-lg text-sky-200">For decades, the internet's true potential was hidden within a complex, invisible infrastructure. Today, AI provides the digital X-ray vision to see, understand, and harness this power. We transform these unseen signals into your greatest strategic advantage.</p>
+                <a href="#workshop-overview" class="mt-10 inline-block bg-sky-500 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-sky-500/20 hover:bg-sky-400 transition-transform transform hover:scale-105">Discover the Workshop</a>
+            </div>
+        </section>
+
+        <section id="workshop-overview" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-4xl font-bold">Brand Intelligence in the Age of AI</h2>
+                    <p class="max-w-3xl mx-auto mt-4 text-slate-300">An immersive workshop designed to unlock the full potential of your data. We guide you through our proprietary AI Operations Workflow—from raw digital signals to decisive, high-impact business actions.</p>
+                </div>
+
+                <div id="dashboard" class="py-16">
+                    <div class="text-center mb-12">
+                        <h2 class="section-title text-4xl font-bold">Real-time Intelligence Dashboard</h2>
+                        <p class="max-w-2xl mx-auto mt-2 text-sky-300">This isn't a static report. It's a living dashboard where innovative visualizations reveal deep insights from live data streams.</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="card p-6 rounded-xl shadow-lg">
+                            <h3 class="font-bold text-xl text-sky-200 mb-2">Geospatial Sentiment Heatmap</h3>
+                            <p class="text-sm text-sky-400 mb-4">Real-time analysis shows strong positive sentiment (blue) in North America and Europe, our core markets. However, an emerging negative sentiment trend (orange) is detected in APAC, signaling a potential market perception issue requiring immediate investigation.</p>
+                            <div class="chart-container" style="background: url('https://i.imgur.com/gA3h0hW.png') no-repeat center center; background-size: contain;">
+                                <canvas id="heatmapChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg">
+                            <h3 class="font-bold text-xl text-sky-200 mb-2">Competitor Ecosystem Network</h3>
+                            <p class="text-sm text-sky-400 mb-4">Our Brand (orange) holds a central position. "InnovateCo" is identified as a high-velocity challenger moving towards our space, while we maintain a key "Strategic Partnership" that provides a defensive moat against the "Market Leader."</p>
+                            <div class="chart-container">
+                                <canvas id="networkChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg">
+                            <h3 class="font-bold text-xl text-sky-200 mb-2">Market Share Treemap: Cloud AI Services</h3>
+                            <p class="text-sm text-sky-400 mb-4">While we hold a strong position in "ML Platforms," the treemap reveals "InnovateCo" is rapidly capturing share in the high-growth "Generative AI" sub-category, representing a significant future threat.</p>
+                            <div class="chart-container">
+                                <canvas id="treemapChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-xl shadow-lg">
+                            <h3 class="font-bold text-xl text-sky-200 mb-2">Voice of the Customer</h3>
+                            <p class="text-sm text-sky-400 mb-4">Thematic analysis of customer feedback shows that while our "Great UX" is a key strength, "High Price" and a lack of "AI Integration Features" are the most frequently mentioned pain points, validating the competitive threat.</p>
+                            <div class="chart-container">
+                                <canvas id="bubbleChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="story" class="py-16">
+                    <div class="text-center mb-12">
+                        <h2 class="section-title text-4xl font-bold">The Q2 Engagement Story</h2>
+                        <p class="max-w-2xl mx-auto mt-2 text-sky-300">Data tells you what happened. A story explains why it matters.</p>
+                    </div>
+                    <div class="max-w-4xl mx-auto space-y-12">
+                        <div class="story-act p-6 rounded-r-lg">
+                            <h3 class="text-2xl font-bold text-sky-200">Act I: The Hook</h3>
+                            <p class="mt-2 text-slate-300">We've observed a significant shift in customer engagement over the last quarter, challenging our core assumptions. Instead of growth, we're seeing stagnation. Let's explore why.</p>
+                        </div>
+                        <div class="story-act p-6 rounded-r-lg">
+                            <h3 class="text-2xl font-bold text-sky-200">Act II: The Rising Action</h3>
+                            <p class="mt-2 text-slate-300 mb-6">The charts below tell a clear story. While our overall engagement dipped, the decline was sharpest in our key "Developer 25-34" demographic. Simultaneously, "InnovateCo's" share of voice surged, focusing their messaging on the very "AI integration" features our customers are requesting.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="card p-4 rounded-xl">
+                                    <h4 class="font-semibold text-center text-sky-300">Insight 1: Core Demo Dip</h4>
+                                    <div class="chart-container" style="height: 250px;">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card p-4 rounded-xl">
+                                     <h4 class="font-semibold text-center text-sky-300">Insight 2: Competitor Ascent</h4>
+                                     <div class="chart-container" style="height: 250px;">
+                                        <canvas id="lineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-act p-6 rounded-r-lg">
+                            <h3 class="text-2xl font-bold text-sky-200">Act III: The Resolution</h3>
+                            <p class="mt-2 text-slate-300">The data tells us this is not a sales problem, but a product-market fit issue with our core audience, exploited by a focused competitor. Our next steps must address this feature gap directly and launch a targeted counter-messaging campaign.</p>
+                            <a href="#roadmap" class="mt-4 inline-block bg-sky-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-sky-500 transition">View the Strategic Roadmap</a>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="workflow" class="text-center mb-20">
+                    <h3 class="section-title text-3xl font-bold mb-10">Our Proprietary AI Operations Workflow</h3>
+                    <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="workflow-step card p-6 rounded-lg text-center">
+                            <div class="text-4xl mb-3">📡</div>
+                            <h4 class="font-bold text-lg text-sky-200">1. Data Acquisition</h4>
+                            <p class="text-sm text-slate-400 mt-2">Systematically gathering raw signals from company, competitor, and customer digital footprints.</p>
+                        </div>
+                        <div class="workflow-step card p-6 rounded-lg text-center">
+                             <div class="text-4xl mb-3">🔬</div>
+                            <h4 class="font-bold text-lg text-sky-200">2. Insight Generation</h4>
+                            <p class="text-sm text-slate-400 mt-2">Applying AI models to analyze, segment, and transform data into strategic intelligence.</p>
+                        </div>
+                        <div class="workflow-step card p-6 rounded-lg text-center">
+                             <div class="text-4xl mb-3">🔮</div>
+                            <h4 class="font-bold text-lg text-sky-200">3. Predictive Analysis</h4>
+                            <p class="text-sm text-slate-400 mt-2">Forecasting market shifts, customer behavior, and campaign outcomes with AI-driven models.</p>
+                        </div>
+                        <div class="workflow-step card p-6 rounded-lg text-center">
+                             <div class="text-4xl mb-3">⚡️</div>
+                            <h4 class="font-bold text-lg text-sky-200">4. Insight Activation</h4>
+                            <p class="text-sm text-slate-400 mt-2">Executing the next best action through automated workflows and the Model Context Protocol.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="data-points" class="max-w-6xl mx-auto">
+                    <h3 class="section-title text-3xl font-bold text-center mb-10">The Data Points Explorer</h3>
+                    <p class="text-center text-slate-300 max-w-3xl mx-auto mb-8">Explore the comprehensive universe of data points we harness. Our proprietary methods transform these disparate signals into a unified AI Operations Workflow. Click any category to expand the list.</p>
+                    <div class="space-y-3" id="data-points-accordion">
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="agenda" class="py-20 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="section-title text-4xl font-bold">Workshop Agenda: From Data to Dominance</h2>
+                    <p class="max-w-3xl mx-auto mt-4 text-slate-300">A structured journey to operationalize brand intelligence within your organization.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 1: The New Competitive Landscape</h4>
+                        <p class="text-slate-400">Understanding the invisible infrastructure of the internet and how AI is fundamentally reshaping market perception. We'll identify your core challenges and opportunities in this new era.</p>
+                    </div>
+                     <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 2: Mastering Data Acquisition</h4>
+                        <p class="text-slate-400">A deep dive into identifying and ethically collecting the data that matters. We'll cover everything from company and people data to real-time organic and paid media signals.</p>
+                    </div>
+                     <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 3: AI-Powered Insight Generation</h4>
+                        <p class="text-slate-400">Learn how we apply advanced analytics and AI models to transform raw data into actionable insights, including targeting scores, segmentation, and content strategy recommendations.</p>
+                    </div>
+                     <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 4: Predictive Analysis & Forecasting</h4>
+                        <p class="text-slate-400">Moving beyond reporting to prediction. This module focuses on using AI to forecast trends, predict churn, identify expansion opportunities, and model campaign outcomes.</p>
+                    </div>
+                     <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 5: The Insight-to-Impact Workflow</h4>
+                        <p class="text-slate-400">We introduce our structured methodology for ensuring insights translate directly into strategic actions, complete with prioritization, clear ownership, and ROI measurement.</p>
+                    </div>
+                     <div class="card p-8 rounded-xl">
+                        <h4 class="font-bold text-xl text-sky-300 mb-2">Module 6: Activating Intelligence with MCP</h4>
+                        <p class="text-slate-400">The final step: execution. See how the Model Context Protocol (MCP) activates insights in real-time to automate campaigns, optimize content, and trigger the next best action.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-4xl font-bold">Interactive Strategic Roadmap</h2>
+                <p class="max-w-2xl mx-auto mt-2 text-sky-300">A dynamic plan to reclaim market leadership, based on the insights from our live dashboard. Click each step for details.</p>
+            </div>
+            <div id="roadmap-container" class="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto">
+            </div>
+            <div id="roadmap-details" class="mt-8 card p-6 rounded-xl shadow-lg max-w-5xl mx-auto min-h-[150px]">
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-4xl font-bold">Ready to Reshape Your Strategy?</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-300 mb-8">Secure your spot in our exclusive "Brand Intelligence in the Age of AI" workshop. Let's build your next competitive advantage together.</p>
+                <a href="#" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-lg text-lg shadow-lg shadow-blue-500/20 transition-transform transform hover:scale-105">Register Your Interest Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-16 border-t border-sky-900/50 py-8">
+        <div class="container mx-auto px-6 text-center text-slate-400 text-sm">
+            <p>&copy; 2025 Agentic Marketing Firm. All Rights Reserved. | Harnessing Data for Strategic Decision-Making.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dataPoints = {
+        "COMPANY DATA": {
+            "Company Identification & General Information": ["Company Name", "Domain", "ISO Country Code", "Founded Date", "Company Profile", "Competitors", "Description", "Logo", "Company LinkedIn"],
+            "Location & Presence": ["Office Address", "Country", "State", "Zip Code", "All Major Cities a Business is Located In"],
+            "Workforce & Hiring Data": ["Employee Count", "Employee Count % Growth", "Job Openings", "Find Open Jobs on LinkedIn"],
+            "Financial & Business Performance": ["Revenue", "Total Funding", "Latest Funding", "Investors", "Find Company’s Market Cap"],
+            "Technology & Digital Presence": ["Full Tech Stack", "Website Tech Stack", "Site Traffic", "SimilarWeb Analytics", "Identify Company’s CRM"],
+            "Social Media & Marketing": ["Facebook URL", "Twitter Handle", "LinkedIn Profile", "Post Engagement Timeline", "Find Social Media Engagement Trends"],
+            "Company News & Media": ["Recent Company News", "Find a Recent Positive News Article", "Find a Company's 10K", "10K Analysis of Top Annual Initiatives"],
+            "Products & Services": ["List Company’s Products & Services", "Product Features", "Find Company’s Pricing Plan Cost Range", "See If a Company Offers a Free Trial"]
+        },
+        "PEOPLE DATA": {
+            "Personal Identification & Background": ["First Name", "Last Name", "Full Name", "Profile Picture", "Bio", "Location"],
+            "Education & Skills": ["Education (School Name)", "Certifications", "Contact Skills"],
+            "Employment & Professional Details": ["Current Company", "Job Title", "Job Start Date", "Former Companies"],
+            "Contact Information": ["Work Email", "Personal Email", "Direct Dial Phone Number", "Find a Person’s LinkedIn via Name & Company"],
+            "Social Media & Online Presence": ["LinkedIn Profile", "Twitter Handle", "Twitter Bio", "Social Media Engagement"],
+            "Content Creation & Thought Leadership": ["Published Articles & Blogs", "Podcast Appearances", "Speaking Engagements", "Find a Person’s Blog Pages"],
+            "Influencer & Network Metrics": ["Influencer Score / Klout Score", "Follower Growth Rate", "LinkedIn Connections by Industry", "Mentions & Tags"]
+        },
+        "BRAND INTELLIGENCE": {
+            "Brand Foundation": ["Purpose & Mission Alignment", "Brand Identity & Architecture", "Brand Equity Score"],
+            "Market Performance": ["Market Share", "Share of Voice (SOV)", "Competitive Positioning Map"],
+            "Stakeholder Perception": ["Brand Sentiment Analysis", "Net Promoter Score (NPS)", "Customer Experience Metrics"],
+            "Digital Presence": ["Website Performance", "Social Media Brand Equity", "Paid Media Effectiveness"],
+            "Purpose & Financial Impact": ["ESG Rating Performance", "Brand Valuation (monetary)", "Marketing ROI"]
+        },
+        "CUSTOMER & ABM DATA": {
+            "Account Identification": ["Target Account List", "Account Priority Score", "Industry Fit", "Technology Stack"],
+            "Account Intelligence": ["Strategic Initiatives", "Pain Points", "Growth Objectives", "Competitive Pressures"],
+            "Stakeholder & Contact Mapping": ["Decision Makers", "Influencers", "Champions", "Relationship Mapping"],
+            "Intent Data & Buying Signals": ["Research Activity", "Content Consumption Patterns", "Third-Party Intent Data (Bombora)", "Job Posting Analysis"],
+            "Engagement & Health": ["Account Engagement Score", "Multi-Channel Engagement", "Pipeline Velocity", "Account Health Score", "Churn Probability"]
+        },
+        "ORGANIC MARKETING (SEO & CONTENT)": {
+            "Core SEO Performance": ["Organic Traffic", "Keyword Rankings", "Click-Through Rate (CTR)", "Backlink Profile"],
+            "Technical SEO": ["Core Web Vitals (LCP, INP, CLS)", "Crawl Errors", "Index Coverage", "Site Architecture"],
+            "Content Performance": ["Page Views", "Time on Page", "Bounce Rate", "Lead Conversion Rate (Content)", "Social Shares"],
+            "Local & Advanced SEO": ["Local Pack Rankings", "Voice Search Rankings", "Featured Snippet Captures", "Schema Markup Performance"]
+        },
+        "PAID MEDIA (PPC & SOCIAL ADS)": {
+            "Core Performance": ["Impressions", "Clicks", "CTR", "CPC", "CPM", "Cost"],
+            "Conversion & Revenue": ["Conversions", "Conversion Rate", "Cost Per Acquisition (CPA)", "Revenue", "Return on Ad Spend (ROAS)"],
+            "Audience & Targeting": ["Audience Targeting (Demographics, Interests)", "Lookalike Audiences", "Remarketing Lists"],
+            "Creative & Platform Specifics": ["Ad Creative Performance", "A/B Test Results", "Quality Score", "Auction Insights (Impression Share)", "Video Completion Rate"]
+        },
+        "REAL-TIME SIGNALS & OPPORTUNITIES": {
+            "Social & News Pulse": ["Brand mention velocity", "Trending hashtags", "Sentiment inflection points", "Breaking news relevance"],
+            "Competitive Moves": ["Real-time ad-library uploads", "Pricing changes scraped", "Funding announcements"],
+            "Audience & Web Triggers": ["Spike in live-chat volume", "Web traffic anomalies", "High-intent revisit within 24h", "Abandoned-cart values > $X"]
+        }
+    };
+
+    const accordionContainer = document.getElementById('data-points-accordion');
+
+    Object.entries(dataPoints).forEach(([mainCategory, subCategories]) => {
+        const mainAccordionItem = document.createElement('div');
+        mainAccordionItem.className = 'card rounded-lg overflow-hidden';
+
+        const mainHeader = document.createElement('div');
+        mainHeader.className = 'accordion-header cursor-pointer p-5 flex justify-between items-center bg-slate-800/50';
+        mainHeader.innerHTML = `
+            <h4 class="text-xl font-bold text-sky-200">${mainCategory}</h4>
+            <span class="text-sky-400 transform transition-transform duration-300 text-2xl">&#x25BC;</span>
+        `;
+
+        const mainContent = document.createElement('div');
+        mainContent.className = 'accordion-content';
+        const mainContentWrapper = document.createElement('div');
+        mainContentWrapper.className = 'p-4 space-y-2';
+        mainContent.appendChild(mainContentWrapper);
+
+        Object.entries(subCategories).forEach(([subCategory, points]) => {
+            const subAccordionItem = document.createElement('div');
+            subAccordionItem.className = 'rounded-md overflow-hidden border border-slate-700';
+
+            const subHeader = document.createElement('div');
+            subHeader.className = 'accordion-header cursor-pointer p-3 flex justify-between items-center bg-slate-700/50';
+            subHeader.innerHTML = `
+                <h5 class="font-semibold text-slate-200">${subCategory}</h5>
+                <span class="text-slate-400 transform transition-transform duration-300 text-lg">&#x25B8;</span>
+            `;
+
+            const subContent = document.createElement('div');
+            subContent.className = 'accordion-content';
+            const subContentWrapper = document.createElement('div');
+            subContentWrapper.className = 'p-3 data-point-grid';
+
+            points.forEach(point => {
+                const pointEl = document.createElement('div');
+                pointEl.className = 'data-point text-xs py-1 px-3 rounded-full';
+                pointEl.textContent = `{${point}}`;
+                subContentWrapper.appendChild(pointEl);
+            });
+            
+            subContent.appendChild(subContentWrapper);
+            subAccordionItem.appendChild(subHeader);
+            subAccordionItem.appendChild(subContent);
+            mainContentWrapper.appendChild(subAccordionItem);
+
+            subHeader.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = subContent.classList.toggle('open');
+                subHeader.querySelector('span').style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+            });
+        });
+
+        mainAccordionItem.appendChild(mainHeader);
+        mainAccordionItem.appendChild(mainContent);
+        accordionContainer.appendChild(mainAccordionItem);
+
+        mainHeader.addEventListener('click', () => {
+            const isOpen = mainContent.classList.toggle('open');
+            mainHeader.querySelector('span').style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+    });
+
+    const CHART_COLORS = { blue: 'rgba(56, 189, 248, 0.7)', lightBlue: 'rgba(14, 165, 233, 0.7)', darkBlue: 'rgba(30, 64, 175, 0.7)', white: 'rgba(240, 249, 255, 0.9)', accent: 'rgba(251, 146, 60, 0.9)' };
+    Chart.defaults.color = CHART_COLORS.white;
+    Chart.defaults.borderColor = 'rgba(56, 189, 248, 0.2)';
+    const defaultTooltip = { enabled: true, backgroundColor: 'rgba(2, 6, 23, 0.8)', titleColor: CHART_COLORS.white, bodyColor: CHART_COLORS.white, borderColor: CHART_COLORS.blue, borderWidth: 1, callbacks: { title: (items) => { const item = items[0]; let label = item.chart.data.labels[item.dataIndex]; return Array.isArray(label) ? label.join(' ') : label; } } };
+
+    new Chart(document.getElementById('heatmapChart'), {
+        type: 'bubble',
+        data: {
+            datasets: [
+                { label: 'High Positive Sentiment', data: [{x: -95, y: 38, r: 30}], backgroundColor: 'rgba(56, 189, 248, 0.7)'},
+                { label: 'High Positive Sentiment', data: [{x: 10, y: 51, r: 28}], backgroundColor: 'rgba(56, 189, 248, 0.7)'},
+                { label: 'Emerging Negative Sentiment', data: [{x: 133, y: -25, r: 22}], backgroundColor: 'rgba(251, 146, 60, 0.7)'},
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { display: false } }, plugins: { legend: { display: false }, tooltip: {...defaultTooltip, callbacks: { title: (items) => items[0].dataset.label }}} }
+    });
+    
+    new Chart(document.getElementById('networkChart'), {
+        type: 'scatter', 
+        data: {
+            datasets: [
+                { label: 'OurBrand', data: [{x: 5, y: 5}], backgroundColor: CHART_COLORS.accent, pointRadius: 18, },
+                { label: 'Market Leader', data: [{x: 2, y: 2}], backgroundColor: CHART_COLORS.darkBlue, pointRadius: 22 },
+                { label: 'InnovateCo (Challenger)', data: [{x: 7, y: 8}], backgroundColor: CHART_COLORS.blue, pointRadius: 14 },
+                { label: 'Legacy Competitor', data: [{x: 2, y: 8}], backgroundColor: 'rgba(100, 116, 139, 0.7)', pointRadius: 16 },
+                { label: 'Strategic Partner', data: [{x: 8, y: 3}], backgroundColor: CHART_COLORS.lightBlue, pointRadius: 15 },
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { display: false } }, plugins: { legend: { position: 'bottom' }, tooltip: {...defaultTooltip, callbacks: { title: (items) => items[0].dataset.label }} } }
+    });
+
+    new Chart(document.getElementById('treemapChart'), {
+        type: 'treemap',
+        data: {
+            datasets: [{
+                tree: [
+                    {value: 25, group: 'OurBrand', category: 'ML Platforms'}, {value: 10, group: 'OurBrand', category: 'Generative AI'},
+                    {value: 30, group: 'Market Leader', category: 'ML Platforms'}, {value: 15, group: 'Market Leader', category: 'Compute'},
+                    {value: 5, group: 'InnovateCo', category: 'ML Platforms'}, {value: 20, group: 'InnovateCo', category: 'Generative AI'},
+                    {value: 12, group: 'Others', category: 'ML Platforms'}, {value: 8, group: 'Others', category: 'Compute'}
+                ],
+                key: 'value', groups: ['group', 'category'],
+                captions: {display: true, color: '#fff', font: {size: 12}},
+                labels: { display: true, formatter(ctx) { return ctx.raw.g ? `${ctx.raw.g} (${ctx.raw.v}%)` : ''; } },
+                backgroundColor(ctx) {
+                    if (ctx.type !== 'data') return 'transparent';
+                    const group = ctx.raw.g.split(', ')[0];
+                    if (group === 'OurBrand') return CHART_COLORS.accent;
+                    if (group === 'Market Leader') return CHART_COLORS.darkBlue;
+                    if (group === 'InnovateCo') return CHART_COLORS.blue;
+                    return CHART_COLORS.lightBlue;
+                }
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: defaultTooltip } }
+    });
+
+    new Chart(document.getElementById('bubbleChart'), {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                label: 'Customer Feedback Themes',
+                data: [
+                    {x: 2, y: 7, r: 35, label: 'High Price'}, {x: 4, y: 4, r: 45, label: 'Feature Request: AI Integration'},
+                    {x: 6, y: 8, r: 25, label: 'Great UX'}, {x: 8, y: 3, r: 30, label: 'Poor Support'},
+                    {x: 5, y: 6, r: 20, label: 'Bug Reports: Mobile App'},
+                ],
+                backgroundColor: [CHART_COLORS.accent, CHART_COLORS.blue, CHART_COLORS.lightBlue, CHART_COLORS.darkBlue, 'rgba(100, 116, 139, 0.7)']
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { display: false } }, plugins: { legend: { display: false }, tooltip: {...defaultTooltip, callbacks: {title: (items) => items[0].raw.label}} } }
+    });
+    
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Q1', 'Q2'],
+            datasets: [{ label: 'Engagement: Devs 25-34', data: [8.5, 6.2], backgroundColor: CHART_COLORS.lightBlue, barPercentage: 0.6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: defaultTooltip } }
+    });
+
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: ['Apr', 'May', 'Jun'],
+            datasets: [
+                { label: 'OurBrand Share of Voice', data: [22, 20, 18], borderColor: CHART_COLORS.accent, tension: 0.2, fill: false },
+                { label: 'InnovateCo Share of Voice', data: [5, 12, 25], borderColor: CHART_COLORS.blue, tension: 0.2, fill: false }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: defaultTooltip } }
+    });
+
+    const roadmapData = [
+        { id: 'discover', title: 'Discover & Analyze', details: '<strong>Goal:</strong> Identify root cause of engagement dip in Developer 25-34 segment & APAC negative sentiment. <br><strong>KPIs:</strong> Competitor SOV, Voice of Customer theme volume. <br><strong>Insight Source:</strong> Dashboard charts.' },
+        { id: 'strategize', title: 'Strategize & Plan', details: '<strong>Goal:</strong> Develop "AI Integration" feature roadmap to close product gap. Plan targeted counter-messaging campaign against "InnovateCo". <br><strong>KPIs:</strong> Feature spec completion, campaign creative drafts. <br><strong>Action:</strong> Prioritize R&D for AI features.' },
+        { id: 'activate', title: 'Activate & Execute', details: '<strong>Goal:</strong> Launch "Project Chimera" marketing campaign to highlight our new AI capabilities. Begin phased rollout of new features. <br><strong>KPIs:</strong> Campaign ROI, initial feature adoption rate. <br><strong>Activation:</strong> Trigger via MCP.' },
+        { id: 'optimize', title: 'Measure & Optimize', details: '<strong>Goal:</strong> Monitor engagement lift in key demo and sentiment shift in APAC. A/B test campaign messaging. <br><strong>KPIs:</strong> Engagement Index, Sentiment Score, SOV. <br><strong>Feedback Loop:</strong> Feed results back into live dashboard.' },
+    ];
+    const roadmapContainer = document.getElementById('roadmap-container');
+    const roadmapDetails = document.getElementById('roadmap-details');
+    roadmapData.forEach((step, index) => {
+        const stepEl = document.createElement('div');
+        stepEl.className = 'roadmap-step flex-1 flex flex-col items-center cursor-pointer p-4';
+        stepEl.dataset.id = step.id;
+        stepEl.innerHTML = `<div class="roadmap-circle w-8 h-8 rounded-full border-2 border-sky-400 flex items-center justify-center font-bold mb-2">${index + 1}</div><p class="text-center text-sm font-semibold">${step.title}</p>`;
+        roadmapContainer.appendChild(stepEl);
+        
+        stepEl.addEventListener('click', () => {
+            document.querySelectorAll('.roadmap-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.roadmap-circle').forEach(c => c.classList.remove('bg-sky-500', 'shadow-lg', 'shadow-sky-500/50'));
+            stepEl.classList.add('active');
+            stepEl.querySelector('.roadmap-circle').classList.add('bg-sky-500', 'shadow-lg', 'shadow-sky-500/50');
+            const data = roadmapData.find(d => d.id === step.id);
+            roadmapDetails.innerHTML = `<h4 class="font-bold text-lg text-sky-200 mb-2">${data.title}</h4><p class="text-sky-300 text-sm">${data.details}</p>`;
+        });
+    });
+    if(document.querySelector('.roadmap-step')) {
+       document.querySelector('.roadmap-step').click();
+    }
+});
+</script>
+</body>
+</html>
+
+```
