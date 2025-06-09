@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Notion User Base Report: Interactive Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A top-down, narrative-driven dashboard. The structure starts with a high-level summary of Notion's market size to immediately establish its scale. It then flows into growth trends to show momentum, followed by a demographic breakdown (geography, company size) to add layers of context. The core of the app is the "Marketing User Deep Dive," which is the central question of the prompt. This section uses interactive elements to allow users to explore industries, companies, and job titles, making the data tangible. The final sections on platform opportunities and AI adoption serve as a strategic conclusion. This flow was chosen to guide the user from a broad understanding to a specific, actionable insight, mirroring a typical business analysis process and maximizing usability. -->
+    <!-- Visualization & Content Choices: 
+        - Overall Metrics (Goal: Inform): Presented as large, dynamic "Key Metric" cards for immediate impact. Uses simple HTML/JS to animate numbers on load.
+        - Growth Trends (Goal: Show Change): A dual-axis line chart (Chart.js) effectively compares user growth and revenue over time, highlighting the parallel success story. Interaction: Tooltips on hover provide exact figures.
+        - Geographic/Company Size (Goal: Compare/Inform): Donut and Bar charts (Chart.js) were chosen for their clarity in showing proportions and segment sizes. Interaction: Interactive tooltips and clear legends.
+        - Marketing Industries (Goal: Compare): A horizontal bar chart (Chart.js) provides a clear ranking of industries where marketing users are prevalent.
+        - Companies/Job Titles (Goal: Organize/Explore): An interactive card grid with filters (HTML/JS) was chosen over a static table. This allows users to actively engage with the data, filtering by company size to see relevant examples of companies and the typical marketing roles found within them. This is more dynamic and user-centric than a passive list.
+        - All text blocks provide context for the visualizations, explaining what the data shows and why it's important, directly addressing the report's narrative.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #37352f;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .metric-card {
+            background-color: #ffffff;
+            border: 1px solid #e9e9e7;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .filter-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .filter-btn.active {
+            background-color: #37352f;
+            color: #ffffff;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Notion User Base Report</h1>
+            <p class="mt-4 text-lg text-gray-600">An Interactive Analysis for 2025: Spotlight on Marketing Professionals</p>
+        </header>
+
+        <main>
+            <section id="market-size" class="mb-16 fade-in" style="animation-delay: 100ms;">
+                <h2 class="text-3xl font-bold text-center mb-8">Overall Market at a Glance</h2>
+                 <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">Notion has achieved significant scale, establishing itself as a dominant force in the collaborative workspace market. The following key metrics from 2024 illustrate the breadth and depth of its user base and enterprise adoption, providing the foundation for its continued growth and the opportunity for integrated AI solutions.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="metric-card p-6 rounded-lg">
+                        <p class="text-gray-500 text-sm font-medium">Total Users</p>
+                        <p id="totalUsers" class="text-4xl font-bold mt-2">0</p>
+                        <p class="text-xs text-gray-400 mt-1">Worldwide</p>
+                    </div>
+                    <div class="metric-card p-6 rounded-lg">
+                        <p class="text-gray-500 text-sm font-medium">Paying Customers</p>
+                        <p id="payingCustomers" class="text-4xl font-bold mt-2">0</p>
+                        <p class="text-xs text-gray-400 mt-1">Subscribed Accounts</p>
+                    </div>
+                    <div class="metric-card p-6 rounded-lg">
+                        <p class="text-gray-500 text-sm font-medium">Business Adoption</p>
+                        <p id="businessAdoption" class="text-4xl font-bold mt-2">0</p>
+                        <p class="text-xs text-gray-400 mt-1">Companies Using Notion</p>
+                    </div>
+                    <div class="metric-card p-6 rounded-lg">
+                        <p class="text-gray-500 text-sm font-medium">Fortune 500</p>
+                        <p id="fortune500" class="text-4xl font-bold mt-2">0%</p>
+                        <p class="text-xs text-gray-400 mt-1">Penetration Rate</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="growth-trends" class="mb-16 p-8 bg-white rounded-lg border border-gray-200 fade-in" style="animation-delay: 200ms;">
+                <h2 class="text-3xl font-bold text-center mb-4">Exceptional Growth Trajectory</h2>
+                <p class="text-center max-w-3xl mx-auto text-gray-600 mb-8">Notion's growth from 2019 to 2024 showcases a powerful product-market fit, evolving from a note-taking app to a comprehensive workspace. This chart visualizes the exponential increase in both its user base and estimated annual revenue, demonstrating a successful scaling strategy and robust monetization.</p>
+                <div class="chart-container mx-auto">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </section>
+
+            <section id="demographics" class="mb-16 fade-in" style="animation-delay: 300ms;">
+                <h2 class="text-3xl font-bold text-center mb-8">User Demographics: Global & Business Scale</h2>
+                 <p class="text-center max-w-3xl mx-auto text-gray-600 mb-10">Understanding who uses Notion reveals its core markets. The platform has a strong foothold in major international markets and is particularly popular among small to medium-sized businesses. These charts break down the user base by geography and company size, identifying the largest and most strategic segments.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="font-semibold text-center mb-4">Geographic Distribution</h3>
+                        <div class="chart-container mx-auto" style="height:300px; max-height:350px;">
+                            <canvas id="geoChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="font-semibold text-center mb-4">Company Size Distribution</h3>
+                        <div class="chart-container mx-auto" style="height:300px; max-height:350px;">
+                            <canvas id="companySizeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="marketing-deep-dive" class="py-16 bg-white rounded-lg border border-gray-200 fade-in" style="animation-delay: 400ms;">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-bold text-center mb-4">Deep Dive: The Notion Marketing User</h2>
+                    <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Marketing teams are a primary and highly engaged segment within the Notion ecosystem. This section explores their profile in detail, answering who they are, where they work, and what roles they hold. Understanding this audience is key to grasping the opportunity for specialized tools like AI-powered prompt libraries.</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <div class="lg:col-span-2">
+                             <h3 class="font-semibold text-xl mb-4 text-center lg:text-left">Top Industries for Marketing Users</h3>
+                             <p class="text-gray-600 mb-6 text-center lg:text-left text-sm">Notion's flexibility attracts marketers from various fields, but its adoption is highest in technology and creative sectors. This chart displays the leading industries by the number of companies using Notion, highlighting where marketing use cases are most concentrated.</p>
+                            <div class="chart-container mx-auto" style="height:320px; max-height:400px;">
+                                <canvas id="industryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-3">
+                            <h3 class="font-semibold text-xl mb-4 text-center lg:text-left">Company Profiles & Common Job Titles</h3>
+                            <p class="text-gray-600 mb-6 text-center lg:text-left text-sm">Explore which companies use Notion and the typical marketing job titles found within them. Use the filters to see examples based on company size. This demonstrates how Notion scales from startups to enterprise-level marketing departments.</p>
+
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
+                                <button class="filter-btn active py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm font-medium" data-filter="all">All Sizes</button>
+                                <button class="filter-btn py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm font-medium" data-filter="smb">SMB (0-49)</button>
+                                <button class="filter-btn py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm font-medium" data-filter="mid">Mid-Market (100-249)</button>
+                                <button class="filter-btn py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm font-medium" data-filter="ent">Enterprise</button>
+                            </div>
+
+                            <div id="marketing-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="opportunity" class="mt-16 text-center fade-in" style="animation-delay: 500ms;">
+                <h2 class="text-3xl font-bold mb-4">The Launchpad for AI Innovation</h2>
+                <p class="max-w-4xl mx-auto text-gray-600">The Notion ecosystem, with its massive, engaged, and tech-savvy user base, represents an unparalleled opportunity. Its users, particularly the 1,950+ marketing companies, already operate within a template-driven culture and are primed for AI solutions that enhance productivity. The platform's built-in distribution, combined with a clear market need for structured AI frameworks, makes it the perfect environment to launch and scale solutions like the Prompt Engineering Operating System, targeting the underserved segment of SMBs that need powerful AI tools without enterprise-level consulting costs.</p>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+            <p class="text-sm text-gray-500">Interactive Report generated based on 2025 Notion User Base Analysis. All data is derived from the provided source report.</p>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const reportData = {
+        keyMetrics: {
+            totalUsers: 30,
+            payingCustomers: 4,
+            businessAdoption: 98000,
+            fortune500: 50,
+        },
+        growth: {
+            years: ['2019', '2024'],
+            users: [1, 30],
+            revenue: [3, 300]
+        },
+        geoDistribution: {
+            labels: ['United States', 'United Kingdom', 'France', 'Other'],
+            data: [51, 11, 7, 31],
+            companies: ['~36,500', '~7,750', '~4,900', 'N/A']
+        },
+        companySize: {
+            labels: ['20-49 emp', '0-9 emp', '100-249 emp', 'Other'],
+            data: [29800, 24000, 15800, 28400]
+        },
+        marketingIndustries: {
+            labels: ['Marketing', 'Technology', 'Machine Learning'],
+            data: [1950, 1640, 1550]
+        },
+        marketingProfiles: [
+            { name: 'Startup Marketing Dept.', category: 'smb', description: 'Uses Notion as an all-in-one hub.', roles: ['Marketing Manager', 'Content Creator', 'Social Media Specialist'] },
+            { name: 'Creative Agency', category: 'smb', description: 'Manages client projects and internal ops.', roles: ['Account Manager', 'Project Manager', 'Brand Strategist'] },
+            { name: 'SaaS Company', category: 'mid', description: 'Product marketing and content strategy hub.', roles: ['Product Marketing Manager', 'Content Strategist', 'SEO Specialist'] },
+            { name: 'Tech Company', category: 'mid', description: 'Cross-functional campaign collaboration.', roles: ['Campaign Manager', 'Marketing Ops', 'Demand Gen Lead'] },
+            { name: 'Fortune 500 Division', category: 'ent', description: 'Knowledge base and project wiki for a specific team.', roles: ['Marketing Team Lead', 'Internal Comms', 'Data Analyst'] },
+            { name: 'Global Enterprise', category: 'ent', description: 'Centralized resource for brand guidelines and playbooks.', roles: ['Global Brand Manager', 'Marketing Director', 'Enablement Lead'] }
+        ]
+    };
+
+    function animateValue(obj, start, end, duration, suffix = '', isFloat = false) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            let value = progress * (end - start) + start;
+            if (isFloat) {
+                obj.innerHTML = value.toFixed(1) + suffix;
+            } else {
+                obj.innerHTML = Math.floor(value).toLocaleString() + suffix;
+            }
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+    
+    function initKeyMetrics() {
+        const { keyMetrics } = reportData;
+        animateValue(document.getElementById('totalUsers'), 0, keyMetrics.totalUsers, 1500, 'M+');
+        animateValue(document.getElementById('payingCustomers'), 0, keyMetrics.payingCustomers, 1500, 'M+');
+        animateValue(document.getElementById('businessAdoption'), 0, keyMetrics.businessAdoption, 1500, '+');
+        animateValue(document.getElementById('fortune500'), 0, keyMetrics.fortune500, 1500, '%');
+    }
+
+    function initGrowthChart() {
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: reportData.growth.years,
+                datasets: [
+                    {
+                        label: 'Total Users (Millions)',
+                        data: reportData.growth.users,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        yAxisID: 'y',
+                        tension: 0.4,
+                        fill: true,
+                    },
+                    {
+                        label: 'Revenue (Millions USD)',
+                        data: reportData.growth.revenue,
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.4,
+                        fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false } 
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Users (Millions)' },
+                        grid: { color: '#e9e9e7' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Revenue ($M)' },
+                        grid: { drawOnChartArea: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    if (context.dataset.yAxisID === 'y1') {
+                                       label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y) + 'M';
+                                    } else {
+                                        label += context.parsed.y + 'M';
+                                    }
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initGeoChart() {
+        const ctx = document.getElementById('geoChart').getContext('2d');
+        const { labels, data, companies } = reportData.geoDistribution;
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'User Distribution',
+                    data: data,
+                    backgroundColor: ['#3b82f6', '#16a34a', '#f97316', '#e5e7eb'],
+                    borderColor: '#ffffff',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) { label += ': '; }
+                                label += context.raw + '%';
+                                const companyInfo = companies[context.dataIndex];
+                                if(companyInfo && companyInfo !== 'N/A') {
+                                     return [label, `(${companyInfo} companies)`];
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initCompanySizeChart() {
+        const ctx = document.getElementById('companySizeChart').getContext('2d');
+        const { labels, data } = reportData.companySize;
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Companies',
+                    data: data,
+                    backgroundColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                     x: { grid: { color: '#e9e9e7' } },
+                     y: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                               return ' ' + context.parsed.x.toLocaleString() + ' companies';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initIndustryChart() {
+        const ctx = document.getElementById('industryChart').getContext('2d');
+        const { labels, data } = reportData.marketingIndustries;
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Companies',
+                    data: data,
+                    backgroundColor: ['#3b82f6', '#16a34a', '#f97316'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                     x: { grid: { color: '#e9e9e7' }, title: {display: true, text: 'Number of Companies'} },
+                     y: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                               return ' ' + context.parsed.x.toLocaleString() + '+ companies';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function renderMarketingCards(filter = 'all') {
+        const container = document.getElementById('marketing-cards');
+        container.innerHTML = '';
+        const filteredData = (filter === 'all')
+            ? reportData.marketingProfiles
+            : reportData.marketingProfiles.filter(p => p.category === filter || (filter === 'smb' && p.category === 'smb') || (filter === 'mid' && p.category === 'mid') || (filter === 'ent' && p.category === 'ent'));
+
+        filteredData.forEach(profile => {
+            const card = document.createElement('div');
+            card.className = 'bg-gray-50 p-5 rounded-lg border border-gray-200 fade-in';
+            let rolesHtml = profile.roles.map(role => `<span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${role}</span>`).join('');
+            
+            card.innerHTML = `
+                <h4 class="font-bold text-gray-800">${profile.name}</h4>
+                <p class="text-sm text-gray-500 mt-1 mb-4">${profile.description}</p>
+                <div>
+                    <p class="text-xs font-semibold text-gray-600 mb-2">Common Roles:</p>
+                    ${rolesHtml}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function initMarketingFilters() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                renderMarketingCards(button.dataset.filter);
+            });
+        });
+    }
+    
+
+    initKeyMetrics();
+    initGrowthChart();
+    initGeoChart();
+    initCompanySizeChart();
+    initIndustryChart();
+    renderMarketingCards();
+    initMarketingFilters();
+
+});
+</script>
+
+</body>
+</html>
