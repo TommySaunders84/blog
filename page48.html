@@ -1,0 +1,602 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go-to-Market Strategy: The Prompt Engineering Project</title>
+    
+    <!-- Fonts & Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      /* Base Styles */
+      body {
+        font-family: 'IBM Plex Sans', sans-serif;
+        background-color: #0a0a0a;
+        color: #e5e7eb;
+      }
+      h1, h2, h3, h4, .font-sans-header {
+        font-family: 'DM Sans', sans-serif;
+      }
+
+      /* Color Utilities */
+      .bg-primary-dark { background-color: #002d9c; }
+      .text-primary-light { color: #3b82f6; }
+      .border-primary-light { border-color: #3b82f6; }
+      .kpi-value { color: #60a5fa; } /* blue-400 for dark bg */
+
+      /* Content-section anchor spacing */
+      .content-section {
+        padding-top: 5rem;
+        margin-top: -4rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid #1f2937;
+      }
+      .content-section:last-child {
+        border-bottom: none;
+      }
+
+      /* Section headings */
+      .style-heading {
+        border-left: 4px solid #3b82f6;
+        padding-left: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Quote blocks */
+       blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #d1d5db; /* gray-300 */
+            margin: 1rem 0;
+        }
+
+      /* Sidebar nav */
+      .sidebar-nav a {
+        display: block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s, color 0.2s;
+        color: #9ca3af;
+        font-size: 0.875rem;
+      }
+      .sidebar-nav a:hover {
+        background-color: #1f2937;
+        color: #e5e7eb;
+      }
+      .sidebar-nav a.active {
+        background-color: #1f2937;
+        color: #e5e7eb;
+        font-weight: 600;
+      }
+       .sidebar-nav .sub-link {
+        padding-left: 1.75rem;
+        font-size: 0.8rem;
+        position: relative;
+      }
+      .sidebar-nav .sub-link::before {
+        content: '';
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 1px;
+        background-color: #4b5563; /* gray-600 */
+      }
+      
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .kpi-card {
+        background-color: #111827; /* gray-900 */
+        border-radius: 0.5rem;
+        border: 1px solid #1f2937; /* gray-800 */
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .kpi-card .kpi-value {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+      }
+      .kpi-card .kpi-label {
+        font-size: 0.875rem;
+        color: #9ca3af; /* gray-400 */
+        margin-top: 0.25rem;
+      }
+      
+      /* Gemini Feature Styles */
+      .gemini-feature-card {
+        background-color: #111827;
+        border: 1px solid #3b82f6;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 2rem;
+      }
+      .gemini-feature-card label {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .gemini-feature-card input, .gemini-feature-card textarea {
+        background-color: #1f2937;
+        border: 1px solid #374151;
+        color: #e5e7eb;
+        border-radius: 0.375rem;
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+        margin-top: 0.25rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .gemini-feature-card input:focus, .gemini-feature-card textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px #1e40af;
+      }
+      .gemini-button {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s;
+        cursor: pointer;
+      }
+      .gemini-button:hover {
+        background-color: #2563eb;
+      }
+      .gemini-button:disabled {
+        background-color: #374151;
+        cursor: not-allowed;
+      }
+      .gemini-output {
+        background-color: #0a0a0a;
+        border: 1px solid #1f2937;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        color: #d1d5db;
+        min-height: 100px;
+        white-space: pre-wrap;
+      }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="max-w-7xl mx-auto lg:flex">
+        <!-- Sticky Sidebar -->
+        <aside class="w-full lg:w-64 lg:h-screen lg:sticky lg:top-0 py-8 lg:py-12 lg:pr-8">
+            <h1 class="font-sans-header text-lg font-bold px-3">GTM Strategy</h1>
+            <p class="px-3 text-sm text-gray-400 mb-4">The Prompt Engineering Project</p>
+            <nav id="sidebar-nav" class="sidebar-nav space-y-1">
+                <a href="#executive-summary">Executive Summary</a>
+                <a href="#market-landscape">Market Landscape</a>
+                <a href="#competitive-analysis">Competitive Analysis</a>
+                <a href="#actionable-insights">Actionable Insights</a>
+                <a href="#positioning-strategy">Positioning Strategy</a>
+                <a href="#pricing-strategy">Pricing Strategy</a>
+                <a href="#targeting-strategy">Targeting Strategy</a>
+                <a href="#distribution-channels">Distribution Channels</a>
+                <a href="#partnership-opportunities">Partnership Opportunities</a>
+                <a href="#implementation-roadmap">Implementation Roadmap</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0">
+            <!-- Header for the main content -->
+            <header class="py-8 px-4 lg:px-8 border-b border-gray-800">
+                <h2 class="font-sans-header text-4xl font-bold">Go-to-Market Strategy</h2>
+                <p class="text-lg text-gray-400 mt-2">An interactive analysis of the market opportunity, competitive landscape, and strategic roadmap for The Prompt Engineering Project.</p>
+            </header>
+
+            <div class="px-4 lg:px-8">
+                <!-- Executive Summary -->
+                <section id="executive-summary" class="content-section">
+                    <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Executive Summary</h2>
+                    </div>
+                    <p class="text-gray-300">The Prompt Engineering Project sits at the intersection of explosive AI adoption and a **$6.65 billion** marketing automation market growing at **13.85% CAGR**. With 69.1% of marketers already using AI tools but facing significant implementation barriers, there's a critical opportunity to bridge the gap between advanced AI capabilities and practical marketing needs. This represents a first-mover advantage in the emerging MCP-powered marketing tools space.</p>
+                    <p class="mt-4 text-gray-300">The analysis reveals a clear market gap: while MCP adoption is accelerating rapidly (launched November 2024, already **5,000+** active servers), marketing professionals face a 70% technical challenge rate and 67% lack adequate training. This creates perfect positioning for a no-code, marketing-focused MCP solution that can capture significant market share.</p>
+                </section>
+
+                <!-- Market Landscape -->
+                <section id="market-landscape" class="content-section">
+                    <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Market Landscape</h2>
+                    </div>
+                    <p class="text-gray-300">The MCP adoption curve shows explosive early growth. However, a significant portion of marketers face barriers to entry. Marketing professionals report high ROI from automation but struggle to find tools that meet their needs, signaling a clear opportunity for specialized, user-friendly solutions.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 my-8">
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                            <p class="text-sm text-gray-400">Average ROI from Marketing Automation</p>
+                            <p class="font-sans-header text-5xl font-bold kpi-value">544%</p>
+                        </div>
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                            <p class="text-sm text-gray-400">of Organizations Increasing AI Investment</p>
+                            <p class="font-sans-header text-5xl font-bold kpi-value">90%</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                        <h3 class="font-sans-header font-semibold text-center mb-4">Key Marketer Pain Points</h3>
+                        <canvas id="painPointsChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Competitive Analysis -->
+                <section id="competitive-analysis" class="content-section">
+                    <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Competitive Analysis</h2>
+                    </div>
+                    <p class="text-gray-300">The competitive landscape shows a clear market gap in MCP-marketing integration. Direct competitors like large enterprise solutions and specialized AI tools either lack simplicity or workflow integration, creating a strategic opening. No established player specifically targets this intersection, creating a time-sensitive first-mover advantage.</p>
+                     <div class="bg-gray-900 p-6 rounded-lg border border-gray-800 my-8">
+                        <h3 class="font-sans-header font-semibold text-center mb-4">Marketing Automation Market Share (Select Players)</h3>
+                         <canvas id="marketShareChart"></canvas>
+                    </div>
+                </section>
+                
+                <!-- Actionable Insights -->
+                <section id="actionable-insights" class="content-section">
+                    <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Actionable Insights From Research</h2>
+                    </div>
+                    <h3 class="font-sans-header text-xl font-semibold mt-6 mb-2">Strategic Market Entry</h3>
+                    <p class="text-gray-300">The confluence of MCP's early adoption and marketers' struggles with AI integration creates an unprecedented market entry opportunity. The data shows a fundamental market inefficiency: while 69.1% of marketers use AI, 70% struggle with technical integration. This allows us to establish category leadership before competitors react.</p>
+
+                    <h3 class="font-sans-header text-xl font-semibold mt-6 mb-2">Pricing & Monetization</h3>
+                    <p class="text-gray-300">A critical pricing sweet spot exists between basic tools ($10-20/mo) and enterprise solutions ($100+/mo). A subscription model capitalizes on the 72% marketer preference for predictable pricing and allows us to position our Professional tier as a high-value alternative to expensive platforms.</p>
+
+                    <div class="kpi-grid my-8">
+                        <div class="kpi-card"><div class="kpi-value">65%</div><div class="kpi-label">Target Gross Margin (6 mos)</div></div>
+                        <div class="kpi-card"><div class="kpi-value">$2k+</div><div class="kpi-label">Target Customer LTV</div></div>
+                        <div class="kpi-card"><div class="kpi-value">60%</div><div class="kpi-label">Target User Activation via Integrations</div></div>
+                        <div class="kpi-card"><div class="kpi-value">2x</div><div class="kpi-label">Higher Retention w/ Analytics</div></div>
+                    </div>
+
+                    <h3 class="font-sans-header text-xl font-semibold mt-6 mb-2">Growth & Product Strategy</h3>
+                    <p class="text-gray-300">Growth will be driven by a community-first playbook, integration-led product development, and establishing educational authority. By focusing on bi-directional integrations (e.g., with HubSpot) and creating proprietary templates, we build a competitive moat and increase switching costs. This approach aims to achieve higher user activation and retention rates than industry averages.</p>
+                </section>
+
+                <!-- Positioning Strategy -->
+                <section id="positioning-strategy" class="content-section">
+                    <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Positioning Strategy</h2>
+                    </div>
+                     <p class="text-gray-300">Lead with business benefits, not technical features. Research shows marketing professionals prioritize efficiency gains (79% cite productivity improvements) and ROI measurement over technical capabilities.</p>
+                    <h3 class="font-sans-header text-lg font-semibold mt-6 mb-2">Primary Value Proposition</h3>
+                    <blockquote>"For marketing professionals at 20-49 employee companies who struggle with content distribution across multiple channels, The Prompt Engineering Project is a no-code content management platform that enables you to create content once and publish it everywhere, unlike manual copy-paste workflows or complex technical solutions that require developer resources."</blockquote>
+
+                    <!-- Gemini Feature: Value Prop Generator -->
+                    <div class="gemini-feature-card">
+                        <h3 class="font-sans-header text-xl font-semibold mb-4 text-white">✨ Generate Your Value Proposition</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="vp-product-name">Your Product/Company Name</label>
+                                <input id="vp-product-name" type="text" placeholder="e.g., Phoenix CRM">
+                            </div>
+                            <div>
+                                <label for="vp-target-audience">Your Target Audience</label>
+                                <input id="vp-target-audience" type="text" placeholder="e.g., Freelance Designers">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="vp-differentiators">Key Problems & Differentiators (one per line)</label>
+                            <textarea id="vp-differentiators" rows="3" placeholder="e.g., Struggle with client invoicing&#10;Is a platform for automated billing&#10;Unlike manual spreadsheets"></textarea>
+                        </div>
+                        <div class="mt-4">
+                            <button id="vp-generate-btn" class="gemini-button">Generate Value Proposition</button>
+                        </div>
+                        <div id="vp-output" class="gemini-output hidden"></div>
+                    </div>
+                </section>
+
+                <!-- Pricing Strategy -->
+                <section id="pricing-strategy" class="content-section">
+                     <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Pricing Strategy</h2>
+                    </div>
+                    <p class="text-gray-300">A recommended tiered subscription model captures different market segments, leveraging the 72% marketer preference for predictable monthly pricing.</p>
+                     <div class="grid md:grid-cols-3 gap-6 my-8 text-center">
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                            <h4 class="font-sans-header font-bold text-primary-light">Starter Tier</h4>
+                            <p class="font-sans-header text-4xl font-bold my-2">$19</p>
+                            <p class="text-sm text-gray-400">/ month</p>
+                            <p class="text-sm mt-4">For individual marketers with essential features.</p>
+                        </div>
+                        <div class="bg-gray-900 p-6 rounded-lg border-2 border-primary-light shadow-lg">
+                             <h4 class="font-sans-header font-bold text-primary-light">Professional Tier</h4>
+                            <p class="font-sans-header text-4xl font-bold my-2">$49</p>
+                            <p class="text-sm text-gray-400">/ month</p>
+                             <p class="text-sm mt-4">For small teams (2-5 users) with full access & automation.</p>
+                        </div>
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+                             <h4 class="font-sans-header font-bold text-primary-light">Team Tier</h4>
+                            <p class="font-sans-header text-4xl font-bold my-2">$99</p>
+                            <p class="text-sm text-gray-400">/ month</p>
+                             <p class="text-sm mt-4">For growing departments (5-15 users) with advanced analytics.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Targeting Strategy -->
+                <section id="targeting-strategy" class="content-section">
+                     <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Targeting Strategy</h2>
+                    </div>
+                     <p class="text-gray-300">The strategy leverages existing ecosystems like Notion for immediate market entry and focuses on LinkedIn for targeting marketing decision-makers at 20-49 employee companies. A multi-channel distribution approach prioritizes content marketing, community engagement, and strategic partnerships to build brand authority and drive organic growth.</p>
+                     
+                     <!-- Gemini Feature: Ad Copy Generator -->
+                    <div class="gemini-feature-card">
+                        <h3 class="font-sans-header text-xl font-semibold mb-4 text-white">✨ Generate Sample Ad Copy</h3>
+                        <p class="text-gray-400 mb-4">Click the button below to generate a sample LinkedIn ad for The Prompt Engineering Project based on the strategy defined on this page.</p>
+                        <div class="mt-4">
+                            <button id="ad-generate-btn" class="gemini-button">Generate LinkedIn Ad</button>
+                        </div>
+                        <div id="ad-output" class="gemini-output hidden"></div>
+                    </div>
+                </section>
+
+                <!-- Distribution Channels -->
+                 <section id="distribution-channels" class="content-section">
+                     <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Distribution Channels</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">A three-phase distribution strategy will optimize resource allocation over 12 months:</p>
+                     <ul class="list-none space-y-2">
+                        <li><strong class="text-primary-light">Phase 1 (Months 1-3):</strong> Foundation Building</li>
+                        <li><strong class="text-primary-light">Phase 2 (Months 4-6):</strong> Partnership Development</li>
+                        <li><strong class="text-primary-light">Phase 3 (Months 7-12):</strong> Scale and Optimization</li>
+                    </ul>
+                </section>
+
+                 <!-- Partnership Opportunities -->
+                 <section id="partnership-opportunities" class="content-section">
+                     <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Partnership Opportunities</h2>
+                    </div>
+                     <p class="text-gray-300">Strategic partnerships are key to scalable growth. This includes deep integrations with major marketing platforms, a competitive affiliate program, a community-driven template marketplace, and channel partnerships with marketing agencies for white-label offerings.</p>
+                </section>
+
+                 <!-- Implementation Roadmap -->
+                <section id="implementation-roadmap" class="content-section">
+                     <div class="style-heading">
+                        <h2 class="font-sans-header text-2xl font-bold">Implementation Roadmap</h2>
+                    </div>
+                     <p class="text-gray-300">First-mover advantage requires rapid execution. The following are our key targets for the first 12 months to establish market presence before larger competitors enter the space.</p>
+                     <div class="grid grid-cols-2 md:grid-cols-3 gap-6 my-8">
+                        <div class="kpi-card">
+                            <p class="kpi-value">50k+</p>
+                            <p class="kpi-label">Monthly Visitors</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="kpi-value">1k+</p>
+                            <p class="kpi-label">Community Members</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="kpi-value">25+</p>
+                            <p class="kpi-label">Live Integrations</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="kpi-value">100+</p>
+                            <p class="kpi-label">Active Affiliates</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="kpi-value">500+</p>
+                            <p class="kpi-label">Marketplace Templates</p>
+                        </div>
+                         <div class="kpi-card">
+                            <p class="kpi-value">10+</p>
+                            <p class="kpi-label">Agency Partners</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar scroll-spy logic
+            const sections = document.querySelectorAll('.content-section');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+            const activateLink = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateLink(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Chart.js Configuration for dark theme
+            const chartFont = { family: 'IBM Plex Sans', size: 12 };
+            const chartColors = {
+                blue: 'rgba(59, 130, 246, 0.6)',
+                indigo: 'rgba(99, 102, 241, 0.6)',
+                purple: 'rgba(139, 92, 246, 0.6)',
+                gray: 'rgba(75, 85, 99, 0.6)',
+                blue_border: 'rgb(96, 165, 250)',
+                indigo_border: 'rgb(129, 140, 248)',
+                purple_border: 'rgb(167, 139, 250)',
+            };
+            Chart.defaults.font.family = chartFont.family;
+            Chart.defaults.font.size = chartFont.size;
+            Chart.defaults.color = '#9ca3af'; // gray-400
+            Chart.defaults.plugins.legend.position = 'bottom';
+            Chart.defaults.plugins.tooltip.backgroundColor = '#1f2937'; // gray-800
+            Chart.defaults.plugins.tooltip.titleFont.size = 14;
+            Chart.defaults.plugins.tooltip.bodyFont.size = 12;
+
+            // Pain Points Chart (Horizontal Bar)
+            const painPointsCtx = document.getElementById('painPointsChart')?.getContext('2d');
+            if (painPointsCtx) {
+                new Chart(painPointsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Technical Complexity', 'Lack of Training', 'Security Concerns'],
+                        datasets: [{
+                            label: '% of Marketers',
+                            data: [70, 67, 40],
+                            backgroundColor: [chartColors.blue, chartColors.indigo, chartColors.purple],
+                            borderColor: [chartColors.blue_border, chartColors.indigo_border, chartColors.purple_border],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { suggestedMax: 100, grid: { color: '#1f2937' } }, y: { grid: { color: '#1f2937' } } }
+                    }
+                });
+            }
+
+            // Market Share Chart (Doughnut)
+            const marketShareCtx = document.getElementById('marketShareChart')?.getContext('2d');
+            if(marketShareCtx){
+                new Chart(marketShareCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['HubSpot', 'Adobe', 'Others'],
+                        datasets: [{
+                            data: [38.32, 8, 53.68],
+                            backgroundColor: [chartColors.blue, chartColors.indigo, chartColors.gray],
+                            borderColor: '#0a0a0a',
+                            hoverOffset: 4
+                        }]
+                    },
+                     options: { plugins: { legend: { labels: { color: '#d1d5db' }}}}
+                });
+            }
+            
+            // --- Gemini API Feature Logic ---
+
+            const callGemini = async (prompt) => {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        console.error("Unexpected response structure:", result);
+                        return "Error: Could not parse response from AI.";
+                    }
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    return `Error: ${error.message}. Please check console for details.`;
+                }
+            };
+            
+            // Value Proposition Generator
+            const vpButton = document.getElementById('vp-generate-btn');
+            const vpOutput = document.getElementById('vp-output');
+            
+            vpButton.addEventListener('click', async () => {
+                const productName = document.getElementById('vp-product-name').value;
+                const targetAudience = document.getElementById('vp-target-audience').value;
+                const differentiatorsText = document.getElementById('vp-differentiators').value;
+
+                if (!productName || !targetAudience || !differentiatorsText) {
+                    vpOutput.textContent = "Please fill in all fields.";
+                    vpOutput.classList.remove('hidden');
+                    return;
+                }
+
+                vpButton.disabled = true;
+                vpButton.textContent = 'Generating...';
+                vpOutput.classList.remove('hidden');
+                vpOutput.textContent = 'Thinking...';
+                
+                const prompt = `You are a marketing strategist. Based on the following template and product details, write a compelling value proposition.
+                TEMPLATE: "For [Target Audience] who struggle with [Problem], [Product Name] is a [Product Category] that enables you to [Key Benefit], unlike [Alternative]."
+                INSTRUCTIONS: Use the user-provided details to fill in the template. The differentiators text contains the problem, the product category/key benefit, and the alternative. Interpret them intelligently.
+                USER-PROVIDED DETAILS:
+                - Product Name: ${productName}
+                - Target Audience: ${targetAudience}
+                - Differentiators (one per line, describing problem, solution, and alternative): ${differentiatorsText}
+                
+                Return only the final value proposition text.`;
+                
+                const result = await callGemini(prompt);
+                vpOutput.textContent = result;
+                vpButton.disabled = false;
+                vpButton.textContent = 'Generate Value Proposition';
+            });
+            
+            // Ad Copy Generator
+            const adButton = document.getElementById('ad-generate-btn');
+            const adOutput = document.getElementById('ad-output');
+            
+            adButton.addEventListener('click', async () => {
+                adButton.disabled = true;
+                adButton.textContent = 'Generating...';
+                adOutput.classList.remove('hidden');
+                adOutput.textContent = 'Thinking...';
+                
+                const prompt = `You are a senior copywriter for a B2B SaaS company. Your product is 'The Prompt Engineering Project'. 
+                The primary value proposition is: "For marketing professionals at 20-49 employee companies who struggle with content distribution across multiple channels, The Prompt Engineering Project is a no-code content management platform that enables you to create content once and publish it everywhere, unlike manual copy-paste workflows or complex technical solutions that require developer resources."
+                The target audience is marketing managers and content managers.
+                
+                Write a compelling, short-form LinkedIn ad. The output must be a clean, readable text block with clear sections for Headline, Body, and CTA. 
+                Example Format:
+                
+                **Headline:** Your headline here
+                
+                **Body:** Your body text here. Keep it concise, around 2-3 short paragraphs.
+                
+                **CTA:** Your call to action here
+                `;
+                
+                const result = await callGemini(prompt);
+                adOutput.textContent = result;
+                adButton.disabled = false;
+                adButton.textContent = 'Generate LinkedIn Ad';
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+```
