@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Trends & Market Research | SPA Infographic</title>
+
+    <!-- Chosen Palette: "Calm Clarity" - A minimal palette with a warm neutral background, slate grays for text, and a subtle amber accent for highlights. -->
+    <!-- Application Structure Plan: A single-page, vertical scroll layout with a sticky top navigation bar. This structure was chosen for its intuitive, story-like flow, guiding the user logically from the high-level market overview down to the tactical execution details. It presents the information in a compelling narrative, starting with the opportunity, defining the challenges, analyzing the competition, and finally presenting the strategic plan. This is more user-friendly than a rigid chapter-by-chapter report structure. -->
+    <!-- Visualization & Content Choices: The source report's data is visualized to maximize clarity and impact. Key stats are presented as large "KPI cards" (Goal: Inform) for immediate impact. A horizontal bar chart (Chart.js) is used for "The Challenge" section (Goal: Compare) to clearly rank marketer pain points. A donut chart (Chart.js) shows "Market Share" (Goal: Compare composition) as it's cleaner than a pie chart. A SWOT analysis and a 3-phase roadmap are visualized using styled HTML/CSS with Tailwind's grid/flexbox system (Goal: Organize), which is the required method for diagrams as it avoids SVG/Mermaid JS. Each visualization is accompanied by explanatory text to provide context. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfbf8; /* A very light, warm beige */
+            color: #334155; /* slate-700 */
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Merriweather', serif;
+        }
+        .nav-link {
+            transition: color 0.2s, border-color 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #1e293b; /* slate-800 */
+            border-bottom-color: #f59e0b; /* amber-500 */
+        }
+        .content-section {
+            padding-top: 6rem;
+            margin-top: -4rem;
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .kpi-value {
+            color: #0f172a; /* slate-900 */
+        }
+        .kpi-label {
+            color: #64748b; /* slate-500 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px; /* Base height */
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <header class="sticky top-0 bg-white/80 backdrop-blur-lg z-50 shadow-sm">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 font-display font-bold text-lg">Market Research</div>
+                <div class="hidden md:block">
+                    <div id="main-nav" class="ml-10 flex items-baseline space-x-4">
+                        <a href="#opportunity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Opportunity</a>
+                        <a href="#challenge" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Challenge</a>
+                        <a href="#competition" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Competition</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Strategy</a>
+                        <a href="#roadmap" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Roadmap</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <section class="text-center py-16">
+            <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight">AI in Marketing:</h1>
+            <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-amber-500">A Go-to-Market Analysis</h2>
+            <p class="mt-6 max-w-3xl mx-auto text-lg text-slate-600">An interactive deep-dive into the market trends, competitive landscape, and strategic opportunities for MCP-powered marketing tools.</p>
+        </section>
+
+        <section id="opportunity" class="content-section">
+            <h3 class="font-display text-3xl font-bold mb-4">The Opportunity: A Nascent Market on the Verge of Explosion</h3>
+            <p class="text-slate-600 max-w-4xl mb-12">The marketing automation sector is a massive, growing industry. Simultaneously, AI adoption among marketers is widespread, yet a significant gap exists between advanced AI capabilities (like MCPs) and practical, user-friendly applications. This creates a prime opportunity for a first-mover to capture a new market sub-segment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="kpi-card">
+                    <p class="kpi-value font-display text-5xl font-bold">$6.65B</p>
+                    <p class="kpi-label mt-2 text-sm font-semibold">Marketing Automation Market Size</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-value font-display text-5xl font-bold">13.85%</p>
+                    <p class="kpi-label mt-2 text-sm font-semibold">Compound Annual Growth Rate (CAGR)</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-value font-display text-5xl font-bold">69.1%</p>
+                    <p class="kpi-label mt-2 text-sm font-semibold">of Marketers Already Using AI Tools</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenge" class="content-section">
+            <h3 class="font-display text-3xl font-bold mb-4">The Challenge: Bridging the Expertise Gap</h3>
+            <p class="text-slate-600 max-w-4xl mb-12">Despite high AI adoption, marketers face significant hurdles. The data reveals a strong demand for automation's high ROI (544% on average) but widespread frustration with existing tools. Technical complexity and a lack of training are the primary barriers preventing marketers from fully leveraging advanced AI, creating a clear problem for a no-code solution to solve.</p>
+            <div class="card">
+                <h4 class="font-display text-xl font-bold text-center mb-6">Top 3 Marketer Pain Points with Tech Implementation</h4>
+                <div class="chart-container">
+                    <canvas id="painPointsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="competition" class="content-section">
+            <h3 class="font-display text-3xl font-bold mb-4">The Competition: A Fragmented Landscape</h3>
+            <p class="text-slate-600 max-w-4xl mb-12">The market is dominated by complex enterprise solutions on one end and narrow, feature-specific AI tools on the other. Enterprise platforms like HubSpot and Adobe hold significant market share but present barriers in cost and complexity. Specialized tools lack deep workflow integration. This leaves a strategic gap for a platform that combines power with simplicity.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 card">
+                    <h4 class="font-display text-xl font-bold text-center mb-6">Marketing Automation Market Share</h4>
+                    <div class="chart-container !h-64 md:!h-72">
+                         <canvas id="marketShareChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="card">
+                        <h4 class="font-display text-xl font-bold mb-4">Competitor Weaknesses</h4>
+                        <ul class="space-y-3 text-slate-600">
+                            <li class="flex"><strong class="w-32 flex-shrink-0 text-slate-700">Enterprise Solutions:</strong>High cost and complexity create barriers for small-to-mid-sized teams.</li>
+                            <li class="flex"><strong class="w-32 flex-shrink-0 text-slate-700">Specialized AI:</strong>Offer content generation but lack crucial workflow and platform integration.</li>
+                             <li class="flex"><strong class="w-32 flex-shrink-0 text-slate-700">Workspace Tools:</strong>Provide general workspace AI but have no marketing-specific features or templates.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="content-section">
+            <h3 class="font-display text-3xl font-bold mb-4">The Strategy: A SWOT Analysis</h3>
+            <p class="text-slate-600 max-w-4xl mb-12">Based on the market dynamics, a clear strategic path emerges. By leveraging our strengths to seize market opportunities, we can build a defensible position while mitigating weaknesses and threats.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card border-t-4 border-green-400">
+                    <h4 class="font-display text-xl font-bold mb-2">Strengths</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Addresses clear, documented user pain points</li>
+                        <li>No-code solution lowers barrier to entry</li>
+                        <li>Positioned for first-mover advantage</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-blue-400">
+                    <h4 class="font-display text-xl font-bold mb-2">Opportunities</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Explosive MCP adoption creates a new user base</li>
+                        <li>Clear market gap for integrated, simple solutions</li>
+                        <li>Budget consolidation on high-ROI tools</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-amber-500">
+                    <h4 class="font-display text-xl font-bold mb-2">Weaknesses</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>New brand requires building authority and trust</li>
+                        <li>Limited resources compared to enterprise players</li>
+                        <li>Dependent on third-party platform (MCP) growth</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-red-400">
+                    <h4 class="font-display text-xl font-bold mb-2">Threats</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Large platforms will likely enter the space eventually</li>
+                        <li>Rapidly changing AI landscape requires agility</li>
+                        <li>Potential for market education challenges</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="content-section">
+            <h3 class="font-display text-3xl font-bold mb-4">The Roadmap: A Phased Approach to Growth</h3>
+            <p class="text-slate-600 max-w-4xl mb-12">To effectively capture the market, we will execute a three-phase distribution strategy over 12 months, designed to build a strong foundation before scaling aggressively.</p>
+            <div class="relative mt-8">
+                <div class="absolute left-4 md:left-1/2 top-0 h-full w-0.5 bg-slate-200"></div>
+                <div class="relative flex flex-col space-y-12">
+                    <div class="md:flex items-center w-full">
+                        <div class="md:w-1/2 md:pr-8">
+                            <div class="card md:text-right">
+                                <h4 class="font-display text-xl font-bold text-amber-500">Phase 1: Foundation</h4>
+                                <p class="text-sm text-slate-500">(Months 1-3)</p>
+                                <p class="mt-2 text-slate-600">Launch content marketing, engage in 10+ communities, and implement 2-3 high-priority integrations like HubSpot.</p>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-1/2"></div>
+                    </div>
+                    <div class="md:flex items-center w-full">
+                        <div class="hidden md:block w-1/2"></div>
+                        <div class="md:w-1/2 md:pl-8">
+                            <div class="card">
+                                <h4 class="font-display text-xl font-bold text-amber-500">Phase 2: Partnership</h4>
+                                <p class="text-sm text-slate-500">(Months 4-6)</p>
+                                <p class="mt-2 text-slate-600">Launch affiliate and channel partner programs, expand integrations, and establish content partnerships.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="md:flex items-center w-full">
+                        <div class="md:w-1/2 md:pr-8">
+                            <div class="card md:text-right">
+                                <h4 class="font-display text-xl font-bold text-amber-500">Phase 3: Scale</h4>
+                                <p class="text-sm text-slate-500">(Months 7-12)</p>
+                                <p class="mt-2 text-slate-600">Implement programmatic SEO, launch a template marketplace, and optimize channels with data-driven insights.</p>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartFontColor = '#334155'; // slate-700
+            const chartGridColor = '#f1f5f9'; // slate-100
+
+            const processLabel = (label) => {
+                const max_length = 16;
+                if (label.length <= max_length) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > max_length) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const painPointsData = {
+                labels: ['Technical Complexity', 'Lack of Training', 'Security Concerns'].map(processLabel),
+                datasets: [{
+                    label: '% of Marketers',
+                    data: [70, 67, 40],
+                    backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(99, 102, 241, 0.8)', 'rgba(139, 92, 246, 0.8)'],
+                    borderColor: ['rgb(59, 130, 246)', 'rgb(99, 102, 241)', 'rgb(139, 92, 246)'],
+                    borderWidth: 1
+                }]
+            };
+
+            const painPointsCtx = document.getElementById('painPointsChart')?.getContext('2d');
+            if (painPointsCtx) {
+                new Chart(painPointsCtx, {
+                    type: 'bar',
+                    data: painPointsData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { title: tooltipTitleCallback } }
+                        },
+                        scales: {
+                            x: { grid: { color: chartGridColor }, ticks: { color: chartFontColor }, suggestedMax: 100 },
+                            y: { grid: { display: false }, ticks: { color: chartFontColor } }
+                        }
+                    }
+                });
+            }
+
+            const marketShareData = {
+                labels: ['HubSpot', 'Adobe', 'Others'],
+                datasets: [{
+                    data: [38.32, 8, 53.68],
+                    backgroundColor: ['rgba(59, 130, 246, 0.9)', 'rgba(99, 102, 241, 0.9)', 'rgba(203, 213, 225, 0.9)'],
+                    borderColor: '#ffffff',
+                    hoverOffset: 4
+                }]
+            };
+
+            const marketShareCtx = document.getElementById('marketShareChart')?.getContext('2d');
+            if (marketShareCtx) {
+                new Chart(marketShareCtx, {
+                    type: 'doughnut',
+                    data: marketShareData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: chartFontColor }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px' });
+            
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+
+</body>
+</html>
