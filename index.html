@@ -67,6 +67,8 @@
             letter-spacing: -1px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
         }
 
         .logo:hover {
@@ -85,6 +87,11 @@
             cursor: pointer;
             position: relative;
             transition: all 0.3s ease;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: var(--dark);
         }
 
         .nav-item::after {
@@ -149,6 +156,9 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            color: var(--dark);
+            display: inline-block;
         }
 
         .filter-btn::before {
@@ -166,14 +176,18 @@
             left: 0;
         }
 
-        .filter-design::before { background: var(--pastel-pink); }
-        .filter-tech::before { background: var(--pastel-blue); }
-        .filter-culture::before { background: var(--pastel-yellow); }
-        .filter-strategy::before { background: var(--pastel-green); }
+        .filter-all::before { background: var(--pastel-purple); }
+        .filter-trending::before { background: var(--pastel-orange); }
+        .filter-ai::before { background: var(--pastel-blue); }
+        .filter-marketing::before { background: var(--pastel-green); }
+        .filter-brand::before { background: var(--pastel-pink); }
+        .filter-design::before { background: var(--pastel-yellow); }
+        .filter-thoughts::before { background: var(--pastel-green); }
 
         .filter-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 0 var(--dark);
+            color: var(--dark);
         }
 
         /* Blog Grid */
@@ -193,6 +207,9 @@
             transition: all 0.3s ease;
             position: relative;
             background: var(--white);
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .blog-card:hover {
@@ -316,6 +333,10 @@
         .tech-cat { color: var(--bright-blue); background: var(--pastel-blue); }
         .culture-cat { color: var(--bright-yellow); background: var(--pastel-yellow); }
         .strategy-cat { color: var(--bright-green); background: var(--pastel-green); }
+        .ai-cat { color: var(--bright-blue); background: var(--pastel-blue); }
+        .marketing-cat { color: var(--bright-green); background: var(--pastel-green); }
+        .brand-cat { color: var(--bright-coral); background: var(--pastel-pink); }
+        .thoughts-cat { color: var(--bright-purple); background: var(--pastel-purple); }
 
         .text-title {
             font-size: clamp(28px, 4vw, 48px);
@@ -389,6 +410,8 @@
             grid-template-columns: 1fr 1fr;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
         }
 
         .featured-card:hover {
@@ -572,14 +595,14 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">The Unusual Blog</div>
+            <a href="https://blog.tommysaunders.ai/" class="logo">The Unusual Blog</a>
             <ul class="nav-menu">
-                <li class="nav-item">Latest</li>
-                <li class="nav-item">Design</li>
-                <li class="nav-item">Technology</li>
-                <li class="nav-item">Culture</li>
-                <li class="nav-item">Strategy</li>
-                <li class="nav-item">About</li>
+                <li class="nav-item"><a href="https://blog.tommysaunders.ai/">Latest</a></li>
+                <li class="nav-item"><a href="https://tommysaunders.ai/design-system">Design</a></li>
+                <li class="nav-item"><a href="https://tommysaunders.ai/product-design">Technology</a></li>
+                <li class="nav-item"><a href="https://tommysaunders.ai/creative-direction">Culture</a></li>
+                <li class="nav-item"><a href="https://tommysaunders.ai/brand-strategy">Strategy</a></li>
+                <li class="nav-item"><a href="https://tommysaunders.ai/">About</a></li>
             </ul>
         </div>
     </nav>
@@ -593,24 +616,26 @@
 
         <!-- Category Filter -->
         <div class="category-filter">
-            <button class="filter-btn filter-all">All Posts</button>
-            <button class="filter-btn filter-design">Design</button>
-            <button class="filter-btn filter-tech">Technology</button>
-            <button class="filter-btn filter-culture">Culture</button>
-            <button class="filter-btn filter-strategy">Strategy</button>
+            <a href="https://blog.tommysaunders.ai/category/all-posts" class="filter-btn filter-all">All Posts</a>
+            <a href="https://blog.tommysaunders.ai/category/trending" class="filter-btn filter-trending">Trending</a>
+            <a href="https://blog.tommysaunders.ai/category/ai" class="filter-btn filter-ai">AI</a>
+            <a href="https://blog.tommysaunders.ai/category/marketing" class="filter-btn filter-marketing">Marketing</a>
+            <a href="https://blog.tommysaunders.ai/category/brand" class="filter-btn filter-brand">Brand</a>
+            <a href="https://blog.tommysaunders.ai/category/design" class="filter-btn filter-design">Design</a>
+            <a href="https://blog.tommysaunders.ai/category/thoughts" class="filter-btn filter-thoughts">Thoughts</a>
         </div>
 
         <!-- Featured Post -->
         <section class="featured-section">
-            <article class="featured-card">
+            <a href="https://blog.tommysaunders.ai/the-art-of-being-deliberately-different" class="featured-card">
                 <div class="featured-content">
                     <span class="featured-label">Featured Story</span>
                     <h2 class="featured-title">The Art of Being Deliberately Different</h2>
                     <p class="text-excerpt">Why swimming against the current is the only way to make waves in design.</p>
                     <div class="author-info">
-                        <div class="author-avatar">SC</div>
+                        <div class="author-avatar">TS</div>
                         <div class="author-details">
-                            <span class="author-name">Sarah Chen</span>
+                            <span class="author-name">Tommy Saunders</span>
                             <span class="post-date">2 days ago • 12 min read</span>
                         </div>
                     </div>
@@ -618,30 +643,30 @@
                 <div class="featured-image">
                     <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=400&fit=crop" alt="Featured">
                 </div>
-            </article>
+            </a>
         </section>
 
         <!-- Blog Grid -->
         <section class="blog-grid">
             <!-- Large Image Cover Card -->
-            <article class="blog-card card-large">
+            <a href="https://blog.tommysaunders.ai/breaking-the-grid-when-chaos-creates-order" class="blog-card card-large">
                 <div class="image-cover">
                     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop" alt="Post" class="cover-image">
                     <div class="image-overlay">
-                        <span class="overlay-category">Design Philosophy</span>
+                        <span class="overlay-category">Brand</span>
                         <h3 class="overlay-title">Breaking the Grid: When Chaos Creates Order</h3>
                         <p class="overlay-excerpt">Exploring how deliberate disruption in design systems can lead to more engaging user experiences.</p>
                         <div class="overlay-meta">
-                            <span>Marcus Johnson</span>
+                            <span>Tommy Saunders</span>
                             <span>•</span>
                             <span>8 min read</span>
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Text Cover Card -->
-            <article class="blog-card card-regular design-cat">
+            <a href="https://blog.tommysaunders.ai/why-perfect-is-the-enemy-of-interesting" class="blog-card card-regular design-cat">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category">Design</span>
@@ -657,30 +682,30 @@
                         <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=350&fit=crop" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Tall Image Cover Card -->
-            <article class="blog-card card-tall">
+            <a href="https://blog.tommysaunders.ai/the-future-is-analog" class="blog-card card-tall">
                 <div class="image-cover">
                     <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=600&fit=crop" alt="Post" class="cover-image">
                     <div class="image-overlay">
-                        <span class="overlay-category">Technology</span>
+                        <span class="overlay-category">AI</span>
                         <h3 class="overlay-title">The Future is Analog</h3>
                         <p class="overlay-excerpt">Why the next wave of innovation might look surprisingly familiar.</p>
                         <div class="overlay-meta">
-                            <span>Alex Rivera</span>
+                            <span>Tommy Saunders</span>
                             <span>•</span>
                             <span>10 min read</span>
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Wide Text Cover Card -->
-            <article class="blog-card card-wide tech-cat">
+            <a href="https://blog.tommysaunders.ai/coding-like-a-poet" class="blog-card card-wide ai-cat">
                 <div class="text-cover">
                     <div class="text-content">
-                        <span class="text-category">Technology</span>
+                        <span class="text-category">AI</span>
                         <h3 class="text-title">Coding Like a Poet: The Art of Beautiful Functions</h3>
                         <p class="text-excerpt">When algorithms become art and logic becomes literature.</p>
                         <div class="text-meta">
@@ -693,30 +718,30 @@
                         <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=300&fit=crop" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Image Cover Card -->
-            <article class="blog-card card-regular">
+            <a href="https://blog.tommysaunders.ai/the-renaissance-of-weird" class="blog-card card-regular">
                 <div class="image-cover">
                     <img src="https://images.unsplash.com/photo-1524634126442-357e0eac3c14?w=400&h=350&fit=crop" alt="Post" class="cover-image">
                     <div class="image-overlay">
-                        <span class="overlay-category">Culture</span>
+                        <span class="overlay-category">Marketing</span>
                         <h3 class="overlay-title">The Renaissance of Weird</h3>
                         <p class="overlay-excerpt">How being unusual became the ultimate competitive advantage.</p>
                         <div class="overlay-meta">
-                            <span>Jamie Park</span>
+                            <span>Tommy Saunders</span>
                             <span>•</span>
                             <span>6 min read</span>
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Text Cover Card -->
-            <article class="blog-card card-regular culture-cat">
+            <a href="https://blog.tommysaunders.ai/the-museum-of-failed-ideas" class="blog-card card-regular marketing-cat">
                 <div class="text-cover">
                     <div class="text-content">
-                        <span class="text-category">Culture</span>
+                        <span class="text-category">Marketing</span>
                         <h3 class="text-title">The Museum of Failed Ideas</h3>
                         <p class="text-excerpt">Celebrating the beautiful disasters that changed everything.</p>
                         <div class="text-meta">
@@ -729,13 +754,13 @@
                         <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=350&fit=crop" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Text Cover Card -->
-            <article class="blog-card card-regular strategy-cat">
+            <a href="https://blog.tommysaunders.ai/zigging-when-they-zag" class="blog-card card-regular brand-cat">
                 <div class="text-cover">
                     <div class="text-content">
-                        <span class="text-category">Strategy</span>
+                        <span class="text-category">Brand</span>
                         <h3 class="text-title">Zigging When They Zag</h3>
                         <p class="text-excerpt">A contrarian's guide to standing out in a sea of sameness.</p>
                         <div class="text-meta">
@@ -748,14 +773,14 @@
                         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=350&fit=crop" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Image Cover Card -->
-            <article class="blog-card card-regular">
+            <a href="https://blog.tommysaunders.ai/embracing-creative-chaos" class="blog-card card-regular">
                 <div class="image-cover">
                     <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=400&h=350&fit=crop" alt="Post" class="cover-image">
                     <div class="image-overlay">
-                        <span class="overlay-category">Creative Process</span>
+                        <span class="overlay-category">Thoughts</span>
                         <h3 class="overlay-title">Embracing Creative Chaos</h3>
                         <p class="overlay-excerpt">Why your messiest ideas might be your best ones.</p>
                         <div class="overlay-meta">
@@ -765,7 +790,7 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
         </section>
 
         <!-- Newsletter Section -->
@@ -787,13 +812,17 @@
             'Culture': 'var(--pastel-yellow)',
             'Strategy': 'var(--pastel-green)',
             'Creative Process': 'var(--pastel-purple)',
-            'Design Philosophy': 'var(--pastel-orange)'
+            'Design Philosophy': 'var(--pastel-orange)',
+            'AI': 'var(--pastel-blue)',
+            'Marketing': 'var(--pastel-green)',
+            'Brand': 'var(--pastel-pink)',
+            'Thoughts': 'var(--pastel-purple)'
         };
 
-        // Filter functionality
+        // Filter functionality - visual feedback only since they're now links
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Remove active state from all buttons
+            btn.addEventListener('click', function(e) {
+                // Visual feedback
                 document.querySelectorAll('.filter-btn').forEach(b => {
                     b.style.background = 'var(--white)';
                     b.style.color = 'var(--dark)';
@@ -802,36 +831,6 @@
                 // Add active state to clicked button
                 this.style.background = 'var(--dark)';
                 this.style.color = 'var(--white)';
-                
-                // Filter animation
-                const cards = document.querySelectorAll('.blog-card');
-                cards.forEach((card, index) => {
-                    card.style.animation = 'fadeOut 0.3s ease forwards';
-                    
-                    setTimeout(() => {
-                        card.style.animation = 'fadeIn 0.5s ease forwards';
-                        card.style.animationDelay = `${index * 0.1}s`;
-                    }, 300);
-                });
-            });
-        });
-
-        // Hover effects enhancement
-        document.querySelectorAll('.text-cover').forEach(cover => {
-            cover.addEventListener('mouseenter', function() {
-                const title = this.querySelector('.text-title');
-                if (title) {
-                    title.style.transform = 'scale(0.95)';
-                    title.style.opacity = '0.8';
-                }
-            });
-            
-            cover.addEventListener('mouseleave', function() {
-                const title = this.querySelector('.text-title');
-                if (title) {
-                    title.style.transform = 'scale(1)';
-                    title.style.opacity = '1';
-                }
             });
         });
 
@@ -911,17 +910,6 @@
             
             title.addEventListener('mouseleave', function() {
                 this.style.color = 'var(--dark)';
-            });
-        });
-
-        // Click to read animation
-        document.querySelectorAll('.blog-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.animation = 'pulse 0.3s ease';
-                
-                setTimeout(() => {
-                    this.style.animation = '';
-                }, 300);
             });
         });
 
