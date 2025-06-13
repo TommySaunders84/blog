@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Museum of Failed Ideas - The Unusual Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Raw Materials Brand Palette */
+            --pastel-pink: #FFE5EC;
+            --pastel-blue: #E3F2FD;
+            --pastel-yellow: #FFF9C4;
+            --pastel-green: #E8F5E9;
+            --pastel-purple: #F3E5F5;
+            --pastel-orange: #FFF3E0;
+            
+            --bright-coral: #FF6B6B;
+            --bright-blue: #4DABF7;
+            --bright-yellow: #FFD43B;
+            --bright-green: #51CF66;
+            --bright-purple: #845EF7;
+            
+            --dark: #1A1A1A;
+            --gray: #666666;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            
+            /* Museum specific */
+            --velvet: #8B0000;
+            --brass: #B8860B;
+            --marble: #F8F8F8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--marble);
+            color: var(--dark);
+            line-height: 1.6;
+            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="20" font-size="20">🔍</text></svg>'), auto;
+        }
+
+        /* Museum Navigation */
+        .museum-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            color: var(--white);
+            padding: 20px;
+            z-index: 1000;
+            border-bottom: 5px solid var(--brass);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .museum-logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .admission-ticket {
+            background: var(--pastel-yellow);
+            color: var(--dark);
+            padding: 10px 20px;
+            border: 2px dashed var(--dark);
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transform: rotate(-2deg);
+        }
+
+        /* Museum Entrance */
+        .entrance-hall {
+            margin-top: 80px;
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--marble) 0%, var(--light-gray) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entrance-hall::before,
+        .entrance-hall::after {
+            content: '🏛️';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .entrance-hall::before { left: -50px; }
+        .entrance-hall::after { right: -50px; }
+
+        .exhibition-title {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .title-line {
+            display: block;
+        }
+
+        .title-failed {
+            color: var(--bright-coral);
+            text-decoration: line-through;
+            text-decoration-thickness: 8px;
+            text-decoration-color: var(--dark);
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+
+        .exhibition-subtitle {
+            font-size: 24px;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+
+        .curator-info {
+            display: inline-block;
+            background: var(--white);
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 20px 40px;
+            box-shadow: 5px 5px 0 var(--dark);
+        }
+
+        /* Exhibition Info Plaque */
+        .exhibition-plaque {
+            max-width: 800px;
+            margin: 60px auto;
+            background: var(--white);
+            border: 3px solid var(--dark);
+            border-radius: 5px;
+            padding: 40px;
+            box-shadow: 5px 5px 0 var(--dark);
+            position: relative;
+        }
+
+        .plaque-number {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            background: var(--bright-coral);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .audio-guide {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--pastel-green);
+            border: 3px solid var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-guide:hover {
+            transform: scale(1.1);
+            background: var(--bright-green);
+        }
+
+        /* Gallery Sections */
+        .gallery-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .gallery-title {
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .gallery-title::before,
+        .gallery-title::after {
+            content: '•';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--bright-coral);
+        }
+
+        .gallery-title::before { left: -40px; }
+        .gallery-title::after { right: -40px; }
+
+        /* Exhibit Frames */
+        .exhibit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            margin-bottom: 100px;
+        }
+
+        .exhibit-frame {
+            background: var(--white);
+            border: 15px solid;
+            border-image: linear-gradient(45deg, var(--brass), var(--dark)) 1;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .exhibit-frame:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .exhibit-frame::before {
+            content: 'DO NOT TOUCH';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bright-coral);
+            color: var(--white);
+            padding: 5px 15px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 20px;
+        }
+
+        .exhibit-content {
+            text-align: center;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .failed-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--bright-coral);
+            font-size: 48px;
+            font-weight: 900;
+            transform: rotate(-15deg);
+            opacity: 0.5;
+            text-transform: uppercase;
+            border: 4px solid var(--bright-coral);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .exhibit-item {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .exhibit-label {
+            background: var(--white);
+            border: 2px solid var(--dark);
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .label-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .label-date {
+            color: var(--gray);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .label-description {
+            line-height: 1.4;
+        }
+
+        /* Velvet Rope Section */
+        .vip-section {
+            background: var(--pastel-purple);
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .velvet-rope {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--velvet),
+                var(--velvet) 10px,
+                var(--brass) 10px,
+                var(--brass) 20px
+            );
+        }
+
+        .vip-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .spotlight {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            position: absolute;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Interactive Hall */
+        .interactive-hall {
+            padding: 80px 20px;
+            background: var(--white);
+        }
+
+        .failure-timeline {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--dark);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 80px;
+        }
+
+        .timeline-item:nth-child(even) {
+            text-align: right;
+            margin-top: 120px;
+        }
+
+        .timeline-dot {
+            width: 30px;
+            height: 30px;
+            background: var(--bright-coral);
+            border: 4px solid var(--dark);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot { left: -15px; }
+        .timeline-item:nth-child(even) .timeline-dot { right: -15px; }
+
+        .timeline-dot:hover {
+            transform: translateY(-50%) scale(1.5);
+            background: var(--bright-yellow);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 5px 5px 0 var(--dark);
+            display: inline-block;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: rotate(-2deg);
+            background: var(--pastel-yellow);
+        }
+
+        /* Guest Book */
+        .guest-book {
+            max-width: 800px;
+            margin: 80px auto;
+            background: var(--white);
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 5px 5px 0 var(--dark);
+            position: relative;
+        }
+
+        .guest-book::before {
+            content: '📖';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            background: var(--white);
+            padding: 0 20px;
+        }
+
+        .guest-entry {
+            border-bottom: 2px dashed var(--gray);
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .guest-entry:last-child {
+            border-bottom: none;
+        }
+
+        .guest-signature {
+            font-family: cursive;
+            font-size: 24px;
+            color: var(--bright-blue);
+            margin-bottom: 10px;
+        }
+
+        /* Museum Shop */
+        .museum-shop {
+            background: var(--pastel-orange);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .shop-items {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .shop-item {
+            background: var(--white);
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 30px;
+            width: 200px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-10px) rotate(5deg);
+            box-shadow: 5px 5px 0 var(--dark);
+        }
+
+        .price-tag {
+            background: var(--bright-coral);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-top: 15px;
+            display: inline-block;
+            transform: rotate(-5deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .exhibit-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-item:nth-child(even) {
+                text-align: left;
+                margin-top: 0;
+            }
+            
+            .shop-items {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Museum Navigation -->
+    <nav class="museum-nav">
+        <div class="nav-content">
+            <div class="museum-logo">MOFAI</div>
+            <div class="admission-ticket">Admit One: Free Thinker</div>
+        </div>
+    </nav>
+
+    <!-- Entrance Hall -->
+    <header class="entrance-hall">
+        <h1 class="exhibition-title">
+            <span class="title-line">The Museum of</span>
+            <span class="title-line title-failed">Failed Ideas</span>
+        </h1>
+        <p class="exhibition-subtitle">Celebrating the beautiful disasters that changed everything</p>
+        <div class="curator-info">
+            <strong>Curated by:</strong> Robin Lee | <strong>Exhibition:</strong> Permanent | <strong>Admission:</strong> One Open Mind
+        </div>
+    </header>
+
+    <!-- Exhibition Introduction -->
+    <div class="exhibition-plaque">
+        <div class="plaque-number">EXHIBIT 001</div>
+        <div class="audio-guide">🎧</div>
+        <h2 style="font-size: 32px; margin-bottom: 20px;">Welcome to the Hall of Beautiful Disasters</h2>
+        <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+            Behind every breakthrough lies a graveyard of "failed" ideas. This exhibition celebrates the magnificent mistakes, the glorious misfires, and the spectacular flops that paved the way for innovation.
+        </p>
+        <p style="font-size: 18px; line-height: 1.8;">
+            As you wander these halls, remember: <strong>failure is not the opposite of success—it's the first draft.</strong>
+        </p>
+    </div>
+
+    <!-- Gallery of Failed Innovations -->
+    <section class="gallery-section">
+        <div class="section-header">
+            <h2 class="gallery-title">Hall of Ambitious Failures</h2>
+            <p style="font-size: 20px; color: var(--gray);">Touch everything. Rules are meant to be broken.</p>
+        </div>
+
+        <div class="exhibit-grid">
+            <div class="exhibit-frame" style="background: var(--pastel-pink);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">FAILED</div>
+                    <div class="exhibit-item">💡</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">Edison's 10,000 Light Bulbs</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">Failed Prototypes #1-9,999</div>
+                    <div class="label-date">1878-1879</div>
+                    <div class="label-description">
+                        "I have not failed. I've just found 10,000 ways that won't work." Each failure illuminated the path to success.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exhibit-frame" style="background: var(--pastel-blue);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">REJECTED</div>
+                    <div class="exhibit-item">📱</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">The iPhone Prototype</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">Project Purple</div>
+                    <div class="label-date">2005-2007</div>
+                    <div class="label-description">
+                        Hundreds of failed designs. Screens that cracked. Batteries that died. Until one didn't.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exhibit-frame" style="background: var(--pastel-yellow);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">FLOPPED</div>
+                    <div class="exhibit-item">🥤</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">New Coke</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">The 79-Day Disaster</div>
+                    <div class="label-date">1985</div>
+                    <div class="label-description">
+                        The failure that taught the world about brand loyalty. Sometimes you have to lose something to realize its value.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exhibit-frame" style="background: var(--pastel-green);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">CRASHED</div>
+                    <div class="exhibit-item">🚀</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">SpaceX's First Three Launches</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">Rapid Unscheduled Disassembly</div>
+                    <div class="label-date">2006-2008</div>
+                    <div class="label-description">
+                        Three explosions that led to reusable rockets. Sometimes you need to blow things up to reach the stars.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exhibit-frame" style="background: var(--pastel-purple);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">MELTED</div>
+                    <div class="exhibit-item">🍫</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">The Accidental Chocolate Chip</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">Ruth Wakefield's "Mistake"</div>
+                    <div class="label-date">1938</div>
+                    <div class="label-description">
+                        When chocolate didn't melt as expected, a classic was born. The best accidents become traditions.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exhibit-frame" style="background: var(--pastel-orange);">
+                <div class="exhibit-content">
+                    <div class="failed-stamp">STUCK</div>
+                    <div class="exhibit-item">📎</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">Post-it Notes</h3>
+                </div>
+                <div class="exhibit-label">
+                    <div class="label-title">The Weak Adhesive</div>
+                    <div class="label-date">1968-1980</div>
+                    <div class="label-description">
+                        A failed super-strong adhesive became the world's favorite reminder. Weakness became the strength.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIP Section -->
+    <section class="vip-section">
+        <div class="velvet-rope"></div>
+        <div class="vip-content">
+            <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 30px;">The Failure Philosophy Wing</h2>
+            <div style="max-width: 800px; margin: 0 auto; font-size: 20px; line-height: 1.8;">
+                <p style="margin-bottom: 30px;">
+                    "Success is going from failure to failure without losing enthusiasm." — Winston Churchill
+                </p>
+                <p style="margin-bottom: 30px;">
+                    "The only real mistake is the one from which we learn nothing." — Henry Ford
+                </p>
+                <p>
+                    "Failure is simply the opportunity to begin again, this time more intelligently." — Also Henry Ford (he failed a lot)
+                </p>
+            </div>
+        </div>
+        <div class="spotlight" id="spotlight"></div>
+    </section>
+
+    <!-- Interactive Timeline -->
+    <section class="interactive-hall">
+        <div class="section-header">
+            <h2 class="gallery-title">Timeline of Beautiful Disasters</h2>
+        </div>
+        
+        <div class="failure-timeline">
+            <div class="timeline-line"></div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>1928: Penicillin</h3>
+                    <p>Alexander Fleming's "contaminated" petri dish became humanity's first antibiotic.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>1945: Microwave Oven</h3>
+                    <p>Percy Spencer's melted chocolate bar in his pocket led to kitchen revolution.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>1992: Text Messages</h3>
+                    <p>Originally considered useless because "who would type when they could call?"</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>2003: Tesla Roadster</h3>
+                    <p>The first prototype caught fire. The 100th changed the auto industry forever.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guest Book -->
+    <div class="guest-book">
+        <h2 style="text-align: center; font-size: 36px; margin-bottom: 40px;">Visitor Reflections</h2>
+        
+        <div class="guest-entry">
+            <div class="guest-signature">Sarah M.</div>
+            <p>"This exhibition reminded me that my biggest 'failure' led to my greatest success. Thank you!"</p>
+        </div>
+        
+        <div class="guest-entry">
+            <div class="guest-signature">Dr. James Liu</div>
+            <p>"Every failed experiment in my lab now feels like a step forward, not backward."</p>
+        </div>
+        
+        <div class="guest-entry">
+            <div class="guest-signature">Anonymous Dreamer</div>
+            <p>"I came here feeling like a failure. I'm leaving feeling like an inventor."</p>
+        </div>
+    </div>
+
+    <!-- Museum Shop -->
+    <section class="museum-shop">
+        <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 20px;">Exit Through the Gift Shop</h2>
+        <p style="font-size: 20px; color: var(--gray); margin-bottom: 40px;">Take home a piece of beautiful failure</p>
+        
+        <div class="shop-items">
+            <div class="shop-item">
+                <div style="font-size: 48px; margin-bottom: 10px;">🏆</div>
+                <h3>Participation Trophy</h3>
+                <p style="font-size: 14px; color: var(--gray);">For trying</p>
+                <div class="price-tag">PRICELESS</div>
+            </div>
+            
+            <div class="shop-item">
+                <div style="font-size: 48px; margin-bottom: 10px;">📕</div>
+                <h3>Book of Mistakes</h3>
+                <p style="font-size: 14px; color: var(--gray);">Blank pages included</p>
+                <div class="price-tag">$0.00</div>
+            </div>
+            
+            <div class="shop-item">
+                <div style="font-size: 48px; margin-bottom: 10px;">🎨</div>
+                <h3>Failed Art Print</h3>
+                <p style="font-size: 14px; color: var(--gray);">Frame not straight</p>
+                <div class="price-tag">FREE</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Audio guide hover sounds
+        document.querySelectorAll('.audio-guide').forEach(guide => {
+            guide.addEventListener('click', function() {
+                this.textContent = this.textContent === '🎧' ? '🔊' : '🎧';
+                this.style.animation = 'pulse 0.5s ease';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 500);
+            });
+        });
+
+        // DO NOT TOUCH signs that encourage touching
+        document.querySelectorAll('.exhibit-frame').forEach(frame => {
+            frame.addEventListener('mouseenter', function() {
+                const doNotTouch = this.querySelector('::before');
+                this.style.transform = 'scale(1.05) rotate(' + (Math.random() * 4 - 2) + 'deg)';
+            });
+            
+            frame.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+            
+            frame.addEventListener('click', function() {
+                const stamp = this.querySelector('.failed-stamp');
+                if (stamp) {
+                    stamp.style.animation = 'stamp 0.5s ease';
+                    setTimeout(() => {
+                        stamp.style.animation = '';
+                    }, 500);
+                }
+            });
+        });
+
+        // Spotlight follow mouse in VIP section
+        const vipSection = document.querySelector('.vip-section');
+        const spotlight = document.getElementById('spotlight');
+        
+        vipSection.addEventListener('mousemove', (e) => {
+            const rect = vipSection.getBoundingClientRect();
+            spotlight.style.left = e.clientX - rect.left + 'px';
+            spotlight.style.top = e.clientY - rect.top + 'px';
+            spotlight.style.opacity = '1';
+        });
+        
+        vipSection.addEventListener('mouseleave', () => {
+            spotlight.style.opacity = '0';
+        });
+
+        // Timeline dot interactions
+        document.querySelectorAll('.timeline-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.style.background = ['var(--pastel-pink)', 'var(--pastel-blue)', 'var(--pastel-yellow)', 'var(--pastel-green)'][Math.floor(Math.random() * 4)];
+                this.style.background = 'var(--bright-green)';
+                
+                setTimeout(() => {
+                    this.style.background = 'var(--bright-coral)';
+                }, 1000);
+            });
+        });
+
+        // Guest book auto-sign
+        const guestBook = document.querySelector('.guest-book');
+        const signatures = ['Your Name Here', 'A Proud Failure', 'Future Success Story', 'Magnificent Mistake Maker'];
+        
+        guestBook.addEventListener('click', function(e) {
+            if (e.target === guestBook || e.target.tagName === 'H2') {
+                const newEntry = document.createElement('div');
+                newEntry.className = 'guest-entry';
+                newEntry.innerHTML = `
+                    <div class="guest-signature">${signatures[Math.floor(Math.random() * signatures.length)]}</div>
+                    <p>Just signed the guest book! Feeling inspired by all these beautiful failures.</p>
+                `;
+                newEntry.style.opacity = '0';
+                guestBook.appendChild(newEntry);
+                
+                setTimeout(() => {
+                    newEntry.style.transition = 'opacity 0.5s ease';
+                    newEntry.style.opacity = '1';
+                }, 100);
+            }
+        });
+
+        // Shop items wiggle
+        document.querySelectorAll('.shop-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.animation = 'wiggle 0.5s ease';
+            });
+            
+            item.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+            }
+            
+            @keyframes stamp {
+                0% { transform: rotate(-15deg) scale(1); }
+                50% { transform: rotate(-15deg) scale(1.3); }
+                100% { transform: rotate(-15deg) scale(1); }
+            }
+            
+            @keyframes wiggle {
+                0%, 100% { transform: rotate(0deg); }
+                25% { transform: rotate(-5deg); }
+                75% { transform: rotate(5deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Museum closing announcement
+        let inactivityTimer;
+        function resetTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                alert('🏛️ The Museum of Failed Ideas will be closing in 5 minutes. Please proceed to the gift shop.');
+            }, 300000); // 5 minutes
+        }
+        
+        document.addEventListener('mousemove', resetTimer);
+        document.addEventListener('keypress', resetTimer);
+        resetTimer();
+    </script>
+</body>
+</html>
