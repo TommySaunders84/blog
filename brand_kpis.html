@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Brand Intelligence Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is structured as a multi-tabbed interactive dashboard, deliberately moving away from the report's linear chapter format to a user-centric, task-oriented design. The navigation ("Dashboard," "Perception," "Competition," "Performance," "Roadmap") allows users to directly access the information they need, such as competitive SWOT analysis or channel performance, without sequential scrolling. This architecture makes the dense information highly accessible and consumable. Interactions like tab switching, hover effects on charts, and clickable accordions for detailed information are designed to encourage exploration and deeper understanding, transforming the static report into an engaging analytical tool. -->
+    <!-- Visualization & Content Choices: Report Info: Executive KPI Dashboard (Table 1) -> Goal: Inform -> Viz: KPI Cards (HTML/CSS) & Donut Chart (Chart.js) -> Interaction: Hover for tooltips. Justification: Provides a quick, high-level overview. Report Info: Real-time Brand Perception Map -> Goal: Compare/Relationships -> Viz: Bubble Chart (Chart.js) -> Interaction: Hover to see brand details. Justification: Visualizes complex multi-attribute positioning effectively. Report Info: Comparative SWOT Matrix (Table 5) -> Goal: Compare -> Viz: Interactive Tabbed Table (HTML/JS) -> Interaction: Click tabs to switch competitor views. Justification: Enables direct, side-by-side comparison which is difficult in a static table. Report Info: Strategic Roadmap (Table 9) -> Goal: Organize/Plan -> Viz: Interactive Accordion/Card Layout (HTML/CSS/JS) -> Interaction: Click to expand details. Justification: Presents a large amount of detailed planning information in a compact, digestible format. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FBFBF8;
+            color: #333;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-button.active {
+            border-bottom-color: #4A55A2;
+            color: #4A55A2;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -2px rgb(0 0 0 / 0.07);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen">
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Brand Intelligence Report</h1>
+                        <p class="text-sm text-gray-500">Interactive Analysis & Strategic Roadmap</p>
+                    </div>
+                    <nav id="main-nav" class="mt-4 sm:mt-0 flex flex-wrap justify-center space-x-2 sm:space-x-4">
+                        <button data-view="dashboard" class="nav-button py-2 px-3 text-sm font-medium text-gray-600 hover:text-indigo-600">Dashboard</button>
+                        <button data-view="perception" class="nav-button py-2 px-3 text-sm font-medium text-gray-600 hover:text-indigo-600">Perception</button>
+                        <button data-view="competition" class="nav-button py-2 px-3 text-sm font-medium text-gray-600 hover:text-indigo-600">Competition</button>
+                        <button data-view="performance" class="nav-button py-2 px-3 text-sm font-medium text-gray-600 hover:text-indigo-600">Performance</button>
+                        <button data-view="roadmap" class="nav-button py-2 px-3 text-sm font-medium text-gray-600 hover:text-indigo-600">Roadmap</button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content" class="p-4 sm:p-6 lg:p-8">
+            
+            <!-- Dashboard / Executive Summary View -->
+            <section id="view-dashboard" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Executive Dashboard</h2>
+                    <p class="mt-2 text-lg text-gray-600">This dashboard provides a condensed, high-impact overview of the brand's current health, competitive standing, and key strategic priorities. It's designed for rapid comprehension of the most critical findings from the full report.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-sm font-medium text-gray-500">Brand Sentiment Score</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900">75% <span class="text-base font-normal text-gray-500">Positive</span></p>
+                        <p class="mt-1 flex items-baseline text-sm text-green-600">↑ 3% from 72% (Recent Campaign)</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-sm font-medium text-gray-500">Net Promoter Score (NPS)</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900">45</p>
+                        <p class="mt-1 flex items-baseline text-sm text-gray-500">→ Stable (vs. Industry Avg: 40)</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-sm font-medium text-gray-500">Share of Voice (SOV)</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900">25%</p>
+                        <p class="mt-1 flex items-baseline text-sm text-red-600">↓ 3% from 28% (Competitor Ad Spend)</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3 card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Key Strategic Objectives & KPI Alignment</h3>
+                        <p class="mt-1 text-sm text-gray-500">Visualizing our progress against core strategic goals.</p>
+                        <div class="chart-container mt-4">
+                            <canvas id="kpiAlignmentChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Critical Findings & Insights</h3>
+                         <p class="mt-1 text-sm text-gray-500">The most significant discoveries demanding attention.</p>
+                        <ul class="mt-4 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-red-100 text-red-800 flex items-center justify-center font-bold">!</div>
+                                <p class="ml-3 text-sm text-gray-700"><span class="font-semibold">Threat:</span> Competitor B is gaining traction with a new product feature, evidenced by a sharp rise in their positive sentiment.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-yellow-100 text-yellow-800 flex items-center justify-center font-bold">?</div>
+                                <p class="ml-3 text-sm text-gray-700"><span class="font-semibold">Opportunity:</span> Significant opportunities for AI integration in customer experience have been identified, an area where competitors are lagging.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold">🎯</div>
+                                <p class="ml-3 text-sm text-gray-700"><span class="font-semibold">Recommendation:</span> Prioritize a strategic focus on Gen Z engagement to counter demographic-specific sentiment decline.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Perception View -->
+            <section id="view-perception" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Brand Perception</h2>
+                    <p class="mt-2 text-lg text-gray-600">This section provides a nuanced understanding of how our brand is perceived, combining quantitative sentiment analysis with qualitative perceptual mapping to uncover the 'why' behind market attitudes.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3 card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Brand Perception Map</h3>
+                        <p class="mt-1 text-sm text-gray-500">Positioning against competitors on key market attributes. Hover over points for details.</p>
+                        <div class="chart-container mt-4">
+                            <canvas id="perceptionMapChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Sentiment Over Time</h3>
+                        <p class="mt-1 text-sm text-gray-500">Tracking our brand's positive sentiment against the competition.</p>
+                        <div class="chart-container mt-4">
+                            <canvas id="sentimentTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-8 card p-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Key Drivers of Sentiment</h3>
+                    <p class="mt-1 text-sm text-gray-500">Core themes influencing positive and negative perception, based on volume of mentions.</p>
+                    <div class="chart-container mt-4" style="height: 450px; max-height: 500px;">
+                        <canvas id="sentimentDriversChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Competition View -->
+            <section id="view-competition" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Competitive Landscape</h2>
+                    <p class="mt-2 text-lg text-gray-600">A deep dive into our key competitors, their digital strategies, and their relative strengths and weaknesses, designed to identify strategic threats and opportunities.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Digital Footprint Analysis</h3>
+                        <p class="mt-1 text-sm text-gray-500">Comparative strength across key digital channels.</p>
+                         <div class="chart-container mt-4">
+                            <canvas id="digitalFootprintChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Comparative SWOT Analysis</h3>
+                        <p class="mt-1 text-sm text-gray-500">Our strategic position relative to key competitors. Select a competitor to compare.</p>
+                        <div class="mt-4">
+                            <div class="sm:hidden">
+                                <label for="swot-tabs-select" class="sr-only">Select a competitor</label>
+                                <select id="swot-tabs-select" class="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"></select>
+                            </div>
+                            <div class="hidden sm:block">
+                                <nav id="swot-tabs-desktop" class="flex space-x-4 border-b border-gray-200" aria-label="Tabs"></nav>
+                            </div>
+                        </div>
+                        <div id="swot-content" class="mt-4"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Performance View -->
+            <section id="view-performance" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Content & Channel Performance</h2>
+                    <p class="mt-2 text-lg text-gray-600">Evaluating the effectiveness of our content and channel strategies to understand what resonates with our audience and drives strategic goals.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Channel Impact Assessment</h3>
+                        <p class="mt-1 text-sm text-gray-500">Effectiveness of content distribution based on leads generated.</p>
+                         <div class="chart-container mt-4" style="height: 450px; max-height: 500px;">
+                            <canvas id="channelPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Signal-to-Strategy Alignment</h3>
+                        <p class="mt-1 text-sm text-gray-500">How well our digital signals support key objectives. Click to expand.</p>
+                        <div id="strategy-alignment-accordion" class="mt-4 space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Roadmap View -->
+            <section id="view-roadmap" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Future Outlook & Strategic Roadmap</h2>
+                    <p class="mt-2 text-lg text-gray-600">An implementable plan that translates our data-driven insights into prioritized strategic actions and prepares the brand for plausible future market scenarios.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Implementable Strategic Roadmap</h3>
+                    <p class="mt-1 text-sm text-gray-500">Prioritized initiatives to drive brand growth and mitigate risks. Click each initiative for details.</p>
+                    <div id="action-plan" class="mt-6 space-y-4"></div>
+                </div>
+                 <div class="mt-8 card p-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Future Scenario Planning</h3>
+                    <p class="mt-1 text-sm text-gray-500">Preparing for potential market shifts based on key uncertainties and driving forces.</p>
+                    <div id="future-scenarios" class="mt-4 grid md:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const appState = {
+        activeView: 'dashboard',
+    };
+
+    const navContainer = document.getElementById('main-nav');
+    const navButtons = navContainer.querySelectorAll('.nav-button');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    const chartInstances = {};
+
+    const reportData = {
+        kpiAlignment: {
+            labels: ['Brand Preference (Millennials)', 'Sustainability Thought Leadership', 'Customer Acquisition Efficiency', 'Product Innovation Perception'],
+            datasets: [
+                {
+                    label: 'Current Performance (%)',
+                    data: [50, 66, 33, 50],
+                    backgroundColor: 'rgba(74, 85, 162, 0.6)',
+                },
+                {
+                    label: 'Target (%)',
+                    data: [100, 100, 100, 100],
+                    backgroundColor: 'rgba(230, 230, 230, 0.6)',
+                }
+            ]
+        },
+        perceptionMap: {
+            datasets: [
+                { label: 'Our Brand', data: [{ x: 7.5, y: 8.0, r: 20 }], backgroundColor: '#4A55A2' },
+                { label: 'Competitor A', data: [{ x: 5.5, y: 6.0, r: 25 }], backgroundColor: '#FF8C32' },
+                { label: 'Competitor B', data: [{ x: 8.5, y: 4.5, r: 15 }], backgroundColor: '#3498DB' },
+                { label: 'Competitor C', data: [{ x: 3.0, y: 3.5, r: 12 }], backgroundColor: '#95A5A6' }
+            ]
+        },
+        sentimentTrend: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [
+                { label: 'Our Brand', data: [72, 71, 73, 74, 73, 75], borderColor: '#4A55A2', tension: 0.1, fill: false },
+                { label: 'Competitor A', data: [70, 68, 69, 68, 67, 68], borderColor: '#FF8C32', tension: 0.1, fill: false },
+                { label: 'Competitor B', data: [60, 62, 63, 65, 66, 65], borderColor: '#3498DB', tension: 0.1, fill: false }
+            ]
+        },
+        sentimentDrivers: {
+            positive: { labels: ['Ease of Use', 'Customer Support', 'Innovative Feature X'], data: [1250, 800, 600] },
+            negative: { labels: ['Price Point', 'Integration with Y', 'Website Complexity'], data: [950, 450, 300] }
+        },
+        digitalFootprint: {
+            labels: ['SEO Strength', 'Social Engagement', 'Content Output', 'Paid Ads', 'Website UX'],
+            datasets: [
+                { label: 'Our Brand', data: [8, 7, 6, 5, 7], borderColor: '#4A55A2', backgroundColor: 'rgba(74, 85, 162, 0.2)' },
+                { label: 'Competitor A', data: [7, 6, 8, 8, 6], borderColor: '#FF8C32', backgroundColor: 'rgba(255, 140, 50, 0.2)' },
+                { label: 'Competitor B', data: [5, 8, 7, 4, 8], borderColor: '#3498DB', backgroundColor: 'rgba(52, 152, 219, 0.2)' }
+            ]
+        },
+        swot: {
+            'Competitor A': {
+                brand: { strengths: ['Patented technology feature X', 'Agile product development'], weaknesses: ['Limited brand awareness in new markets', 'Higher price point'], opportunities: ['Growing demand for sustainable products', 'Untapped millennial market'], threats: ['New low-cost entrant', 'Data privacy regulations'] },
+                competitor: { strengths: ['Large market share', 'Extensive distribution'], weaknesses: ['Slow to adapt', 'Outdated technology'], opportunities: ['Expansion into emerging economies', 'Acquisition of startups'], threats: ['Disruptive technology', 'Increased price sensitivity'] }
+            },
+            'Competitor B': {
+                brand: { strengths: ['Patented technology feature X', 'Agile product development'], weaknesses: ['Limited brand awareness in new markets', 'Higher price point'], opportunities: ['Growing demand for sustainable products', 'Untapped millennial market'], threats: ['New low-cost entrant', 'Data privacy regulations'] },
+                competitor: { strengths: ['Innovative product design', 'Effective influencer marketing'], weaknesses: ['Limited scalability', 'Smaller marketing budget'], opportunities: ['Growing gig economy', 'Competitor C exiting market'], threats: ['Rapid tech obsolescence', 'Difficulty retaining talent'] }
+            }
+        },
+        channelPerformance: {
+            labels: ['LinkedIn', 'Blog', 'Email', 'Google Ads', 'Instagram', 'Facebook Ads'],
+            data: [250, 400, 300, 600, 150, 100],
+            tooltips: ['Objective: B2B Leads | Impact: High', 'Objective: SEO & Education | Impact: High', 'Objective: Nurturing & Conversions | Impact: High', 'Objective: Lead Gen & Sales | Impact: Medium', 'Objective: Brand Awareness | Impact: Medium', 'Objective: Retargeting | Impact: Low']
+        },
+        strategyAlignment: [
+            { title: 'Increase Millennial Brand Preference', status: 'Moderate', text: 'Positive sentiment is moving, but Share of Voice is stagnant. Instagram content needs optimization for this demographic.' },
+            { title: 'Establish Sustainability Thought Leadership', status: 'Moderate', text: 'Strong positive sentiment, but long-form content is not gaining sufficient traction. Video content performs better.' },
+            { title: 'Improve Customer Acquisition Efficiency', status: 'Misalignment', text: 'Some efficiency gains, but CPL target not met. Lead quality from certain channels may be an issue impacting final conversion.' },
+            { title: 'Enhance Product Innovation Perception', status: 'Misalignment', text: 'Increase in mentions is positive, but mixed sentiment and low positive media cut-through suggest launch messaging needs refinement.' },
+        ],
+        actionPlan: [
+            { title: 'Revitalize Gen Z Engagement Strategy', objective: 'Improve brand sentiment with Gen Z by 15 pts and increase engagement by 25% within 12 months.', owner: 'Marketing', kpis: 'Gen Z Sentiment, TikTok/IG Engagement' },
+            { title: 'Enhance Product Innovation Perception', objective: 'Increase positive media mentions of "innovation" by 30% and improve launch sentiment by 10 pts within 9 months.', owner: 'Product Marketing & PR', kpis: 'Positive Media Mentions, Launch Sentiment' },
+            { title: 'Optimize Customer Acquisition Funnel', objective: 'Reduce overall CPL by 10% and improve lead-to-customer conversion by 5% within 6 months.', owner: 'Digital Marketing & Sales Ops', kpis: 'CPL, Lead Conversion Rate' },
+        ],
+        futureScenarios: [
+            { title: 'The Hyper-Personalization Imperative', text: 'AI drives demand for ultra-tailored experiences. Opportunity for new revenue streams, but risk of being outpaced by tech-savvy competitors.' },
+            { title: 'The Trust & Transparency Economy', text: 'Data privacy, ethics, and CSR become paramount. Opportunity to differentiate on trust, but risk from scrutiny of current data practices.' },
+            { title: 'Persistent Economic Volatility', text: 'Price sensitivity rises, and discretionary spending falls. Opportunity to launch value-oriented lines, but risk of margin pressure.' },
+        ]
+    };
+
+    function destroyChart(chartId) {
+        if (chartInstances[chartId]) {
+            chartInstances[chartId].destroy();
+            delete chartInstances[chartId];
+        }
+    }
+
+    function createBarChart(chartId, chartData, options = {}) {
+        destroyChart(chartId);
+        const ctx = document.getElementById(chartId).getContext('2d');
+        chartInstances[chartId] = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { stacked: true }, y: { stacked: true } },
+                ...options
+            }
+        });
+    }
+    
+    function createBubbleChart(chartId, chartData) {
+        destroyChart(chartId);
+        const ctx = document.getElementById(chartId).getContext('2d');
+        chartInstances[chartId] = new Chart(ctx, {
+            type: 'bubble',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Traditional <--- Perceived Innovation ---> Modern' }, min: 0, max: 10 },
+                    y: { title: { display: true, text: 'Value <--- Perceived Quality ---> Premium' }, min: 0, max: 10 }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: (Innovation: ${context.parsed.x}, Quality: ${context.parsed.y})`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function createLineChart(chartId, chartData) {
+        destroyChart(chartId);
+        const ctx = document.getElementById(chartId).getContext('2d');
+        chartInstances[chartId] = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: false, suggestedMin: 50, suggestedMax: 80 } },
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+    
+    function createHorizontalBarChart(chartId, chartData, options = {}) {
+        destroyChart(chartId);
+        const ctx = document.getElementById(chartId).getContext('2d');
+        chartInstances[chartId] = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                 ...options,
+            }
+        });
+    }
+
+    function createRadarChart(chartId, chartData) {
+        destroyChart(chartId);
+        const ctx = document.getElementById(chartId).getContext('2d');
+        chartInstances[chartId] = new Chart(ctx, {
+            type: 'radar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 10 } },
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+
+    function renderSwot(competitor) {
+        const swotData = reportData.swot[competitor];
+        const contentEl = document.getElementById('swot-content');
+        if (!swotData) return;
+
+        const renderList = (title, items) => `
+            <div>
+                <h4 class="font-semibold text-gray-700">${title}</h4>
+                <ul class="mt-2 space-y-1 list-disc list-inside text-sm text-gray-600">${items.map(item => `<li>${item}</li>`).join('')}</ul>
+            </div>`;
+
+        contentEl.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div class="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h3 class="font-bold text-indigo-700">Our Brand</h3>
+                    ${renderList('Strengths 💪', swotData.brand.strengths)}
+                    ${renderList('Weaknesses ⛓️', swotData.brand.weaknesses)}
+                    ${renderList('Opportunities ✨', swotData.brand.opportunities)}
+                    ${renderList('Threats ⚡', swotData.brand.threats)}
+                </div>
+                <div class="space-y-4 p-4 border border-gray-200 rounded-lg">
+                    <h3 class="font-bold text-orange-600">${competitor}</h3>
+                    ${renderList('Strengths 💪', swotData.competitor.strengths)}
+                    ${renderList('Weaknesses ⛓️', swotData.competitor.weaknesses)}
+                    ${renderList('Opportunities ✨', swotData.competitor.opportunities)}
+                    ${renderList('Threats ⚡', swotData.competitor.threats)}
+                </div>
+            </div>`;
+    }
+
+    function initSwot() {
+        const competitors = Object.keys(reportData.swot);
+        const desktopTabs = document.getElementById('swot-tabs-desktop');
+        const selectTabs = document.getElementById('swot-tabs-select');
+        
+        desktopTabs.innerHTML = competitors.map((c, i) => `
+            <button data-competitor="${c}" class="swot-tab ${i === 0 ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">${c}</button>
+        `).join('');
+        selectTabs.innerHTML = competitors.map(c => `<option value="${c}">${c}</option>`).join('');
+
+        const updateSwotTabs = (competitor) => {
+            desktopTabs.querySelectorAll('.swot-tab').forEach(t => {
+                const isActive = t.dataset.competitor === competitor;
+                t.classList.toggle('border-indigo-500', isActive);
+                t.classList.toggle('text-indigo-600', isActive);
+                t.classList.toggle('border-transparent', !isActive);
+                t.classList.toggle('text-gray-500', !isActive);
+            });
+            selectTabs.value = competitor;
+            renderSwot(competitor);
+        };
+
+        desktopTabs.addEventListener('click', e => e.target.classList.contains('swot-tab') && updateSwotTabs(e.target.dataset.competitor));
+        selectTabs.addEventListener('change', e => updateSwotTabs(e.target.value));
+        renderSwot(competitors[0]);
+    }
+
+    function initStrategyAlignment() {
+        const container = document.getElementById('strategy-alignment-accordion');
+        const statusStyles = {
+            'Moderate': 'bg-yellow-100 text-yellow-800',
+            'Misalignment': 'bg-red-100 text-red-800',
+        };
+        container.innerHTML = reportData.strategyAlignment.map((item, index) => `
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <button data-accordion-id="${index}" class="accordion-trigger w-full text-left p-4 flex justify-between items-center hover:bg-gray-50 transition">
+                    <span class="font-medium text-gray-800">${item.title}</span>
+                    <div class="flex items-center">
+                        <span class="text-xs font-semibold mr-3 px-2.5 py-0.5 rounded-full ${statusStyles[item.status] || 'bg-gray-100'}">${item.status}</span>
+                        <span class="accordion-icon transform transition-transform duration-200 text-gray-400">▼</span>
+                    </div>
+                </button>
+                <div id="accordion-content-${index}" class="accordion-content hidden px-4 pb-4 border-t border-gray-200 bg-gray-50">
+                    <p class="mt-2 text-sm text-gray-600">${item.text}</p>
+                </div>
+            </div>`).join('');
+
+        container.addEventListener('click', e => {
+            const button = e.target.closest('.accordion-trigger');
+            if (button) {
+                const content = document.getElementById(`accordion-content-${button.dataset.accordionId}`);
+                const icon = button.querySelector('.accordion-icon');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            }
+        });
+    }
+
+    function initActionPlan() {
+        const container = document.getElementById('action-plan');
+        container.innerHTML = reportData.actionPlan.map((item, index) => `
+             <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <button data-accordion-id="action-${index}" class="accordion-trigger w-full text-left p-4 flex justify-between items-center hover:bg-gray-50 transition">
+                    <span class="font-semibold text-gray-800">${index + 1}. ${item.title}</span>
+                    <span class="accordion-icon transform transition-transform duration-200 text-gray-400">▼</span>
+                </button>
+                <div id="accordion-content-action-${index}" class="accordion-content hidden px-6 pb-4 border-t border-gray-200 bg-gray-50">
+                    <p class="mt-3 text-sm text-gray-700"><strong class="font-semibold">Objective:</strong> ${item.objective}</p>
+                    <p class="mt-2 text-sm text-gray-700"><strong class="font-semibold">Owner:</strong> ${item.owner}</p>
+                    <p class="mt-2 text-sm text-gray-700"><strong class="font-semibold">KPIs:</strong> ${item.kpis}</p>
+                </div>
+            </div>`).join('');
+
+         container.addEventListener('click', e => {
+            const button = e.target.closest('.accordion-trigger');
+            if (button) {
+                const content = document.getElementById(`accordion-content-${button.dataset.accordionId}`);
+                const icon = button.querySelector('.accordion-icon');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            }
+        });
+    }
+
+    function initFutureScenarios() {
+        const container = document.getElementById('future-scenarios');
+        const icons = ['💡', '🛡️', '💰'];
+        container.innerHTML = reportData.futureScenarios.map((item, i) => `
+            <div class="border-l-4 border-indigo-300 p-4 bg-white rounded-r-lg shadow-sm">
+                 <h4 class="font-semibold text-gray-800 flex items-center"><span class="text-xl mr-2">${icons[i]}</span> ${item.title}</h4>
+                <p class="mt-2 text-sm text-gray-600">${item.text}</p>
+            </div>`).join('');
+    }
+    
+    function renderView(view) {
+        appState.activeView = view;
+        navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+        contentSections.forEach(section => section.classList.toggle('active', section.id === `view-${view}`));
+
+        // Lazy load charts
+        if (view === 'dashboard') {
+            createBarChart('kpiAlignmentChart', reportData.kpiAlignment, { indexAxis: 'y', scales: { x: { max: 100, title: { display: true, text: 'Progress to Target (%)' } }, y: { stacked: true } }, plugins: { legend: { display: true, position: 'bottom' } } });
+        } else if (view === 'perception') {
+            createBubbleChart('perceptionMapChart', reportData.perceptionMap);
+            createLineChart('sentimentTrendChart', reportData.sentimentTrend);
+            createHorizontalBarChart('sentimentDriversChart', {
+                labels: [...reportData.sentimentDrivers.positive.labels, ...reportData.sentimentDrivers.negative.labels],
+                datasets: [{ label: 'Mentions', data: [...reportData.sentimentDrivers.positive.data, ...reportData.sentimentDrivers.negative.data.map(d => -d)],
+                backgroundColor: (ctx) => ctx.raw >= 0 ? 'rgba(34, 197, 94, 0.7)' : 'rgba(239, 68, 68, 0.7)' }]
+            }, { plugins: { legend: { display: false } }, scales: { x: { title: { display: true, text: 'Negative <--- Volume of Mentions ---> Positive' } } } });
+        } else if (view === 'competition') {
+            createRadarChart('digitalFootprintChart', reportData.digitalFootprint);
+            initSwot();
+        } else if (view === 'performance') {
+            createHorizontalBarChart('channelPerformanceChart', {
+                labels: reportData.channelPerformance.labels,
+                datasets: [{ label: 'Leads Generated', data: reportData.channelPerformance.data, backgroundColor: '#4A55A2' }]
+            }, { plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: (context) => reportData.channelPerformance.tooltips[context.dataIndex] } } }, scales: { x: { title: { display: true, text: 'Number of High-Intent Leads (Last Qtr)' } } } });
+            initStrategyAlignment();
+        } else if (view === 'roadmap') {
+            initActionPlan();
+            initFutureScenarios();
+        }
+    }
+
+    navContainer.addEventListener('click', (e) => e.target.matches('.nav-button') && renderView(e.target.dataset.view));
+    renderView('dashboard');
+});
+</script>
+</body>
+</html>
