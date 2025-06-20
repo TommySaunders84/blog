@@ -62,6 +62,13 @@
             font-size: 28px;
             font-weight: 900;
             letter-spacing: -1px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: var(--bright-coral);
         }
 
         .nav-links {
@@ -91,6 +98,10 @@
         }
 
         .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .nav-item.active::after {
             width: 100%;
         }
 
@@ -186,6 +197,8 @@
             transition: all 0.3s ease;
             position: relative;
             background: var(--white);
+            text-decoration: none;
+            display: block;
         }
 
         .blog-card:hover {
@@ -382,6 +395,8 @@
             grid-template-columns: 1fr 1fr;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
         }
 
         .featured-card:hover {
@@ -544,13 +559,13 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">TS Blog</div>
+            <a href="https://blog.tommysaunders.ai/" class="nav-logo">TS Blog</a>
             <div class="nav-links">
-                <a href="/" class="nav-item">Home</a>
-                <a href="/product-design" class="nav-item">Product Design</a>
-                <a href="/creative-direction" class="nav-item">Creative Direction</a>
-                <a href="/brand-strategy" class="nav-item">Brand Strategy</a>
-                <a href="/design-system" class="nav-item">Design System</a>
+                <a href="https://blog.tommysaunders.ai/" class="nav-item active">Home</a>
+                <a href="https://blog.tommysaunders.ai/product-design" class="nav-item">Product Design</a>
+                <a href="https://blog.tommysaunders.ai/creative-direction" class="nav-item">Creative Direction</a>
+                <a href="https://blog.tommysaunders.ai/brand-strategy" class="nav-item">Brand Strategy</a>
+                <a href="https://blog.tommysaunders.ai/design-system" class="nav-item">Design System</a>
             </div>
         </div>
     </nav>
@@ -573,13 +588,13 @@
 
         <!-- Featured Post -->
         <section class="featured-section">
-            <article class="featured-card">
+            <a href="https://blog.tommysaunders.ai/posts/the-art-of-being-deliberately-different" class="featured-card">
                 <div class="featured-content">
                     <span class="featured-label">Featured Story</span>
                     <h2 class="featured-title">The Art of Being Deliberately Different</h2>
                     <p class="text-excerpt">Why swimming against the current is the only way to make waves in design.</p>
                     <div class="author-info">
-                        <div class="author-avatar">SC</div>
+                        <div class="author-avatar">TS</div>
                         <div class="author-details">
                             <span class="author-name">Tommy Saunders + Claude Opus 4</span>
                             <span class="post-date">2 days ago • 12 min read</span>
@@ -589,13 +604,13 @@
                 <div class="featured-image">
                     <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9068.jpg" alt="Featured">
                 </div>
-            </article>
+            </a>
         </section>
 
         <!-- Blog Grid -->
         <section class="blog-grid">
             <!-- Large Image Cover Card -->
-            <article class="blog-card card-large">
+            <a href="https://blog.tommysaunders.ai/posts/breaking-the-grid" class="blog-card card-large">
                 <div class="image-cover">
                     <img src="https://blog.tommysaunders.ai/assets.keep/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9085.jpg" alt="Breaking the Grid" class="cover-image">
                     <div class="image-overlay">
@@ -609,10 +624,10 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Text Cover Card -->
-            <article class="blog-card card-regular design-cat">
+            <a href="https://blog.tommysaunders.ai/posts/perfect-enemy-of-interesting" class="blog-card card-regular design-cat">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category">Design</span>
@@ -625,15 +640,15 @@
                         </div>
                     </div>
                     <div class="text-hover-image">
-                        <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9103.jpg" alt="Hidden">
+                        <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9103.jpg" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Tall Image Cover Card -->
-            <article class="blog-card card-tall">
+            <a href="https://blog.tommysaunders.ai/posts/the-future-is-analog" class="blog-card card-tall">
                 <div class="image-cover">
-                    <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9104.jpg" alt="The Future is Analog" class="cover-image">
+                    <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9104.jpg" alt="The Future is Analog" class="cover-image">
                     <div class="image-overlay">
                         <span class="overlay-category">Technology</span>
                         <h3 class="overlay-title">The Future is Analog</h3>
@@ -645,10 +660,10 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Wide Text Cover Card -->
-            <article class="blog-card card-wide tech-cat">
+            <a href="https://blog.tommysaunders.ai/posts/coding-like-a-poet" class="blog-card card-wide tech-cat">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category">Technology</span>
@@ -661,15 +676,15 @@
                         </div>
                     </div>
                     <div class="text-hover-image">
-                        <img src="/https://blog.tommysaunders.ai/assets.keep/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9105.jpg" alt="Hidden">
+                        <img src="https://blog.tommysaunders.ai/assets.keep/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9105.jpg" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Image Cover Card -->
-            <article class="blog-card card-regular">
+            <a href="https://blog.tommysaunders.ai/posts/museum-of-failed-ideas" class="blog-card card-regular">
                 <div class="image-cover">
-                    <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9107.jpg" alt="Museum of Failed Ideas" class="cover-image">
+                    <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9107.jpg" alt="Museum of Failed Ideas" class="cover-image">
                     <div class="image-overlay">
                         <span class="overlay-category">Culture</span>
                         <h3 class="overlay-title">The Museum of Failed Ideas</h3>
@@ -681,10 +696,10 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Text Cover Card with Purple Background -->
-            <article class="blog-card card-regular" style="background: var(--pastel-purple);">
+            <a href="https://blog.tommysaunders.ai/posts/renaissance-of-weird" class="blog-card card-regular" style="background: var(--pastel-purple);">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category" style="color: var(--bright-purple);">Innovation</span>
@@ -697,15 +712,15 @@
                         </div>
                     </div>
                     <div class="text-hover-image">
-                        <img src="/https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9108.jpg" alt="Hidden">
+                        <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9108.jpg" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Wide Image Cover Card -->
-            <article class="blog-card card-wide">
+            <a href="https://blog.tommysaunders.ai/posts/zigging-when-they-zag" class="blog-card card-wide">
                 <div class="image-cover">
-                    <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9109.jpg" alt="Zigging When They Zag" class="cover-image">
+                    <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9109.jpg" alt="Zigging When They Zag" class="cover-image">
                     <div class="image-overlay">
                         <span class="overlay-category">Strategy</span>
                         <h3 class="overlay-title">Zigging When They Zag</h3>
@@ -717,10 +732,10 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Regular Text Cover Card -->
-            <article class="blog-card card-regular culture-cat">
+            <a href="https://blog.tommysaunders.ai/posts/death-of-the-template" class="blog-card card-regular culture-cat">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category">Culture</span>
@@ -733,13 +748,13 @@
                         </div>
                     </div>
                     <div class="text-hover-image">
-                        <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9111.jpg" alt="Hidden">
+                        <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9111.jpg" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Tall Text Cover Card -->
-            <article class="blog-card card-tall strategy-cat">
+            <a href="https://blog.tommysaunders.ai/posts/building-backwards" class="blog-card card-tall strategy-cat">
                 <div class="text-cover">
                     <div class="text-content">
                         <span class="text-category">Strategy</span>
@@ -747,32 +762,32 @@
                         <p class="text-excerpt">Start with the impossible. Work your way back to reality. Find magic in between.</p>
                         <div class="text-meta">
                             <span>20 min read</span>
-                            <span>Tommy Saunders + Claude Opus 4</span>
+                            <span>•</span>
                             <span>Featured</span>
                         </div>
                     </div>
                     <div class="text-hover-image">
-                        <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9116.jpg" alt="Hidden">
+                        <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9116.jpg" alt="Hidden">
                     </div>
                 </div>
-            </article>
+            </a>
 
             <!-- Final Image Card -->
-            <article class="blog-card card-regular">
+            <a href="https://blog.tommysaunders.ai/posts/creative-disruption-playbook" class="blog-card card-regular">
                 <div class="image-cover">
-                    <img src="/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9129.jpg" alt="Creative Disruption" class="cover-image">
+                    <img src="https://blog.tommysaunders.ai/DTS_AFTER_HOURS_Shauna_Summers_Photos_ID9129.jpg" alt="Creative Disruption" class="cover-image">
                     <div class="image-overlay">
                         <span class="overlay-category">Design</span>
                         <h3 class="overlay-title">The Creative Disruption Playbook</h3>
                         <p class="overlay-excerpt">Seven principles for breaking the rules productively.</p>
                         <div class="overlay-meta">
-                            <span>Nina Patel</span>
+                            <span>Tommy Saunders + Claude Opus 4</span>
                             <span>•</span>
                             <span>11 min read</span>
                         </div>
                     </div>
                 </div>
-            </article>
+            </a>
         </section>
 
         <!-- Newsletter Section -->
